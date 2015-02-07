@@ -12,13 +12,14 @@ Fellesprosjekt i PU og DB 2015
 ## Kortversjon:
 ### Oppsett
 - Installer Git: [Windows](http://msysgit.github.io/) | [Mac](https://code.google.com/p/git-osx-installer/downloads/list?can=3)
-- Start Git
+- Start Git Bash
 ```
 mkdir git         # Lag ny mappe
 cd git            # Ã…pne mappe
 git init          # Lag lokalt repository
 git clone <url>   # Kopier online repository til lokal arbeidsmappe
 ```
+Trykk `Insert` i Git Bash for å lime inn.
 Assossiere commits med GitHub-bruker
 ```
 git config --global user.name "username"
