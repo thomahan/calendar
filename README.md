@@ -7,7 +7,8 @@ Fellesprosjekt i PU og DB 2015
 
 ## Innføring i Git
 Mer detaljert: [Git - The Simple Guide](http://rogerdudler.github.io/git-guide/) | 
-[GitHub Help - Set Up Git](https://help.github.com/articles/set-up-git/)
+[GitHub Help - Set Up Git](https://help.github.com/articles/set-up-git/) | 
+[Atlassion Git Tutorial](https://www.atlassian.com/git/tutorials/comparing-workflows/centralized-workflow)
 
 ### Oppsett
 - Installer Git: [Windows](http://msysgit.github.io/) | [Mac](https://code.google.com/p/git-osx-installer/downloads/list?can=3)
