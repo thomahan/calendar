@@ -12,7 +12,7 @@ Mer detaljert: [Git - The Simple Guide](http://rogerdudler.github.io/git-guide/)
 ### Oppsett
 - Installer Git: [Windows](http://msysgit.github.io/) | [Mac](https://code.google.com/p/git-osx-installer/downloads/list?can=3)
 - Start Git Bash
-- Initialiser Git og klon repository:
+- Initialiser Git og klon remote repository:
 ```
 mkdir git         # Lag ny mappe
 cd git            # Åpne mappe
@@ -20,7 +20,7 @@ git init          # Lag lokalt repository
 git clone <url>   # Kopier online repository til lokal arbeidsmappe*
 ```
 *Trykk `Insert` i Git Bash for å lime inn.
-- Før man kan pushe endringer til repositoryet, må man koble lokalt repository til GitHub-bruker:
+- Før man kan pushe endringer til remote repository, må man koble lokalt repository til GitHub-bruker:
 ```
 git config --global user.email "email"
 git config --global user.name "username"
@@ -38,7 +38,12 @@ git pull                          # Oppdaterer lokalt repository
 <gjør endringer>
 git status                        # Viser uoverensstemmelser mellom arbeidsmappe, indeks-fil og HEAD
                                   # (Kan gjøres mellom hvert steg for å ha fullstendig oversikt)
-git add <filename>                # Legger endringer til indeks
+git add <filename>                # Legger endringer til indeks (stageing)
 git commit -m "<commit message>"  # Committer endringer til HEAD
-git push                          # Sender endringer til online repository
+git push                          # Sender endringer til remote repository
+```
+- Hvis noen har oppdatert remote repository siden din siste pull kan man få push-error:
+```
+git pull --rebase                 # Oppdaterer lokalt repository og legger dine commits på toppen
+git push                          # Sender endringer til remote repository
 ```
