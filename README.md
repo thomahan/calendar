@@ -15,10 +15,11 @@ Mer detaljert: [Git - The Simple Guide](http://rogerdudler.github.io/git-guide/)
 - Start Git Bash
 - Initialiser Git og klon remote repository:
 ```
-mkdir git         # Lag ny mappe
-cd git            # Åpne mappe
-git init          # Lag lokalt repository
-git clone <url>   # Kopier online repository til lokal arbeidsmappe*
+mkdir git                                           # Lag ny mappe
+cd git                                              # Åpne mappe
+git init                                            # Lag lokalt repository
+git clone https://github.com/thomahan/kalender.git  # Kopier online repository til lokal arbeidsmappe*
+cd kalender                                         # Åpne lokal arbeidsmappe
 ```
 *Trykk `Insert` i Git Bash for å lime inn.
 - Før man kan pushe endringer til remote repository, må man koble lokalt repository til GitHub-bruker:
