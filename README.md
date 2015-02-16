@@ -20,7 +20,7 @@ Mer detaljert: [Git - The Simple Guide](http://rogerdudler.github.io/git-guide/)
 mkdir git                                           # Lag ny mappe
 cd git                                              # Åpne mappe
 git init                                            # Lag lokalt repository
-git clone https://github.com/thomahan/kalender.git  # Kopier online repository til lokal arbeidsmappe*
+git clone https://github.com/thomahan/kalender.git  # Kopier remote repository til lokal arbeidsmappe*
 cd kalender                                         # Åpne lokal arbeidsmappe
 ```
 *Trykk `Insert` i Git Bash for å lime inn.
