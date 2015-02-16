@@ -44,10 +44,6 @@ git status                        # Viser uoverensstemmelser mellom arbeidsmappe
                                   # (Kan gjøres mellom hvert steg for å ha fullstendig oversikt)
 git add <filename>                # Legger endringer til indeks (stageing)
 git commit -m "<commit message>"  # Committer endringer til HEAD
-git push                          # Sender endringer til remote repository
-```
-- Hvis noen har oppdatert remote repository siden din siste pull kan man få push-error:
-```
-git pull --rebase                 # Oppdaterer lokalt repository og legger dine commits på toppen
+git pull --rebase                 # Henter evt. nye commits fra remote og legger dine commits på toppen
 git push                          # Sender endringer til remote repository
 ```
