@@ -1,7 +1,7 @@
 # kalender
 Fellesprosjekt i PU og DB 2015
 
-[MySQL ved NTNU](https://innsida.ntnu.no/wiki/-/wiki/Norsk/Bruke+MySQL+ved+NTNU)
+[MySQL ved NTNU](https://innsida.ntnu.no/wiki/-/wiki/Norsk/Bruke+MySQL+ved+NTNU) | 
 [JDBC tutorial](http://docs.oracle.com/javase/tutorial/jdbc/overview/)
 
 [Mulig å koble til databasen utenfor NTNU med VPN?](https://innsida.ntnu.no/wiki/-/wiki/Norsk/installere+VPN)
