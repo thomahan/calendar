@@ -45,6 +45,14 @@ git status                        # Viser uoverensstemmelser mellom arbeidsmappe
                                   # (Kan gjøres mellom hvert steg for å ha fullstendig oversikt)
 git add <filename>                # Legger endringer til indeks (stageing)
 git commit -m "<commit message>"  # Committer endringer til HEAD
-git pull --rebase                 # Henter evt. nye commits fra remote og legger dine commits på toppen
 git push                          # Sender endringer til remote repository
+```
+- Ved push error, gjenta arbeidsflyten for å fikse filen med merge conflict:
+```
+git pull
+<få merge conflict>
+<fiks filen>
+git add <filename>
+git commit -m "<commit message>"
+git push
 ```
