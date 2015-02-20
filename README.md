@@ -1,6 +1,13 @@
-# kalender
+# Calendar
 Fellesprosjekt i PU og DB 2015
 
+- [Notater](#notater)
+- [Innføring i Git](#innføring-i-git)
+  - [Oppsett](#oppsett)
+  - [Arbeidsflyt](#arbeidsflyt)
+- [Oppsett i Eclipse](#oppsett-i-eclipse)
+
+## Notater
 [MySQL ved NTNU](https://innsida.ntnu.no/wiki/-/wiki/Norsk/Bruke+MySQL+ved+NTNU) | 
 [JDBC tutorial](http://docs.oracle.com/javase/tutorial/jdbc/overview/)
 
@@ -56,3 +63,10 @@ git add <filename>
 git commit -m "<commit message>"
 git push
 ```
+## Oppsett i Eclipse
+1. File > Import
+2. Git > Projects from Git > [Next]
+3. Existing local repository > [Next]
+4. Add > Browse (til Git-mappa) > Search > Uncheck alt annet enn calendar > [Finish] > Velg calendar > [Next]
+5. Import existing projects > [Next]
+6. [Finish]
