@@ -14,8 +14,6 @@ Fellesprosjekt i PU og DB 2015
 
 [Mulig å koble til databasen utenfor NTNU med VPN?](https://innsida.ntnu.no/wiki/-/wiki/Norsk/installere+VPN)
 
-[Opprett GitHub-konto](https://github.com/join)
-
 ## Innføring i Git
 Mer detaljert: [Git - The Simple Guide](http://rogerdudler.github.io/git-guide/) | 
 [GitHub Help - Set Up Git](https://help.github.com/articles/set-up-git/) | 
