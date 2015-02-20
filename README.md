@@ -65,7 +65,7 @@ git commit -m "<commit message>"
 git push
 ```
 ### Commit message
-Det er en Git-konvensjon å bruke imperativ verbform i commit messages. For eksempel: "Add input validation". Dette er slik Git selv gjør det, ved f.eks. automatiske merge commits. Man sparer også noen tegn i hver commit message. Et triks kan være å se om den passer inn i denne setningen: "If applied, this commit will ____________".
+Det er en Git-konvensjon å bruke imperativ verbform i commit messages. For eksempel: "Add input validation". Dette er slik Git selv gjør det, ved f.eks. automatiske merge commits. Man sparer også noen tegn i hver commit message. Et triks kan være å se om den passer inn i denne setningen: "If applied, this commit will ____________". Tanken er altså ikke å rapportere hva man har gjort, men å si hva commiten kommer til å gjøre når den blir lagt til.
 
 ## Oppsett i Eclipse
 1. File > Import
