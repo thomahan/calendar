@@ -5,6 +5,7 @@ Fellesprosjekt i PU og DB 2015
 - [Innføring i Git](#innføring-i-git)
   - [Oppsett](#oppsett)
   - [Arbeidsflyt](#arbeidsflyt)
+  - [Commit message](#commit-message)
 - [Oppsett i Eclipse](#oppsett-i-eclipse)
 
 ## Notater
@@ -24,7 +25,7 @@ Mer detaljert: [Git - The Simple Guide](http://rogerdudler.github.io/git-guide/)
 - Installer Git: [Windows](http://msysgit.github.io/) | [Mac](https://code.google.com/p/git-osx-installer/downloads/list?can=3)
 - Start Git Bash
 - Initialiser Git og klon remote repository:
-```
+```shell
 mkdir git                                           # Lag ny mappe
 cd git                                              # Åpne mappe
 git init                                            # Lag lokalt repository
@@ -33,19 +34,19 @@ cd kalender                                         # Åpne lokal arbeidsmappe
 ```
 *Trykk `Insert` i Git Bash for å lime inn.
 - Før man kan pushe endringer til remote repository, må man koble lokalt repository til GitHub-bruker:
-```
+```shell
 git config --global user.email "email"
 git config --global user.name "username"
 ```
 - For å slippe å logge inn ved hver push kan man enten la Git cache innloggingsinfo midlertidig eller lagre det permanent:
-```
+```shell
 git config --global credential.helper cache                   # Caches i 15 minutter
 git config --global credential.helper 'cache --timeout=3600'  # Caches i 1 time
 git config --global credential.helper store                   # Lagres permanent
 ```
 
 ### Arbeidsflyt
-```
+```shell
 git pull                          # Oppdaterer lokalt repository
 <gjør endringer>
 git status                        # Viser uoverensstemmelser mellom arbeidsmappe, indeks-fil og HEAD
@@ -55,7 +56,7 @@ git commit -m "<commit message>"  # Committer endringer til HEAD
 git push                          # Sender endringer til remote repository
 ```
 - Ved push error, gjenta arbeidsflyten for å fikse filen med merge conflict:
-```
+```shell
 git pull
 <få merge conflict>
 <fiks filen>
@@ -63,6 +64,9 @@ git add <filename>
 git commit -m "<commit message>"
 git push
 ```
+### Commit message
+Det er en Git-konvensjon å bruke imperativ verbform i commit messages. For eksempel: "Add input validation". Dette er slik Git selv gjør det, ved f.eks. automatiske merge commits. Man sparer også noen tegn i hver commit message. Et triks kan være å se om den passer inn i denne setningen: "If applied, this commit will ____________".
+
 ## Oppsett i Eclipse
 1. File > Import
 2. Git > Projects from Git > [Next]
