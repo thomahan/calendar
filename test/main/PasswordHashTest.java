@@ -7,8 +7,9 @@ import main.PasswordHash;
 
 public class PasswordHashTest {
 	public void getSaltShouldReturnDifferentSalts() {
-		String saltA = PasswordHash.getSalt();
-		String saltB = PasswordHash.getSalt();
+		byte[] saltA = PasswordHash.getSalt();
+		byte[] saltB = PasswordHash.getSalt();
+		System.out.println(saltA);
 		
 		assertFalse(saltA.equals(saltB));
 	}
