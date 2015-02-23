@@ -10,7 +10,7 @@ public class PasswordHash {
 	private static final int DEFAULT_ITERATIONS = 1000;
 
 	/**
-	 * Creates a salt of random bytes to be hashed together with the passwordn.toString(16);
+	 * Creates a salt of random bytes to be hashed together with the password
 	 * @return A string of a random bytes in hexadecimal
 	 */
 	public static String getSalt() {
