@@ -74,6 +74,6 @@ Det er en Git-konvensjon å bruke imperativ verbform i commit messages. For ekse
 5. Import existing projects > [Next]
 6. [Finish]
 
-Last ned [MySQL-Connector](http://dev.mysql.com/downloads/connector/j/) og *Add to build path* i Eclipse.
+Velg MySQL-connector i lib i Eclipse og *Add to build path*.
 
 Høyreklikk prosjektmappe i Eclipse > Build path > Add libraries... > JUnit > [Next] > [Finish]
