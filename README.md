@@ -9,8 +9,6 @@ Fellesprosjekt i PU og DB 2015
 - [Oppsett i Eclipse](#oppsett-i-eclipse)
 
 ## Notater
-Last ned [MySQL-Connector](http://dev.mysql.com/downloads/connector/j/) og *Add to build path* i Eclipse.
-
 [MySQL ved NTNU](https://innsida.ntnu.no/wiki/-/wiki/Norsk/Bruke+MySQL+ved+NTNU) | 
 [JDBC tutorial](http://docs.oracle.com/javase/tutorial/jdbc/overview/)
 
@@ -75,3 +73,7 @@ Det er en Git-konvensjon å bruke imperativ verbform i commit messages. For ekse
 4. Add > Browse (til Git-mappa) > Search > Uncheck alt annet enn calendar > [Finish] > Velg calendar > [Next]
 5. Import existing projects > [Next]
 6. [Finish]
+
+Last ned [MySQL-Connector](http://dev.mysql.com/downloads/connector/j/) og *Add to build path* i Eclipse.
+
+Høyreklikk prosjektmappe i Eclipse > Build path > Add libraries... > JUnit > [Next] > [Finish]
