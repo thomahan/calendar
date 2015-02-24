@@ -51,6 +51,7 @@ git pull                          # Oppdaterer lokalt repository
 <gjør endringer>
 git status                        # Viser uoverensstemmelser mellom arbeidsmappe, indeks-fil og HEAD
                                   # (Kan gjøres mellom hvert steg for å ha fullstendig oversikt)
+git pull                          # Gjør en pull til før opplastingen
 git add <filename>                # Legger endringer til indeks (stageing)
 git commit -m "<commit message>"  # Committer endringer til HEAD
 git push                          # Sender endringer til remote repository
