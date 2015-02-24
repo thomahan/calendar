@@ -1,10 +1,10 @@
 package main;
 
+import main.PasswordHash;
+
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
-
-import main.PasswordHash;
 
 public class PasswordHashTest {
 	@Test
