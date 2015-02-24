@@ -58,7 +58,9 @@ public class CalendarEvent {
 			Invitation invitation = new Invitation(this);
 			invitation.sendInvitationToUser(user);
 			if (invitation.reply == true){
+				System.out.println("Hei");
 				participants.add(user);
+				// + Legge inn i brukers kalender.
 			}
 		} else{
 			throw new IllegalArgumentException("User is already added.");

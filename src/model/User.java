@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class User {
@@ -10,6 +11,7 @@ public class User {
 	private Calendar calendar;
 	private static final AtomicInteger count = new AtomicInteger(0);
 	private ArrayList<Group> groups = new ArrayList<Group>();
+	Scanner scanner = new Scanner(System.in);
 	
 	public User(String name) {
 		this.name = name;
@@ -45,6 +47,15 @@ public class User {
 	public ArrayList<Group> getGroups() {
 		return groups;
 	}
+	
+	public boolean answerInvitation(Invitation invitation){
+		String answer;
+		answer = scanner.next();
+		if(answer.equals("YES")){
+			return true;
+		} else 
+			return false;
+	} //HUSK Å LAGE EN SISTE STATEMENT
 	
 	
 	//Legger til en ny gruppe til gruppelisten
