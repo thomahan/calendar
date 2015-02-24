@@ -10,7 +10,8 @@ Fellesprosjekt i PU og DB 2015
 
 ## Notater
 [MySQL ved NTNU](https://innsida.ntnu.no/wiki/-/wiki/Norsk/Bruke+MySQL+ved+NTNU) | 
-[JDBC tutorial](http://docs.oracle.com/javase/tutorial/jdbc/overview/)
+[JDBC tutorial](http://docs.oracle.com/javase/tutorial/jdbc/overview/) | 
+[Stack Overflow answer](http://stackoverflow.com/questions/2839321/java-connectivity-with-mysql/2840358#2840358)
 
 [Mulig å koble til databasen utenfor NTNU med VPN?](https://innsida.ntnu.no/wiki/-/wiki/Norsk/installere+VPN)
 

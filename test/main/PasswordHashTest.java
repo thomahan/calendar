@@ -9,8 +9,8 @@ import main.PasswordHash;
 public class PasswordHashTest {
 	@Test
 	public void getSaltShouldReturnDifferentSalts() {
-		String saltA = PasswordHash.getSalt();
-		String saltB = PasswordHash.getSalt();
+		String saltA = PasswordHash.nextSalt();
+		String saltB = PasswordHash.nextSalt();
 		
 		/*
 		System.out.println(saltA);
@@ -22,10 +22,10 @@ public class PasswordHashTest {
 	
 	@Test
 	public void hashingShouldBeConsistent() {
-		String salt = PasswordHash.getSalt();
+		String salt = PasswordHash.nextSalt();
 		String password = "abc123";
-		String hashA = PasswordHash.getPasswordHash(salt, password);
-		String hashB = PasswordHash.getPasswordHash(salt, password);
+		String hashA = PasswordHash.hashPassword(salt, password);
+		String hashB = PasswordHash.hashPassword(salt, password);
 
 		/*
 		System.out.println(salt);

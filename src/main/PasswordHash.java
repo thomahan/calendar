@@ -13,13 +13,13 @@ public class PasswordHash {
 	 * Creates a salt of random bytes to be hashed together with the password
 	 * @return A string of a random bytes in hexadecimal
 	 */
-	public static String getSalt() {
+	public static String nextSalt() {
 		SecureRandom random = new SecureRandom();
 		byte[] salt = new byte[SALT_BYTE_SIZE];
 
 		random.nextBytes(salt);
 		
-		return getHexString(salt); 
+		return toHexString(salt); 
 	}
 		
 	/**
@@ -28,12 +28,12 @@ public class PasswordHash {
 	 * @param password
 	 * @return An iterated SHA-256 hash
 	 */
-	public static String getPasswordHash(String salt, String password) {
-		String hash = "";
+	public static String hashPassword(String salt, String password) {
+		String result = "";
 		for (int i = 0; i < DEFAULT_ITERATIONS; i++) {
-			hash = getHash(hash.concat(salt).concat(password));
+			result = hash(result.concat(salt).concat(password));
 		}
-		return hash;
+		return result;
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class PasswordHash {
 	 * @param bytes
 	 * @return A string of hexadecimals
 	 */
-	private static String getHexString(byte[] bytes) {
+	private static String toHexString(byte[] bytes) {
 		BigInteger n = new BigInteger(1, bytes);
 		return n.toString(16);
 	}
@@ -51,14 +51,14 @@ public class PasswordHash {
 	 * @param s
 	 * @return A SHA-256 hash
 	 */
-	private static String getHash(String s) {
+	private static String hash(String s) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			md.reset();
 
 			md.update(s.getBytes());	
 			byte[] digest = md.digest();
-			String hash = getHexString(digest);
+			String hash = toHexString(digest);
 			
 			return hash;
 		} catch (NoSuchAlgorithmException e) {
