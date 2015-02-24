@@ -5,6 +5,6 @@ import java.util.ArrayList;
 
 public interface CalendarEventListener {
 	
-	void eventHasChanged(CalendarEvent event, Date date, ArrayList<User> users, Room room);
+	void eventHasChanged(CalendarEvent event);
 
 }
