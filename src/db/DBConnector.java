@@ -15,7 +15,7 @@ public class DBConnector {
 	 * Establishes a connection to the database
 	 * @return Connection
 	 */
-	public static Connection connect() {
+	public static Connection getConnection() {
 		try {
 			Connection connection = DriverManager.getConnection(url, username, password);
 			return connection;
@@ -36,7 +36,7 @@ public class DBConnector {
 		ResultSet result = null;
 
 		try {
-			connection = connect();
+			connection = getConnection();
 			st = connection.createStatement();
 			result = st.executeQuery(query);
 		} catch (SQLException e) {
@@ -66,7 +66,7 @@ public class DBConnector {
 		Connection connection = null;
 		Statement st = null;
 		try {
-			connection = connect();
+			connection = getConnection();
 			st = connection.createStatement();
 			st.executeUpdate(statement);
 		} catch (SQLException e) {

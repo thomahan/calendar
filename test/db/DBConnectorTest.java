@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNotNull;
 public class DBConnectorTest {
 	@Test
 	public void connectionShouldBeEstablished() {
-		Connection connection = DBConnector.connect();
+		Connection connection = DBConnector.getConnection();
 		assertNotNull(connection);
 	}
 	
