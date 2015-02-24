@@ -9,8 +9,8 @@ public class CalendarEvent {
 	private ArrayList<User> participants = new ArrayList<User>();
 	private ArrayList<User> eventListeners = new ArrayList<User>();
 	private Room room;
-	private Date startDate;
-	private Date endDate;
+	private Date startDate; //Starttid for event
+	private Date endDate; //Sluttid for event
 	
 	// Husk å gå gjennom klassen for å sjekke om verdier eller statements trengs å valideres.
 	
@@ -70,11 +70,13 @@ public class CalendarEvent {
 	}
 	
 	public void addGroup(Group group){
-		// Venter med denne til groups er ferdig. Her må jeg sjekke at hvert gruppemedlem ikke allerede er med far før.
+		
+		
+		// Venter med denne til groups er ferdig. Her må jeg sjekke at hvert gruppemedlem ikke allerede er med fra før.
 	}
 	
 	public void removeGroup(Group group){
-			participants.remove(group.members); // Tror det går an å gjøre det slik, istedenfor å gå gjennom en løkke.
+			participants.remove(group.getMembers()); 
 	}
 	
 	public void fireCalendarEventHasChanged(){

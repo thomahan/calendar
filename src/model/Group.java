@@ -7,7 +7,7 @@ public class Group {
 	
 	private String groupName;
 	final int groupID;
-	private ArrayList<User> members = new ArrayList<User>();
+	ArrayList<User> members = new ArrayList<User>();
 	private ArrayList<User> listeners;
 	private static final AtomicInteger count = new AtomicInteger(0);
 	
