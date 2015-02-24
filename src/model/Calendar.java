@@ -27,16 +27,18 @@ public class Calendar {
 	public boolean isValidEvent(CalendarEvent event){
 		if (events.contains(event)){
 			return false;
-		} else{
+		}  else {
 			return true;
 		}
 		
-		// Ufullstendig metode. Må korrigere for tid (sjekke om avtale eksisterer på det gitte tidspunkt fra før)
+		// Ufullstendig metode. Må korrigere for tid (sjekke om avtale eksisterer på det gitte tidspunkt fra før). Det må gjøres når User-klasse er pushet
+		// For å se om brukeren har en event i det tidsrommet. 
 	}
 	
 	public void showMyEvents(){
 		for (CalendarEvent event: events){
-			System.out.println("Event name: " + event.eventName + ", Date: " + event.date + ", Room: " + event.room);
+			System.out.println("Event name: " + event.getEventName() + ", Starting: " + event.getStartDate() + ", Ending: " + event.getEndDate() + ", Room: " + event.getRoom().getName());
+			
 		}
 	}
 	

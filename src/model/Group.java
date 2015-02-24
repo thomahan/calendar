@@ -1,19 +1,19 @@
 package model;
 
-import java.awt.List;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Group {
 	
-	String groupName;
+	private String groupName;
 	final int groupID;
-	ArrayList<User> members;
-	ArrayList<User> listeners;
+	private ArrayList<User> members = new ArrayList<User>();
+	private ArrayList<User> listeners;
+	private static final AtomicInteger count = new AtomicInteger(0);
 	
-	private Group(String name, int groupID) {
+	public Group(String name) {
 		this.groupName = name;
-		this.groupID = groupID;
-		ArrayList<User> members = new ArrayList<User>();
+		this.groupID = count.incrementAndGet();
 	}
 
 	public String getGroupName() {
@@ -44,15 +44,16 @@ public class Group {
 		return groupID;
 	}
 	
-	private void addUserToGroup(User user) {
+	public void addUserToGroup(User user) {
 		members.add(user);
+		user.addToGroups(this);
 	}
 	
-	private void removeUserFromGroup(User user) {
+	public void removeUserFromGroup(User user) {
 		members.remove(user);
 	}
 	
-	private void changeInGroup() {
+	public void changeInGroup() {
 		
 	}
 
