@@ -4,7 +4,6 @@ import db.DBConnector;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
@@ -21,11 +20,7 @@ public class DBConnectorTest {
 	public void queryShouldReturnResultSet() {
 		ResultSet result = null;
 
-		try {
-			result = DBConnector.makeQuery("SHOW TABLES;");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		result = DBConnector.makeQuery("SHOW TABLES;");
 
 		assertNotNull(result);
 	}
@@ -34,13 +29,9 @@ public class DBConnectorTest {
 	public void statementShouldMakeChangesToDatabase() {
 		ResultSet result = null;
 
-		try {
-			DBConnector.makeStatement("CREATE TABLE test (data INT);");
-			result = DBConnector.makeQuery("SELECT * FROM test;");
-			DBConnector.makeStatement("DROP TABLE test;");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		DBConnector.makeStatement("CREATE TABLE test (data INT);");
+		result = DBConnector.makeQuery("SELECT * FROM test;");
+		DBConnector.makeStatement("DROP TABLE test;");
 
 		assertNotNull(result);
 	}
