@@ -30,7 +30,7 @@ public class DBConnector {
 	 * @param query
 	 * @return Result of query
 	 */
-	public static ResultSet makeQuery(String query) throws SQLException {
+	public static ResultSet makeQuery(String query) {
 		Connection connection = null;
 		Statement st = null;
 		ResultSet result = null;
@@ -42,11 +42,15 @@ public class DBConnector {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (st != null) {
-				st.close();
-			}
-			if (connection != null) {
-				connection.close();
+			try {
+				if (st != null) {
+					st.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 
@@ -58,7 +62,7 @@ public class DBConnector {
 	 * @param statement
 	 * @throws SQLException
 	 */
-	public static void makeStatement(String statement) throws SQLException {
+	public static void makeStatement(String statement) {
 		Connection connection = null;
 		Statement st = null;
 		try {
@@ -68,11 +72,15 @@ public class DBConnector {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (st != null) {
-				st.close();
-			}
-			if (connection != null) {
-				connection.close();
+			try {
+				if (st != null) {
+					st.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 	}
