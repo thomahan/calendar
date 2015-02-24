@@ -9,15 +9,16 @@ public class CalendarEvent {
 	private ArrayList<User> participants = new ArrayList<User>();
 	private ArrayList<User> eventListeners = new ArrayList<User>();
 	private Room room;
-	private Date date;
-	private int duration;
+	private Date startDate;
+	private Date endDate;
 	
 	// Husk å gå gjennom klassen for å sjekke om verdier eller statements trengs å valideres.
 	
-	public CalendarEvent(String eventName, Date date, ArrayList<User> participants){
+	public CalendarEvent(String eventName, Date startDate, ArrayList<User> participants, Date endDate){
 		this.eventName = eventName;
-		this.date = date;
+		this.startDate = startDate;
 		this.participants = participants;
+		this.endDate = endDate;
 	}
 	
 	public String getEventName(){
@@ -28,12 +29,20 @@ public class CalendarEvent {
 		this.eventName = eventName;
 	}
 	
-	public long getDate(){
-		return date.getTime();
+	public long getStartDate(){
+		return startDate.getTime();
 	}
 	
-	public void setDate(Date date){
-		this.date.setTime(date.getTime());
+	public long getEndDate(){
+		return endDate.getTime();
+	}
+	
+	public void setStartDate(Date date){
+		this.startDate.setTime(date.getTime());
+	}
+	
+	public void setEndDate(Date date){
+		this.endDate.setTime(date.getTime());
 	}
 	
 	public Room getRoom(){
@@ -48,7 +57,7 @@ public class CalendarEvent {
 		if (participants.contains(user) == false){
 			Invitation invitation = new Invitation(this);
 			invitation.sendInvitationToUser(user);
-			if (invitation == true){
+			if (invitation.reply == true){
 				participants.add(user);
 			}
 		} else{
