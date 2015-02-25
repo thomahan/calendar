@@ -1,5 +1,5 @@
 CREATE TABLE user (
-	email VARCHAR NOT NULL,
-	salt VARCHAR NOT NULL,
-	passwordHash VARCHAR NOT NULL,
-	CONSTRAINT user_PK PRIMARY KEY (email));
+	username VARCHAR(64) NOT NULL,
+	salt VARCHAR(128) NOT NULL,
+	password_hash VARCHAR(128) NOT NULL,
+	PRIMARY KEY (username));
