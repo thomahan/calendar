@@ -36,6 +36,9 @@ public class DBInitializer {
 		return statementList;
 	}
 	
+	/**
+	 * Executes a list of statements from file on the database
+	 */
 	public static void initializeDB() {
 		List<String> statementList = readSqlFile(initializationFile);
 		for (String s : statementList) {
