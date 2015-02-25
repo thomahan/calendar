@@ -13,16 +13,16 @@ public class User {
 	private ArrayList<Group> groups = new ArrayList<Group>();
 	Scanner scanner = new Scanner(System.in);
 	
-	public User(String name) {
+	public User(String name) { //Legg til person i database
 		this.name = name;
 		this.employeeID = count.incrementAndGet();
 	}
 	
-	private void changeUser(String newName) {
+	private void changeUser(String newName) { //Legg til endring i db
 		name = newName;
 	}
 	
-	private void createGroup(String name) {
+	private void createGroup(String name) { //Legg til gruppe i db
 		Group group = new Group(name);
 		group.addUserToGroup(this);
 		groups.add(group);
@@ -55,11 +55,11 @@ public class User {
 			return true;
 		} else 
 			return false;
-	} //HUSK Å LAGE EN SISTE STATEMENT, hva vil den ikke svarer no eller yes?
+	} //HUSK ï¿½ LAGE EN SISTE STATEMENT, hva vil den ikke svarer no eller yes?
 	
 	
 	//Legger til en ny gruppe til gruppelisten
-	public void addToGroups(Group group) {
+	public void addToGroups(Group group) { //Legg til oppdatert gruppeliste i db
 		groups.add(group);
 	}
 	
