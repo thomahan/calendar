@@ -38,10 +38,10 @@ public class CalendarEvent {
 	}
 	
 	public void setStartDate(Date date){
-		this.startDate.setTime(date.getTime());
+		this.startDate.setTime(date.getTime()); //Må endres i databasen
 	}
 	
-	public void setEndDate(Date date){
+	public void setEndDate(Date date){ // Må endres i databasen
 		this.endDate.setTime(date.getTime());
 	}
 	
@@ -49,11 +49,11 @@ public class CalendarEvent {
 		return room;
 	}
 	
-	public void setRoom(Room room){
+	public void setRoom(Room room){ // Må endres i databasen
 		this.room = room;
 	}
 	
-	public void addParticipant(User user){
+	public void addParticipant(User user){ //Må også legges til i database
 		if (participants.contains(user) == false){
 			Invitation invitation = new Invitation(this);
 			invitation.sendInvitationToUser(user);
@@ -67,11 +67,11 @@ public class CalendarEvent {
 		}
 	}
 	
-	public void removeParticipant(User user){
+	public void removeParticipant(User user){ // Fjernes i database
 		participants.remove(user);
 	}
 	
-	public void addGroup(Group group){
+	public void addGroup(Group group){ // Leggese til i database
 		int n = group.getMembers().size();
 		for (int i = 0; i < n; i++) {
 			addParticipant(group.getMembers().get(i));
@@ -79,7 +79,7 @@ public class CalendarEvent {
 		// Venter med denne til groups er ferdig. Her må jeg sjekke at hvert gruppemedlem ikke allerede er med fra før.
 	}
 	
-	public void removeGroup(Group group){
+	public void removeGroup(Group group){ // Fjernes i database
 			participants.remove(group.getMembers()); 
 	}
 	
