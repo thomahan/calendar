@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class User {
+public class User implements CalendarEventListener, GroupListener {
 	
 	private String name;
 	private final int employeeID;
@@ -16,6 +16,7 @@ public class User {
 	public User(String name) {
 		this.name = name;
 		this.employeeID = count.incrementAndGet();
+		calendar = new Calendar(this);
 	}
 	
 	private void changeUser(String newName) {
@@ -48,19 +49,36 @@ public class User {
 		return groups;
 	}
 	
-	public boolean answerInvitation(Invitation invitation){
+	public boolean answerInvitation(){
 		String answer;
 		answer = scanner.next();
+		
+		while (!(answer.equals("YES") || answer.equals("NO"))){
+			System.out.println("Not a valid answer. Please type YES or NO");
+			answer = scanner.next();
+		}
 		if(answer.equals("YES")){
 			return true;
 		} else 
 			return false;
-	} //HUSK Å LAGE EN SISTE STATEMENT, hva vil den ikke svarer no eller yes?
+	} 
 	
 	
 	//Legger til en ny gruppe til gruppelisten
 	public void addToGroups(Group group) {
 		groups.add(group);
+	}
+
+	@Override
+	public void eventHasChanged(CalendarEvent event) {
+		System.out.println(event.getEventName() + " " + event.getStartDate() + " has been changed.");
+		
+	}
+
+	@Override
+	public void groupHasChanged(Group group) {
+		System.out.println(group.getGroupName() + " has been changed.");
+		
 	}
 	
 	

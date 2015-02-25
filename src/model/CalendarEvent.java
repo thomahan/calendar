@@ -12,7 +12,6 @@ public class CalendarEvent {
 	private Date startDate; //Starttid for event
 	private Date endDate; //Sluttid for event
 	
-	// Husk å gå gjennom klassen for å sjekke om verdier eller statements trengs å valideres.
 	
 	public CalendarEvent(String eventName, Date startDate, ArrayList<User> participants, Date endDate){
 		this.eventName = eventName;
@@ -61,6 +60,7 @@ public class CalendarEvent {
 				System.out.println("Hei");
 				participants.add(user);
 				user.getCalendar().addEvent(this);
+				eventListeners.add(user);
 			}
 		} else{
 			throw new IllegalArgumentException("User is already added.");
@@ -84,8 +84,18 @@ public class CalendarEvent {
 	}
 	
 	public void fireCalendarEventHasChanged(){
-		// Må kartlegge hva innholdet skal være her.
+		for(User listener : eventListeners){
+			listener.eventHasChanged(this);
+		}
 	}
 	
+	public void addListener(User user){
+		eventListeners.add(user);
+	}
+	
+	public void removeListener(User user){
+		eventListeners.remove(user);
+	}
 }
+
 

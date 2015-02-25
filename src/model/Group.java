@@ -8,7 +8,7 @@ public class Group {
 	private String groupName;
 	final int groupID;
 	ArrayList<User> members = new ArrayList<User>();
-	private ArrayList<User> listeners;
+	private ArrayList<User> listeners = new ArrayList<User>();
 	private static final AtomicInteger count = new AtomicInteger(0);
 	
 	public Group(String name) {
@@ -30,6 +30,7 @@ public class Group {
 
 	public void setMembers(ArrayList<User> members) {
 		this.members = members;
+		listeners.addAll(members);
 	}
 
 	public ArrayList<User> getListeners() {
@@ -39,7 +40,15 @@ public class Group {
 	public void setListeners(ArrayList<User> listeners) {
 		this.listeners = listeners;
 	}
-
+	
+	public void addListener(User user){
+		listeners.add(user);
+	}
+	
+	public void removeListener(User user){
+		listeners.remove(user);
+	}
+	
 	public int getGroupID() {
 		return groupID;
 	}
@@ -47,6 +56,7 @@ public class Group {
 	public void addUserToGroup(User user) {
 		members.add(user);
 		user.addToGroups(this);
+		listeners.add(user);
 	}
 	
 	public void removeUserFromGroup(User user) {
@@ -54,6 +64,9 @@ public class Group {
 	}
 	
 	public void changeInGroup() {
+		for(User listener : listeners){
+			listener.groupHasChanged(this);
+		}
 		
 	}
 
