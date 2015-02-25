@@ -25,7 +25,6 @@ public class LoginWindow {
 	
 	static JLabel lblWelcome, lblUserName, lblPassword;
 	static JButton btnNewUser, btnLogIn;
-	static JTable tblCalendar;
 	static JTextField fieldUserName, fieldPassword;
 	static JFrame frmMain;
 	static Container pane;
