@@ -22,8 +22,5 @@ public class Invitation {
 		}
 	}
 	
-	public void sendInvitationToGroup(Group group){
-		
-	}
 	
 }
