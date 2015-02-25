@@ -15,6 +15,7 @@ import static org.junit.Assert.assertFalse;
 public class DBInitializerTest {
 	@Test
 	public void tablesShouldBeInitializedInDatabase() {
+		/*
 		ResultSet result = DBConnector.makeQuery("SHOW TABLES;");
 		try {
 			System.out.println(result.next());
@@ -22,9 +23,9 @@ public class DBInitializerTest {
 			e.printStackTrace();
 		}
 		assertTrue(result.toString().equals(""));
-/*
+		*/
 		DBInitializer.initializeDB();
-
+/*
 		result = DBConnector.makeQuery("SELECT * FROM user;");
 		assertNotNull(result);*/
 	}
