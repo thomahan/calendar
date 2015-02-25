@@ -15,6 +15,7 @@ public class TestMain {
 		User Mikkel = new User("Mikkel");
 		ArrayList<User> brukere = new ArrayList<User>();
 		brukere.add(Adrian);
+		Room rom1 = new Room("Zevs");
 		
 		
 		Date startdato = new Date(2000, 7, 7, 11, 45);
@@ -22,6 +23,8 @@ public class TestMain {
 		CalendarEvent tivoli = new CalendarEvent("Tivoli", startdato, brukere, sluttdato );
 		
 		tivoli.addParticipant(Mikkel);
+		tivoli.setRoom(rom1);
+		Mikkel.getCalendar().showMyEvents();
 		
 		
 		

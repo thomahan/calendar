@@ -8,6 +8,11 @@ public class Room {
 	private String name;
 	private Date date;
 	
+	
+	public Room(String name){
+		this.name = name;
+	}
+	
 	public String getName(){
 		return name;
 	}
