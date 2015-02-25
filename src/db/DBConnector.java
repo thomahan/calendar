@@ -30,31 +30,22 @@ public class DBConnector {
 	 * @param query
 	 * @return Result of query
 	 */
-	public static ResultSet makeQuery(String query) {
+	public static Query makeQuery(String query) {
 		Connection connection = null;
 		Statement st = null;
 		ResultSet result = null;
+		Query queryObject = null;
 
 		try {
 			connection = getConnection();
 			st = connection.createStatement();
 			result = st.executeQuery(query);
+			queryObject = new Query(connection, st, result);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 
-		return result;
+		return queryObject;
 	}
 
 	/**
