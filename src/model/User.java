@@ -55,7 +55,7 @@ public class User {
 			return true;
 		} else 
 			return false;
-	} //HUSK Å LAGE EN SISTE STATEMENT
+	} //HUSK Å LAGE EN SISTE STATEMENT, hva vil den ikke svarer no eller yes?
 	
 	
 	//Legger til en ny gruppe til gruppelisten

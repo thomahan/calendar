@@ -6,22 +6,20 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.table.DefaultTableModel;
 
 import view.CalendarProgram.btnNext_Action;
 import view.CalendarProgram.btnPrev_Action;
-import view.CalendarProgram.cmbYear_Action;
+import view.LoginWindow.btnLogIn_Action;
+import view.LoginWindow.btnNewUser_Action;
 
-public class LoginWindow {
+public class NewUserWindow {
 	
 	static JLabel lblWelcome, lblUserName, lblPassword;
 	static JButton btnNewUser, btnLogIn;
