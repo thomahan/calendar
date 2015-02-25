@@ -6,27 +6,34 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 public class DBInitializerTest {
 	@Test
 	public void tablesShouldBeInitializedInDatabase() {
-		/*
-		ResultSet result = DBConnector.makeQuery("SHOW TABLES;");
+		Query query = DBConnector.makeQuery("SHOW TABLES;");
+		ResultSet result = query.getResult();
+		boolean hasTable = true;
 		try {
-			System.out.println(result.next());
+			hasTable = result.next();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		assertTrue(result.toString().equals(""));
-		*/
+		query.close();
+		assertFalse(hasTable);
+
 		DBInitializer.initializeDB();
-/*
-		result = DBConnector.makeQuery("SELECT * FROM user;");
-		assertNotNull(result);*/
+
+		query = DBConnector.makeQuery("SHOW TABLES;");
+		result = query.getResult();
+		hasTable = false;
+		try {
+			hasTable = result.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		query.close();
+		assertTrue(hasTable);
 	}
 }
