@@ -20,7 +20,7 @@ public class Group {
 		return groupName;
 	}
 
-	public void setGroupName(String groupName) {
+	public void setGroupName(String groupName) { //Legg til endring i db
 		this.groupName = groupName;
 	}
 
@@ -28,7 +28,7 @@ public class Group {
 		return members;
 	}
 
-	public void setMembers(ArrayList<User> members) {
+	public void setMembers(ArrayList<User> members) { //Legg til endring i db
 		this.members = members;
 		listeners.addAll(members);
 	}
@@ -53,13 +53,13 @@ public class Group {
 		return groupID;
 	}
 	
-	public void addUserToGroup(User user) {
+	public void addUserToGroup(User user) { //Legg til endring i db
 		members.add(user);
 		user.addToGroups(this);
 		listeners.add(user);
 	}
 	
-	public void removeUserFromGroup(User user) {
+	public void removeUserFromGroup(User user) { //Legg til endring i db
 		members.remove(user);
 	}
 	
