@@ -14,17 +14,16 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import view.CalendarProgram.btnNext_Action;
-import view.CalendarProgram.btnPrev_Action;
-import view.LoginWindow.btnLogIn_Action;
-import view.LoginWindow.btnNewUser_Action;
+//import view.CalendarProgram.btnNext_Action;
+//import view.CalendarProgram.btnPrev_Action;
+//import view.LoginWindow.btnLogIn_Action;
+//import view.LoginWindow.btnNewUser_Action;
 
 public class NewUserWindow {
 	
-	static JLabel lblWelcome, lblUserName, lblPassword;
-	static JButton btnNewUser, btnLogIn;
-	static JTable tblCalendar;
-	static JTextField fieldUserName, fieldPassword;
+	static JLabel lblInstruction, lblUserName, lblGivenName, lblLastName, lblPassword, lblPasswordConfirm;
+	static JButton btnConfirm;
+	static JTextField fieldUserName, fieldGivenName, fieldLastName, fieldPassword;
 	static JFrame frmMain;
 	static Container pane;
 	static JPanel pnlCalendar;
@@ -38,66 +37,72 @@ public class NewUserWindow {
 		catch (UnsupportedLookAndFeelException e) {}
 		
 		//Prepare frame
-		frmMain = new JFrame ("Login to calendar"); //Create frame
+		frmMain = new JFrame ("New user"); //Create frame
 		frmMain.setSize(330, 375); //Set size to 400x400 pixels
 		pane = frmMain.getContentPane(); //Get content pane
 		pane.setLayout(null); //Apply null layout
 		frmMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Close when X is clicked
 
 		//Create controls
-		lblWelcome = new JLabel ("Welcome!");
+		lblInstruction= new JLabel ("Please fill out the required information");
 		lblUserName= new JLabel ("Username");
+		lblGivenName= new JLabel ("Given name");
+		lblLastName= new JLabel ("Last name");
 		lblPassword= new JLabel ("Password");
-		btnNewUser = new JButton ("New user?");
-		btnLogIn = new JButton ("Log in");
+		btnConfirm = new JButton ("Confirm");
 		pnlCalendar = new JPanel(null);
 		fieldUserName = new JTextField();
+		fieldGivenName = new JTextField();
+		fieldLastName = new JTextField();		
 		fieldPassword = new JTextField();
 		
 		//Set border
 		pnlCalendar.setBorder(BorderFactory.createTitledBorder("Calendar"));
 				
 		//Register action listeners
-		btnNewUser.addActionListener(new btnPrev_Action());
-		btnLogIn.addActionListener(new btnNext_Action());
-		btnNewUser.addActionListener(new btnNewUser_Action());
-		btnLogIn.addActionListener(new btnLogIn_Action());
+		btnConfirm.addActionListener(new btnConfirm_Action());
 		
 		//Add controls to pane
 		pane.add(pnlCalendar);
-		pnlCalendar.add(lblWelcome);
+		pnlCalendar.add(lblInstruction);
 		pnlCalendar.add(lblUserName);
+		pnlCalendar.add(lblGivenName);
+		pnlCalendar.add(lblLastName);
 		pnlCalendar.add(lblPassword);
-		pnlCalendar.add(btnLogIn);
-		pnlCalendar.add(btnNewUser);
+		pnlCalendar.add(btnConfirm);
 		pnlCalendar.add(fieldUserName);
+		pnlCalendar.add(fieldGivenName);
+		pnlCalendar.add(fieldLastName);
 		pnlCalendar.add(fieldPassword);
 		
 		//Set bounds
 		pnlCalendar.setBounds(0, 0, 320, 335);
-		lblWelcome.setBounds(160-lblWelcome.getPreferredSize().width/2, 25, 100, 25);
-		lblUserName.setBounds(30, 125, 100, 25);
-		lblPassword.setBounds(30,150,100,25);
-		btnLogIn.setBounds(200, 125, 100, 25);
-		btnNewUser.setBounds(200, 150, 100, 25);
-		fieldUserName.setBounds(100, 125, 100, 25);
-		fieldPassword.setBounds(100, 150, 100, 25);
+		lblInstruction.setBounds(30,25,500,25);
+		//lblInstruction.getPreferredSize().width
+		lblUserName.setBounds(30, 50, 100, 25);
+		lblGivenName.setBounds(30, 75, 100, 25);
+		lblLastName.setBounds(30, 100, 100, 25);
+		lblPassword.setBounds(30,125,100,25);
+		btnConfirm.setBounds(200, 300, 100, 25);
+		fieldUserName.setBounds(100, 50, 100, 25);
+		fieldGivenName.setBounds(100, 75, 100, 25);
+		fieldLastName.setBounds(100, 100, 100, 25);
+		fieldPassword.setBounds(100, 125, 100, 25);
 		
 		//Make frame visible
 		frmMain.setResizable(false);
 		frmMain.setVisible(true);
 	}
 	
-	static class btnLogIn_Action implements ActionListener{
+	static class btnConfirm_Action implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			String userName = fieldUserName.getText();
+			String givenName = fieldGivenName.getText();
+			System.out.println(userName + givenName);
+			//Check if username is available
+			//Check if password meets system requirements
+			//If OK: open the calendar
+			//else: print error-message in console
 		}
 	}
-	
-	static class btnNewUser_Action implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			
-		}
-	}
-
 }
