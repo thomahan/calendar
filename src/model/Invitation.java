@@ -22,11 +22,5 @@ public class Invitation {
 		}
 	}
 	
-	public void sendInvitationToGroup(Group group){
-		int n = group.getMembers().size();
-		for (int i = 0; i < n; i++) {
-			sendInvitationToUser(group.getMembers().get(i));
-		}
-	}
 	
 }

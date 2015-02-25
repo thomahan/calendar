@@ -60,7 +60,7 @@ public class CalendarEvent {
 			if (invitation.reply == true){
 				System.out.println("Hei");
 				participants.add(user);
-				// + Legge inn i brukers kalender.
+				user.getCalendar().addEvent(this);
 			}
 		} else{
 			throw new IllegalArgumentException("User is already added.");
@@ -72,8 +72,10 @@ public class CalendarEvent {
 	}
 	
 	public void addGroup(Group group){
-		
-		
+		int n = group.getMembers().size();
+		for (int i = 0; i < n; i++) {
+			addParticipant(group.getMembers().get(i));
+		}
 		// Venter med denne til groups er ferdig. Her må jeg sjekke at hvert gruppemedlem ikke allerede er med fra før.
 	}
 	
