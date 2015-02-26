@@ -2,10 +2,7 @@ package db;
 
 import db.UserDBC;
 import main.PasswordHash;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import model.User;
 
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
@@ -16,7 +13,7 @@ public class UserDBCTest {
 	@Test
 	public void userShouldBeRetrievable() {
 		String username = "user1";
-		SystemUser user = UserDBC.getUser(username);
+		User user = UserDBC.getUser(username);
 		
 		assertEquals(username, user.getName());
 		assertNotNull(user.getSalt());
