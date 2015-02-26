@@ -21,10 +21,10 @@ public class User implements CalendarEventListener, GroupListener {
 		this.givenName = givenName;
 		this.lastName = lastName;
 		
-		if (UserDBC.isUserNameUnique == true){
+		if (db.UserDBC.isUserNameUnique == true){
 		this.username = username; // Her må det sjekkes opp mot database at det ikke eksisterer en bruker med samme navn. Kaste Illegal argument exception
 		} else{
-			throw IllegalArgumentException("Username not valid.")
+			throw new IllegalArgumentException("Username not valid.");
 		}
 		String salt1 = main.PasswordHash.nextSalt();
 		this.salt = salt1;
