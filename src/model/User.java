@@ -6,21 +6,31 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class User implements CalendarEventListener, GroupListener {
 	
-	private String name;
+	private String givenName;
+	private String lastName;
+	private String username;
+	private String hashResult;
+	private String salt;
 	private final int employeeID;
 	private Calendar calendar;
 	private static final AtomicInteger count = new AtomicInteger(0);
 	private ArrayList<Group> groups = new ArrayList<Group>();
 	Scanner scanner = new Scanner(System.in);
 	
-	public User(String name) { //Legg til person i database
-		this.name = name;
+	public User(String givenName, String lastName, String username, String password) { //Legg til person i database, password hashes
+		this.givenName = givenName;
+		this.lastName = lastName;
+		this.username = username; // Her må det sjekkes opp mot database at det ikke eksisterer en bruker med samme navn. Kaste Illegal argument exception
+		String salt1 = main.PasswordHash.nextSalt();
+		this.salt = salt1;
+		hashResult = main.PasswordHash.hashPassword(salt1, password);
 		this.employeeID = count.incrementAndGet();
 		calendar = new Calendar(this);
 	}
 	
-	private void changeUser(String newName) { //Legg til endring i db
-		name = newName;
+	private void changeUser(String newGivenName, String newLastName) { //Legg til endring i db
+		this.givenName = newGivenName;
+		this.lastName = newLastName;
 	}
 	
 	private void createGroup(String name) { //Legg til gruppe i db
@@ -28,7 +38,19 @@ public class User implements CalendarEventListener, GroupListener {
 		group.addUserToGroup(this);
 		groups.add(group);
 	}
-
+	
+	public String getSalt(){
+		return this.salt;
+	}
+	
+	public String getHashResult(){
+		return hashResult;
+	}
+	
+	public String getUsername(){
+		return username;
+	}
+	
 	public Calendar getCalendar() {
 		return calendar;
 	}
@@ -38,7 +60,7 @@ public class User implements CalendarEventListener, GroupListener {
 	}
 
 	public String getName() {
-		return name;
+		return givenName + lastName;
 	}
 
 	public int getEmployeeID() {
