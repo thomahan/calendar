@@ -21,7 +21,7 @@ public class User implements CalendarEventListener, GroupListener {
 		this.givenName = givenName;
 		this.lastName = lastName;
 		
-		if (db.UserDBC.isUserNameUnique == true){
+		if (db.UserDBC.isUsernameUnique(username) == true){
 		this.username = username; // Her må det sjekkes opp mot database at det ikke eksisterer en bruker med samme navn. Kaste Illegal argument exception
 		} else{
 			throw new IllegalArgumentException("Username not valid.");

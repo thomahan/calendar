@@ -14,4 +14,9 @@ public class UserDBC {
 	public static void addUser(String username, String salt, String passwordHash) {
 		
 	}
+	
+	
+	public static boolean isUsernameUnique(String username){
+		
+	}
 }
