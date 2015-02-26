@@ -7,7 +7,7 @@ CREATE TABLE user (
 	password_hash VARCHAR(128) NOT NULL,
 	PRIMARY KEY (id));
 
-CREATE TABLE group (
+CREATE TABLE user_group (
 	id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(256),
 	PRIMARY KEY (id));
@@ -28,14 +28,5 @@ CREATE TABLE appointment (
 	owner_id INT NOT NULL,
 	room_id INT,
 	PRIMARY KEY (id),
-	FOREIGN KEY (owner_id) REFERENCES user(id));
+	FOREIGN KEY (owner_id) REFERENCES user(id),
 	FOREIGN KEY (room_id) REFERENCES room(id));
-
-CREATE TABLE appointment_invitation (
-	appointment_id INT NOT NULL,
-	person_id INT NOT NULL,
-	status VARCHAR(256),
-	is_visible BOOL DEFAULT 'true',
-	PRIMARY KEY (appointment_id, person_id),
-	FOREIGN KEY (appointment_id) REFERENCES appointment(id) ON UPDATE CASCADE ON DELETE CASCADE),
-	FOREIGN KEY (person_id) REFERENCES person(id) ON UPDATE CASCADE ON DELETE CASCADE);
