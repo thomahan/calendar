@@ -1,25 +1,47 @@
 package view;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-public class CalendarProgram{
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
+import view.CalendarProgram.btnNext_Action;
+import view.CalendarProgram.btnPrev_Action;
+import view.CalendarProgram.cmbYear_Action;
+import view.CalendarProgram.tblCalendarRenderer;
+
+public class CalendarWindow {
+
 	static JLabel lblMonth, lblYear;
 	static JButton btnPrev, btnNext;
 	static JTable tblCalendar;
 	static JComboBox cmbYear;
 	static JFrame frmMain;
 	static Container pane;
-	static DefaultTableModel mtblCalendar; //Table model
-	static JScrollPane stblCalendar; //The scrollpane
+	static DefaultTableModel mtblCalendar;
+	static JScrollPane stblCalendar;
 	static JPanel pnlCalendar;
-	static int realYear, realMonth, realDay, currentYear, currentMonth;
-
-	public static void main (String args[]){
+	static int realYear, realMonth, realDay, currentYear, currentMonth; 
+	
+	public static void main (String args[]) {
+	
 		//Look and feel
 		try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());}
 		catch (ClassNotFoundException e) {}
@@ -44,7 +66,7 @@ public class CalendarProgram{
 		tblCalendar = new JTable(mtblCalendar);
 		stblCalendar = new JScrollPane(tblCalendar);
 		pnlCalendar = new JPanel(null);
-
+		
 		//Set border
 		pnlCalendar.setBorder(BorderFactory.createTitledBorder("Calendar"));
 		
@@ -77,7 +99,7 @@ public class CalendarProgram{
 		
 		//Get real month/year
 		GregorianCalendar cal = new GregorianCalendar(); //Create calendar
-		cal.setFirstDayOfWeek(Calendar.MONDAY);
+//		cal.setFirstDayOfWeek(Calendar.MONDAY);
 		realDay = cal.get(GregorianCalendar.DAY_OF_MONTH); //Get day
 		realMonth = cal.get(GregorianCalendar.MONTH); //Get month
 		realYear = cal.get(GregorianCalendar.YEAR); //Get year
@@ -85,22 +107,23 @@ public class CalendarProgram{
 		currentYear = realYear;
 		
 		//Add headers
-		String[] headers = {"Sun","Mon", "Tue", "Wed", "Thu", "Fri", "Sat",}; //All headers
+		String[] headers = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat","Sun"}; //All headers
 		for (int i=0; i<7; i++){
 			mtblCalendar.addColumn(headers[i]);
 		}
 		
-		tblCalendar.getParent().setBackground(tblCalendar.getBackground()); //Set background
-
+		//Sets background color
+		tblCalendar.getParent().setBackground(tblCalendar.getBackground()); 
+		
 		//No resize/reorder
 		tblCalendar.getTableHeader().setResizingAllowed(false);
 		tblCalendar.getTableHeader().setReorderingAllowed(false);
-
+		
 		//Single cell selection
 		tblCalendar.setColumnSelectionAllowed(true);
 		tblCalendar.setRowSelectionAllowed(true);
 		tblCalendar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+		
 		//Set row/column count
 		tblCalendar.setRowHeight(38);
 		mtblCalendar.setColumnCount(7);
@@ -112,17 +135,17 @@ public class CalendarProgram{
 		}
 		
 		//Refresh calendar
-		refreshCalendar (realMonth, realYear); //Refresh calendar
+//		refreshCalendar (realMonth, realYear); 
 	}
-	
-	public static void refreshCalendar(int month, int year){
+	public static void refreshCalendar(int month, int year) {
 		//Variables
 		String[] months =  {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 		int nod, som; //Number Of Days, Start Of Month
-			
+		
 		//Allow/disallow buttons
 		btnPrev.setEnabled(true);
 		btnNext.setEnabled(true);
+		
 		if (month == 0 && year <= realYear-10){btnPrev.setEnabled(false);} //Too early
 		if (month == 11 && year >= realYear+100){btnNext.setEnabled(false);} //Too late
 		lblMonth.setText(months[month]); //Refresh the month label (at the top)
@@ -138,25 +161,25 @@ public class CalendarProgram{
 		
 		//Get first day of month and number of days
 		GregorianCalendar cal = new GregorianCalendar(year, month, 1);
+		cal.setFirstDayOfWeek(Calendar.MONDAY);
 		nod = cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
 		som = cal.get(GregorianCalendar.DAY_OF_WEEK);
 		
-//		Draw calendar
-// 		Were unable to set start_of_week to monday.
+		//Draw calendar
 		for (int i=1; i<=nod; i++){
 			int row = new Integer((i+som-2)/7);
 			int column  =  (i+som-2)%7;
 			mtblCalendar.setValueAt(i, row, column);
 		}
-
+	
 		//Apply renderers
 		tblCalendar.setDefaultRenderer(tblCalendar.getColumnClass(0), new tblCalendarRenderer());
 	}
-
+	
 	static class tblCalendarRenderer extends DefaultTableCellRenderer{
 		public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column){
 			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
-			if (column == 0 || column == 6){ //Week-end
+			if (column == 5 || column == 6){ //Week-end
 				setBackground(new Color(255, 220, 220));
 			}
 			else{ //Week
@@ -172,7 +195,7 @@ public class CalendarProgram{
 			return this;  
 		}
 	}
-
+	
 	static class btnPrev_Action implements ActionListener{
 		public void actionPerformed (ActionEvent e){
 			if (currentMonth == 0){ //Back one year
@@ -187,7 +210,7 @@ public class CalendarProgram{
 	}
 	static class btnNext_Action implements ActionListener{
 		public void actionPerformed (ActionEvent e){
-			if (currentMonth == 11){ //Foward one year
+			if (currentMonth == 11){ //Forward one year
 				currentMonth = 0;
 				currentYear += 1;
 			}
@@ -205,5 +228,7 @@ public class CalendarProgram{
 				refreshCalendar(currentMonth, currentYear);
 			}
 		}
-	}
-}
+
+	}}
+	
+
