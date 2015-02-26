@@ -22,7 +22,7 @@ public class User implements CalendarEventListener, GroupListener {
 		this.lastName = lastName;
 		
 		if (db.UserDBC.isUsernameUnique(username)){
-		this.username = username; // Her må det sjekkes opp mot database at det ikke eksisterer en bruker med samme navn. Kaste Illegal argument exception
+		this.username = username; // Her mï¿½ det sjekkes opp mot database at det ikke eksisterer en bruker med samme navn. Kaste Illegal argument exception
 		} else{
 			throw new IllegalArgumentException("Username not valid.");
 		}
@@ -31,6 +31,24 @@ public class User implements CalendarEventListener, GroupListener {
 		hashResult = main.PasswordHash.hashPassword(salt1, password);
 		this.employeeID = count.incrementAndGet();
 		calendar = new Calendar(this);
+	}
+	
+	/**
+	 * Returns a User object. To be used when retrieving a user from the database
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param username
+	 * @param salt
+	 * @param passwordHash
+	 */
+	public User(int id, String firstName, String lastName, String username, String salt, String passwordHash) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.salt = salt;
+		this.passwordHash = passwordHash;
 	}
 	
 	private void changeUser(String newGivenName, String newLastName) { //Legg til endring i db
