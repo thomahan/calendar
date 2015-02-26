@@ -20,7 +20,12 @@ public class User implements CalendarEventListener, GroupListener {
 	public User(String givenName, String lastName, String username, String password) { //Legg til person i database, password hashes
 		this.givenName = givenName;
 		this.lastName = lastName;
+		
+		if (UserDBC.isUserNameUnique == true){
 		this.username = username; // Her må det sjekkes opp mot database at det ikke eksisterer en bruker med samme navn. Kaste Illegal argument exception
+		} else{
+			throw IllegalArgumentException("Username not valid.")
+		}
 		String salt1 = main.PasswordHash.nextSalt();
 		this.salt = salt1;
 		hashResult = main.PasswordHash.hashPassword(salt1, password);
