@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class CalendarEvent {
 
-	private String eventName;
+	private String eventName, oldName;
 	private ArrayList<User> participants = new ArrayList<User>();
 	private ArrayList<User> eventListeners = new ArrayList<User>();
 	private Room room;
@@ -18,6 +18,7 @@ public class CalendarEvent {
 		this.startDate = startDate;
 		this.participants = participants;
 		this.endDate = endDate;
+		oldName = this.eventName;
 	}
 	
 	public String getEventName(){
@@ -25,7 +26,9 @@ public class CalendarEvent {
 	}
 	
 	public void setEventName(String eventName){
+		oldName = this.eventName;
 		this.eventName = eventName;
+		fireCalendarEventHasChanged();
 	}
 	
 	public long getStartDate(){
@@ -37,22 +40,25 @@ public class CalendarEvent {
 	}
 	
 	public void setStartDate(Date date){
-		this.startDate.setTime(date.getTime()); //Må endres i databasen
+		this.startDate.setTime(date.getTime()); //Mï¿½ endres i databasen
+		fireCalendarEventHasChanged();
 	}
 	
-	public void setEndDate(Date date){ // Må endres i databasen
+	public void setEndDate(Date date){ // Mï¿½ endres i databasen
 		this.endDate.setTime(date.getTime());
+		fireCalendarEventHasChanged();
 	}
 	
 	public Room getRoom(){
 		return room;
 	}
 	
-	public void setRoom(Room room){ // Må endres i databasen
+	public void setRoom(Room room){ // Mï¿½ endres i databasen
 		this.room = room;
+		fireCalendarEventHasChanged();
 	}
 	
-	public void addParticipant(User user){ //Må også legges til i database
+	public void addParticipant(User user){ //Mï¿½ ogsï¿½ legges til i database
 		if (participants.contains(user) == false){
 			Invitation invitation = new Invitation(this);
 			invitation.sendInvitationToUser(user);
@@ -68,6 +74,7 @@ public class CalendarEvent {
 	}
 	
 	public void removeParticipant(User user){ // Fjernes i database
+		user.getCalendar().removeEvent(this);
 		participants.remove(user);
 	}
 	
@@ -76,11 +83,14 @@ public class CalendarEvent {
 		for (int i = 0; i < n; i++) {
 			addParticipant(group.getMembers().get(i));
 		}
-		// Venter med denne til groups er ferdig. Her må jeg sjekke at hvert gruppemedlem ikke allerede er med fra før.
+		// Venter med denne til groups er ferdig. Her mï¿½ jeg sjekke at hvert gruppemedlem ikke allerede er med fra fï¿½r.
 	}
 	
 	public void removeGroup(Group group){ // Fjernes i database
-			participants.remove(group.getMembers()); 
+		int n = group.getMembers().size();
+		for (int i = 0; i < n; i++) {
+			removeParticipant(group.getMembers().get(i)); 
+		}
 	}
 	
 	public void fireCalendarEventHasChanged(){
