@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import model.User;
+
 //import view.CalendarProgram.btnNext_Action;
 //import view.CalendarProgram.btnPrev_Action;
 //import view.LoginWindow.btnLogIn_Action;
@@ -21,7 +23,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class NewUserWindow {
 	
-	static JLabel lblInstruction, lblUserName, lblGivenName, lblLastName, lblPassword, lblPasswordConfirm;
+	static JLabel lblInstruction, lblUserName, lblGivenName, lblLastName, lblPassword, lblError;
 	static JButton btnConfirm;
 	static JTextField fieldUserName, fieldGivenName, fieldLastName, fieldPassword;
 	static JFrame frmMain;
@@ -49,6 +51,7 @@ public class NewUserWindow {
 		lblGivenName= new JLabel ("Given name");
 		lblLastName= new JLabel ("Last name");
 		lblPassword= new JLabel ("Password");
+		lblError= new JLabel ("Password taken. Try again.");
 		btnConfirm = new JButton ("Confirm");
 		pnlCalendar = new JPanel(null);
 		fieldUserName = new JTextField();
@@ -98,11 +101,17 @@ public class NewUserWindow {
 		public void actionPerformed(ActionEvent e) {
 			String userName = fieldUserName.getText();
 			String givenName = fieldGivenName.getText();
-			System.out.println(userName + givenName);
-			//Check if username is available
-			//Check if password meets system requirements
-			//If OK: open the calendar
-			//else: print error-message in console
+			String lastName = fieldLastName.getText();
+			String password = fieldPassword.getText();
+			User newUser;
+			try{
+				newUser = new User(userName);
+			}
+			catch (IllegalArgumentException a){
+				pnlCalendar.add(lblError);
+				lblError.setBounds(100,200,100,25);
+				System.out.println("Username taken. Try again.");
+			}
 		}
 	}
 }
