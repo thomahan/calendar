@@ -19,10 +19,19 @@ public class CalendarEvent {
 		this.participants = participants;
 		this.endDate = endDate;
 		oldName = this.eventName;
+		for (int i = 0; i < participants.size(); i++) {
+			participants.get(i).getCalendar().addEvent(this);
+			eventListeners.add(participants.get(i));
+		}
+		//MÅ HUSKE Å SETTE ROM AUTOMATISK
 	}
 	
 	public String getEventName(){
 		return eventName;
+	}
+	
+	public String getOldName(){
+		return oldName;
 	}
 	
 	public void setEventName(String eventName){
@@ -76,6 +85,7 @@ public class CalendarEvent {
 	public void removeParticipant(User user){ // Fjernes i database
 		user.getCalendar().removeEvent(this);
 		participants.remove(user);
+		user.getCalendar().removeEvent(this);
 	}
 	
 	public void addGroup(Group group){ // Leggese til i database
@@ -89,7 +99,7 @@ public class CalendarEvent {
 	public void removeGroup(Group group){ // Fjernes i database
 		int n = group.getMembers().size();
 		for (int i = 0; i < n; i++) {
-			removeParticipant(group.getMembers().get(i)); 
+			removeParticipant(group.getMembers().get(i));
 		}
 	}
 	

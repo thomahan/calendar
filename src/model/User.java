@@ -101,7 +101,7 @@ public class User implements CalendarEventListener, GroupListener {
 
 	@Override
 	public void eventHasChanged(CalendarEvent event) {
-		System.out.println(event.getEventName() + " " + event.getStartDate() + " has been changed.");
+		System.out.println(event.getOldName() + " has been changed: " + "name: " + event.getEventName() + ", start date: " + event.getStartDate() + ", end date: " + event.getEndDate() + ", room: " + event.getRoom().getName());
 		
 	}
 
