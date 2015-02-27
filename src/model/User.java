@@ -74,6 +74,14 @@ public class User implements CalendarEventListener, GroupListener {
 		return id;
 	}
 	
+	public String getFirstName() {
+		return firstName;
+	}
+		
+	public String getLastName() {
+		return lastName;
+	}
+
 	public String getName() {
 		return firstName + lastName;
 	}
