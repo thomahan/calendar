@@ -1,40 +1,47 @@
 package model;
 
+import main.PasswordHash;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class User implements CalendarEventListener, GroupListener {
-	
-	private String givenName;
+	private final int id;
+	private String firstName;
 	private String lastName;
 	private String username;
-	private String hashResult;
 	private String salt;
-	private final int employeeID;
+	private String passwordHash;
+
 	private Calendar calendar;
 	private static final AtomicInteger count = new AtomicInteger(0);
 	private ArrayList<Group> groups = new ArrayList<Group>();
 	Scanner scanner = new Scanner(System.in);
 	
-	public User(String givenName, String lastName, String username, String password) { //Legg til person i database, password hashes
-		this.givenName = givenName;
-		this.lastName = lastName;
-		
-		if (db.UserDBC.isUsernameUnique(username)){
-		this.username = username; // Her m� det sjekkes opp mot database at det ikke eksisterer en bruker med samme navn. Kaste Illegal argument exception
-		} else{
-			throw new IllegalArgumentException("Username not valid.");
-		}
-		String salt1 = main.PasswordHash.nextSalt();
-		this.salt = salt1;
-		hashResult = main.PasswordHash.hashPassword(salt1, password);
-		this.employeeID = count.incrementAndGet();
-		calendar = new Calendar(this);
-	}
-	
 	/**
-	 * Returns a User object. To be used when retrieving a user from the database
+	 * Returns a User object. To be used when creating a new user from UI.
+	 * @param firstName
+	 * @param lastName
+	 * @param username
+	 * @param password
+	 */
+	public User(String firstName, String lastName, String username, String password) { //Legg til person i database, password hashes
+		if (!db.UserDBC.isUsernameUnique(username)) { // Her m� det sjekkes opp mot database at det ikke eksisterer en bruker med samme navn. Kaste Illegal argument exception
+			throw new IllegalArgumentException("Username already in use.");
+		}
+
+		this.id = count.incrementAndGet();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.salt = PasswordHash.nextSalt();
+		this.passwordHash = PasswordHash.hashPassword(this.salt, password);
+		this.calendar = new Calendar(this);
+	}
+
+	/**
+	 * Returns a User object. To be used when retrieving a user from the database.
 	 * @param id
 	 * @param firstName
 	 * @param lastName
@@ -49,10 +56,11 @@ public class User implements CalendarEventListener, GroupListener {
 		this.username = username;
 		this.salt = salt;
 		this.passwordHash = passwordHash;
+		this.calendar = new Calendar(this);
 	}
-	
-	private void changeUser(String newGivenName, String newLastName) { //Legg til endring i db
-		this.givenName = newGivenName;
+
+	private void changeUser(String newFirstName, String newLastName) { //Legg til endring i db
+		this.firstName = newFirstName;
 		this.lastName = newLastName;
 	}
 	
@@ -61,19 +69,27 @@ public class User implements CalendarEventListener, GroupListener {
 		group.addUserToGroup(this);
 		groups.add(group);
 	}
-	
-	public String getSalt(){
-		return this.salt;
+
+	public int getEmployeeID() {
+		return id;
 	}
 	
-	public String getHashResult(){
-		return hashResult;
+	public String getName() {
+		return firstName + lastName;
 	}
 	
 	public String getUsername(){
 		return username;
 	}
+
+	public String getSalt(){
+		return this.salt;
+	}
 	
+	public String getHashResult(){
+		return passwordHash;
+	}
+
 	public Calendar getCalendar() {
 		return calendar;
 	}
@@ -82,14 +98,6 @@ public class User implements CalendarEventListener, GroupListener {
 		this.calendar = calendar;
 	}
 
-	public String getName() {
-		return givenName + lastName;
-	}
-
-	public int getEmployeeID() {
-		return employeeID;
-	}
-	
 	public ArrayList<Group> getGroups() {
 		return groups;
 	}
@@ -108,10 +116,6 @@ public class User implements CalendarEventListener, GroupListener {
 			return false;
 	} 
 
-
-
-	
-	
 	//Legger til en ny gruppe til gruppelisten
 	public void addToGroups(Group group) { //Legg til oppdatert gruppeliste i db
 		groups.add(group);
@@ -128,6 +132,5 @@ public class User implements CalendarEventListener, GroupListener {
 		System.out.println(group.getGroupName() + " has been changed.");
 		
 	}
-	
 	
 }
