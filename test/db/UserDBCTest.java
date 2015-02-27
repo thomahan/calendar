@@ -13,23 +13,26 @@ public class UserDBCTest {
 	@Test
 	public void userShouldBeRetrievable() {
 		String username = "user1";
-		User user = UserDBC.getUser(username);
 		
-		assertEquals(username, user.getName());
+		User user = UserDBC.getUser(username);
+		System.out.println(user.getEmployeeID()+user.getName()+user.getUsername()+user.getSalt()+user.getHashResult());
+		
+		assertEquals(username, user.getUsername());
 		assertNotNull(user.getSalt());
-		assertNotNull(user.getPasswordHash());
+		assertNotNull(user.getHashResult());
 	}
 
 	@Test
 	public void userShouldBeAddedToDatabase() {
-		/*
-		String username = "user1";
+		String username = "user3";
 		String password = "password";
-		String salt = PasswordHash.nextSalt();
-		String passwordHash = PasswordHash.hashPassword(salt, password);
 
-		UserDBC.addUser(username, salt, passwordHash);
-		UserDBC.getUser("user1");
-		*/
+		User user = new User("Bob", "Robertson", username, password);
+
+		UserDBC.addUser(user);
+
+		User dbUser = UserDBC.getUser("user3");
+		
+		assertEquals(user.getUsername(), dbUser.getUsername());
 	}
 }
