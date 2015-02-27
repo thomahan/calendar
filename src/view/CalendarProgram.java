@@ -123,7 +123,7 @@ public class CalendarProgram{
 		//Allow/disallow buttons
 		btnPrev.setEnabled(true);
 		btnNext.setEnabled(true);
-		if (month == 0 && year <= realYear-10){btnPrev.setEnabled(false);} //Too early
+		if (month == 0 && year <= realYear-100){btnPrev.setEnabled(false);} //Too early
 		if (month == 11 && year >= realYear+100){btnNext.setEnabled(false);} //Too late
 		lblMonth.setText(months[month]); //Refresh the month label (at the top)
 		lblMonth.setBounds(160-lblMonth.getPreferredSize().width/2, 25, 180, 25); //Re-align label with calendar
@@ -139,11 +139,15 @@ public class CalendarProgram{
 		//Get first day of month and number of days
 		GregorianCalendar cal = new GregorianCalendar(year, month, 1);
 		nod = cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
-		som = cal.get(GregorianCalendar.DAY_OF_WEEK);
+		cal.setFirstDayOfWeek(Calendar.MONDAY);
+		System.out.println("Day of week:" + GregorianCalendar.DAY_OF_WEEK);
+		som = (cal.get(GregorianCalendar.DAY_OF_WEEK) + 5)%7 + 1;
+		System.out.println("SOM:" + som);
 		
 //		Draw calendar
 // 		Were unable to set start_of_week to monday.
 		for (int i=1; i<=nod; i++){
+			
 			int row = new Integer((i+som-2)/7);
 			int column  =  (i+som-2)%7;
 			mtblCalendar.setValueAt(i, row, column);

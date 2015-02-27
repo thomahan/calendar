@@ -105,7 +105,7 @@ public class NewUserWindow {
 			String password = fieldPassword.getText();
 			User newUser;
 			try{
-				newUser = new User(userName);
+				newUser = new User(userName, givenName, lastName, password);
 			}
 			catch (IllegalArgumentException a){
 				pnlCalendar.add(lblError);
