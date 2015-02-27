@@ -9,13 +9,28 @@ import java.util.ArrayList;
 
 public class DBInitializer {
 	private static String initializationFile = "src/db/dbinit.sql";
+	private static String testDataFile = "src/db/db_test_data_insertion.sql";
+	
+	/**
+	 * Creates empty tables in the database
+	 */
+	public static void initializeDB() {
+		executeSqlFile(initializationFile);
+	}
+
+	/**
+	 * Populates the tables with test data
+	 */
+	public static void insertTestData() {
+		executeSqlFile(testDataFile);
+	}
 
 	/**
 	 * Reads an SQL-file and returns a list of executable statements
 	 * @param fileName
 	 * @return Statements
 	 */
-	public static List<String> readSqlFile(String fileName) {
+	private static List<String> readSqlFile(String fileName) {
 		ArrayList<String> statementList = new ArrayList<String>();
 		String statement = "";
 
@@ -37,10 +52,11 @@ public class DBInitializer {
 	}
 	
 	/**
-	 * Executes a list of statements from file on the database
+	 * Executes an SQL-file on the database
+	 * @param fileName
 	 */
-	public static void initializeDB() {
-		List<String> statementList = readSqlFile(initializationFile);
+	private static void executeSqlFile(String fileName) {
+		List<String> statementList = readSqlFile(fileName);
 		for (String s : statementList) {
 			DBConnector.makeStatement(s);
 		}
