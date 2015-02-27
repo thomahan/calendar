@@ -30,3 +30,4 @@ CREATE TABLE appointment (
 	PRIMARY KEY (id),
 	FOREIGN KEY (owner_id) REFERENCES user(id),
 	FOREIGN KEY (room_id) REFERENCES room(id));
+
