@@ -1,10 +1,9 @@
 package db;
 
-import model.User;
-
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import model.User;
 
 public class UserDBC {
 	/**
@@ -13,12 +12,12 @@ public class UserDBC {
 	 * @return User
 	 * @throws SQLException
 	 */
-	public static User getUser(String username) throws SQLException {
-		User user;
+	public static User getUser(String username) {
+		User user = null;
 		Query query = DBConnector.makeQuery(""
 				+ "SELECT * "
 				+ "FROM user "
-				+ "WHERE username = "+username+";");
+				+ "WHERE username = '"+username+"';");
 		ResultSet result = query.getResult();
 
 		try {
@@ -28,8 +27,7 @@ public class UserDBC {
 				String passwordHash = result.getString("password_hash");
 				String firstName = result.getString("first_name");
 				String lastName = result.getString("last_name");
-
-				user = User(id, firstName, lastName, username, salt, passwordHash);
+				user = new User(id, firstName, lastName, username, salt, passwordHash);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
