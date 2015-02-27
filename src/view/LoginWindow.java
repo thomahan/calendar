@@ -21,7 +21,7 @@ import view.CalendarProgram.btnNext_Action;
 import view.CalendarProgram.btnPrev_Action;
 import view.CalendarProgram.cmbYear_Action;
 
-public class LoginWindow {
+public class LoginWindow extends JFrame implements ActionListener{
 	
 	static JLabel lblWelcome, lblUserName, lblPassword;
 	static JButton btnNewUser, btnLogIn;
@@ -59,8 +59,6 @@ public class LoginWindow {
 		pnlCalendar.setBorder(BorderFactory.createTitledBorder("Calendar"));
 				
 		//Register action listeners
-		btnNewUser.addActionListener(new btnPrev_Action());
-		btnLogIn.addActionListener(new btnNext_Action());
 		btnNewUser.addActionListener(new btnNewUser_Action());
 		btnLogIn.addActionListener(new btnLogIn_Action());
 		
@@ -99,6 +97,12 @@ public class LoginWindow {
 		public void actionPerformed(ActionEvent e) {
 			
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
