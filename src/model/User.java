@@ -88,7 +88,7 @@ public class User implements CalendarEventListener, GroupListener {
 	}
 
 	public String getName() {
-		return firstName + lastName;
+		return firstName + " " + lastName;
 	}
 	
 	public String getUsername(){
