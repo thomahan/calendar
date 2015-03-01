@@ -39,8 +39,8 @@ public class ProofOfConceptView extends JFrame {
 		loginButton.addActionListener(listenerForLoginButton);
 	}
 	
-	public void displayLoginMessage() {
-		JOptionPane.showMessageDialog(this, "You have successfully logged in to the system. Congratulations!", "Login successful!", JOptionPane.INFORMATION_MESSAGE);
+	public void displayLoginMessage(String name) {
+		JOptionPane.showMessageDialog(this, "You have successfully logged in to the system, "+name+". Congratulations!", "Login successful!", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void displayErrorMessage(String errorMessage) {

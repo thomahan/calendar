@@ -35,7 +35,7 @@ public class Controller {
 					throw new Exception("Password incorrect.");
 				}
 				
-				pocView.displayLoginMessage();
+				pocView.displayLoginMessage(user.getName());
 
 			} catch (Exception e) {
 				user = null;
