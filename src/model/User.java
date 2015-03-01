@@ -58,6 +58,11 @@ public class User implements CalendarEventListener, GroupListener {
 		this.passwordHash = passwordHash;
 		this.calendar = new Calendar(this);
 	}
+	
+	public boolean isPasswordCorrect(String password) {
+		String passwordHashCandidate = PasswordHash.hashPassword(this.salt, password);
+		return this.passwordHash.equals(passwordHashCandidate);
+	}
 
 	private void changeUser(String newFirstName, String newLastName) { //Legg til endring i db
 		this.firstName = newFirstName;
