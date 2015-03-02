@@ -5,16 +5,25 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.JPanel;
+
 import java.awt.FlowLayout;
+
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
 import java.awt.GridLayout;
 import java.awt.SystemColor;
+
 import javax.swing.JButton;
 import javax.swing.AbstractAction;
+
 import java.awt.event.ActionEvent;
+
 import javax.swing.Action;
+
+import main.PasswordHash;
+import model.User;
 
 public class NewUser {
 
@@ -148,6 +157,29 @@ public class NewUser {
 			putValue(SHORT_DESCRIPTION, "Some short description");
 		}
 		public void actionPerformed(ActionEvent e) {
+			String userName = textField.getText().toLowerCase();
+			String givenName = textField_1.getText();
+			String lastName = textField_2.getText();
+			String password = textField_3.getText();
+			try{
+				User user = new User(givenName, lastName, userName, password);
+				CalendarWindow cw = new CalendarWindow();
+				cw.main(null);
+				
+			}catch (IllegalArgumentException f){
+				//creates panel
+				JPanel panel_4 = new JPanel();
+				panel_4.setBounds(69, 54, 123, 173);
+				frame.getContentPane().add(panel_4);
+				panel_4.setLayout(new GridLayout(0, 1, 0, 0));
+				
+				//generates errormessage
+				JTextArea txtrErrorMessage = new JTextArea();
+				txtrErrorMessage.setLineWrap(true);
+				txtrErrorMessage.setBackground(SystemColor.window);
+				txtrErrorMessage.setText("Error. Please try again.");
+				panel_4.add(txtrErrorMessage);
+			}
 			CalendarWindow cw = new CalendarWindow();
 			cw.main(null);
 		}
