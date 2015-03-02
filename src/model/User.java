@@ -59,9 +59,7 @@ public class User implements CalendarEventListener, GroupListener {
 		groups.add(group);
 	}
 
-	public int getEmployeeID() {
-		return id;
-	}
+	
 	
 	public String getFirstName() {
 		return firstName;
