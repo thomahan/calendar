@@ -129,11 +129,11 @@ public class NewUser extends JFrame {
 	}
 				
 	public String getFirstName() {
-		return usernameField.getText();
+		return firstNameField.getText();
 	}
 				
 	public String getLastName() {
-		return usernameField.getText();
+		return lastNameField.getText();
 	}
 	
 	public String getPassword() {
@@ -161,7 +161,7 @@ public class NewUser extends JFrame {
 	}
 	
 	public void displayRegisterMessage(String username) {
-		JOptionPane.showMessageDialog(this, "User '"+username+"' successfully created.", "Registration successful!", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, "'"+username+"' successfully created.", "Registration successful!", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public void displayErrorMessage(String errorMessage) {
