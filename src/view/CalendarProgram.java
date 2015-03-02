@@ -34,7 +34,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class CalendarProgram {
-
+	private final String FRAME_TITLE = "Calendar Program";
 	private JFrame frame;
 	private static JTable table;
 	private static DefaultTableModel mtblCalendar;
@@ -70,6 +70,7 @@ public class CalendarProgram {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle(FRAME_TITLE);
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 600, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
