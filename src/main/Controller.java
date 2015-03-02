@@ -15,10 +15,8 @@ public class Controller {
 	private NewUser registerView;
 	private User user;
 	
-	public Controller(LogIn loginView) {
-		this.loginView = loginView;
-		this.loginView.addLoginListener(new LoginListener());
-		this.loginView.addRegisterButtonListener(new RegisterButtonListener());
+	public Controller() {
+		openLoginView();
 	}
 	
 	class LoginListener implements ActionListener {
@@ -45,11 +43,8 @@ public class Controller {
 				
 				loginView.displayLoginMessage(user.getName());
 
-				loginView.dispose();
-				loginView = null;
-				calendarView = new CalendarProgram();
-				calendarView.main(null);
-				
+				closeLoginView();
+				openCalendarView();
 
 			} catch (Exception e) {
 				user = null;
@@ -63,11 +58,8 @@ public class Controller {
 	class RegisterButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			loginView.dispose();
-			loginView = null;
-			registerView = new NewUser();
-			registerView.addRegisterListener(new RegisterListener());
-			registerView.addCancelButtonListener(new CancelButtonListener());
+			closeLoginView();
+			openRegisterView();
 		}
 	}
 
@@ -103,9 +95,8 @@ public class Controller {
 
 				registerView.displayRegisterMessage(username);
 
-				registerView.dispose();
-				registerView = null;
-				loginView = new LogIn();
+				closeRegisterView();
+				openLoginView();
 
 			} catch (Exception e){
 				user = null;
@@ -120,12 +111,36 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			System.out.println("Successful listen!");
-			registerView.dispose();
-			registerView = null;
-			loginView =  new LogIn();
-			loginView.addLoginListener(new LoginListener());
-			loginView.addRegisterButtonListener(new RegisterButtonListener());
+			closeRegisterView();
+			openLoginView();
 		}
 	}
 
+	private void openLoginView() {
+		this.loginView = new LogIn();
+		this.loginView.addLoginListener(new LoginListener());
+		this.loginView.addRegisterButtonListener(new RegisterButtonListener());
+	}
+	
+	private void closeLoginView() {
+		loginView.dispose();
+		loginView = null;
+	}
+	
+	
+	private void openRegisterView() {
+		this.registerView = new NewUser();
+		this.registerView.addRegisterListener(new RegisterListener());
+		this.registerView.addCancelButtonListener(new CancelButtonListener());
+	}
+	
+	private void closeRegisterView() {
+		registerView.dispose();
+		registerView = null;
+	}
+	
+	private void openCalendarView() {
+		calendarView = new CalendarProgram();
+		calendarView.main(null);
+	}
 }
