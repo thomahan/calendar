@@ -171,28 +171,28 @@ public class CalendarWindow {
 		}
 		
 		//Apply renderers: If so: create a tblCalendarRenderer-class which extends DefaultTableCellRenderer
-//		tblCalendar.setDefaultRenderer(tblCalendar.getColumnClass(0), new tblCalendarRenderer());
+		tblCalendar.setDefaultRenderer(tblCalendar.getColumnClass(0), new tblCalendarRenderer());
 	}
 //	
-//	static class tblCalendarRenderer extends DefaultTableCellRenderer{
-//		public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column){
-//			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
-//			if (column == 5 || column == 6){ //Week-end
-//				setBackground(new Color(255, 220, 220));
-//			}
-//			else{ //Week
-//				setBackground(new Color(255, 255, 255));
-//			}
-//			if (value != null){
-//				if (Integer.parseInt(value.toString()) == realDay && currentMonth == realMonth && currentYear == realYear){ //Today
-//					setBackground(new Color(220, 220, 255));
-//				}
-//			}
-//			setBorder(null);
-//			setForeground(Color.black);
-//			return this;  
-//		}
-//	}
+	static class tblCalendarRenderer extends DefaultTableCellRenderer{
+		public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column){
+			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+			if (column == 5 || column == 6){ //Week-end
+				setBackground(new Color(255, 220, 220));
+			}
+			else{ //Week
+				setBackground(new Color(255, 255, 255));
+			}
+			if (value != null){
+				if (Integer.parseInt(value.toString()) == realDay && currentMonth == realMonth && currentYear == realYear){ //Today
+					setBackground(new Color(220, 220, 255));
+				}
+			}
+			setBorder(null);
+			setForeground(Color.black);
+			return this;  
+		}
+	}
 	
 	static class btnPrev_Action implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
