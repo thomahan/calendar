@@ -1,62 +1,42 @@
 package view;
 
-import java.awt.EventQueue;
+import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
+import javax.swing.JButton;
 import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 
-public class LogIn {
-
-	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
-	private final Action action = new SwingAction();
-	private final Action action_1 = new SwingAction_1();
+public class LogIn extends JFrame {
+	private final String FRAME_TITLE = "Calendar Program";
+	private JTextField usernameField;
+	private JPasswordField passwordField;
+	private JButton loginButton;
+	private JButton registerButton;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LogIn window = new LogIn();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		LogIn login = new LogIn();
 	}
 
 	/**
 	 * Create the application.
 	 */
 	public LogIn() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		this.setTitle(FRAME_TITLE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setBounds(100, 100, 450, 300);
+		this.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(119, 67, 218, 133);
-		frame.getContentPane().add(panel);
+		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JTextArea txtrUsername = new JTextArea();
@@ -68,53 +48,58 @@ public class LogIn {
 		desktopPane.setBounds(72, 18, 1, 1);
 		panel.add(desktopPane);
 		
-		textField = new JTextField();
-		textField.setBounds(72, 5, 134, 28);
-		panel.add(textField);
-		textField.setColumns(10);
+		usernameField = new JTextField();
+		usernameField.setBounds(72, 5, 134, 28);
+		usernameField.setColumns(10);
+		panel.add(usernameField);
 		
 		JTextArea txtrPassword = new JTextArea();
 		txtrPassword.setBounds(10, 44, 59, 16);
 		txtrPassword.setText("Password");
 		panel.add(txtrPassword);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(72, 38, 134, 28);
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		passwordField = new JPasswordField();
+		passwordField.setBounds(72, 38, 134, 28);
+		passwordField.setColumns(10);
+		panel.add(passwordField);
 		
-		JButton btnNewButton = new JButton("Confirm");
-		btnNewButton.setAction(action_1);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton.setBounds(72, 75, 117, 29);
-		panel.add(btnNewButton);
+		loginButton = new JButton("Log in");
+		loginButton.setBounds(72, 75, 117, 29);
+		panel.add(loginButton);
 		
-		JButton btnNewUser = new JButton("New User");
-		btnNewUser.setAction(action);
-		btnNewUser.setBounds(72, 104, 117, 29);
-		panel.add(btnNewUser);
+		registerButton = new JButton("Register");
+		registerButton.setBounds(72, 104, 117, 29);
+		panel.add(registerButton);
+
+		this.setVisible(true);
 	}
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "New User");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-			NewUser nu = new NewUser();
-			nu.main(null);
-		}
+		
+	public String getUsername() {
+		return usernameField.getText();
 	}
-	private class SwingAction_1 extends AbstractAction {
-		public SwingAction_1() {
-			putValue(NAME, "Confirm");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+	
+	public String getPassword() {
+		String password = "";
+		for (char c : this.passwordField.getPassword()) {
+			password = password + c;
 		}
-		public void actionPerformed(ActionEvent e) {
-			CalendarWindow cw = new CalendarWindow();
-			cw.main(null);
-		}
+		return password;
 	}
+	
+	public void addLoginListener(ActionListener listenerForLoginButton) {
+		loginButton.addActionListener(listenerForLoginButton);
+	}
+	
+	public void addRegisterButtonListener(ActionListener listenerForRegisterButton) {
+		registerButton.addActionListener(listenerForRegisterButton);
+	}
+	
+	public void displayLoginMessage(String name) {
+		JOptionPane.showMessageDialog(this, "Logged in as "+name+".", "Login successful!", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void displayErrorMessage(String errorMessage) {
+		JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
 }
