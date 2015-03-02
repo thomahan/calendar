@@ -4,28 +4,32 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import model.User;
-import view.ProofOfConceptView;
+import view.CalendarProgram;
+import view.LogIn;
+import view.NewUser;
 import db.UserDBC;
 
 public class Controller {
-	private ProofOfConceptView pocView;
+	private LogIn loginView;
+	private CalendarProgram calendarView;
+	private NewUser registerView;
 	private User user;
 	
-	public Controller(ProofOfConceptView pocView) {
-		this.pocView = pocView;
-		this.pocView.addLoginListener(new LoginListener());
+	public Controller(LogIn loginView) {
+		this.loginView = loginView;
+		this.loginView.addLoginListener(new LoginListener());
+		this.loginView.addRegisterButtonListener(new RegisterButtonListener());
 	}
 	
 	class LoginListener implements ActionListener {
-
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent actionEvent) {
 			String username;
 			String password;
 			
 			try {
-				username = pocView.getUsername();
-				password = pocView.getPassword();
+				username = loginView.getUsername();
+				password = loginView.getPassword();
 				
 				user = UserDBC.getUser(username);
 				
@@ -35,15 +39,31 @@ public class Controller {
 					throw new Exception("Password incorrect.");
 				}
 				
-				pocView.displayLoginMessage(user.getName());
+				loginView.displayLoginMessage(user.getName());
+
+				loginView.dispose();
+				loginView = null;
+				calendarView = new CalendarProgram();
+				calendarView.main(null);
+				
 
 			} catch (Exception e) {
 				user = null;
-				pocView.displayErrorMessage(e.getMessage());
+				loginView.displayErrorMessage(e.getMessage());
 			}
 
 		}
 		
 	}
 
+	class RegisterButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			loginView.dispose();
+			loginView = null;
+			registerView = new NewUser();
+			registerView.main(null);
+		
+		}
+	}
 }
