@@ -40,24 +40,8 @@ public class User implements CalendarEventListener, GroupListener {
 		this.calendar = new Calendar(this);
 	}
 
-	/**
-	 * Returns a User object. To be used when retrieving a user from the database.
-	 * @param id
-	 * @param firstName
-	 * @param lastName
-	 * @param username
-	 * @param salt
-	 * @param passwordHash
-	 */
-	public User(int id, String firstName, String lastName, String username, String salt, String passwordHash) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.username = username;
-		this.salt = salt;
-		this.passwordHash = passwordHash;
-		this.calendar = new Calendar(this);
-	}
+	
+	
 	
 	public boolean isPasswordCorrect(String password) {
 		String passwordHashCandidate = PasswordHash.hashPassword(this.salt, password);
