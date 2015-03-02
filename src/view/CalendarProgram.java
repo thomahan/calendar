@@ -71,7 +71,7 @@ public class CalendarProgram {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 600, 300);
+		frame.setBounds(100, 100, 600, 375);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -79,7 +79,7 @@ public class CalendarProgram {
 		mtblCalendar = new DefaultTableModel(){public boolean isCellEditable(int rowIndex, int mColIndex){return false;}};
 			
 		JPanel panel = new JPanel();
-		panel.setBounds(6, 6, 296, 266);
+		panel.setBounds(6, 6, 296, 341);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -111,7 +111,7 @@ public class CalendarProgram {
 		panel_4.add(button_1);
 		
 		JPanel panel_5 = new JPanel();
-		panel_5.setBounds(6, 55, 284, 205);
+		panel_5.setBounds(6, 55, 284, 280);
 		panel.add(panel_5);
 		panel_5.setLayout(null);
 		
@@ -119,7 +119,7 @@ public class CalendarProgram {
 //		table.setBounds(6, 6, 272, 193);
 		stblCalendar = new JScrollPane(table);
 		panel_5.add(stblCalendar);
-		stblCalendar.setBounds(6,6,272,193);
+		stblCalendar.setBounds(6,6,272,268);
 		
 		//No resize/reorder
 		table.getTableHeader().setResizingAllowed(false);
@@ -157,7 +157,7 @@ public class CalendarProgram {
 		currentYear = realYear;		
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(314, 6, 280, 266);
+		panel_1.setBounds(314, 6, 280, 341);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -171,13 +171,13 @@ public class CalendarProgram {
 		panel_2.add(btnAddNewEvent);
 		
 		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(6, 55, 268, 205);
+		panel_3.setBounds(6, 55, 268, 280);
 		panel_1.add(panel_3);
 		panel_3.setLayout(null);
 		
 		TextArea textArea = new TextArea();
 		textArea.setEditable(false);
-		textArea.setBounds(10, 10, 248, 185);
+		textArea.setBounds(10, 10, 248, 260);
 		panel_3.add(textArea);
 		
 		//Refresh calendar
