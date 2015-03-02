@@ -1,14 +1,18 @@
 package model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+
+import db.Query;
 
 public class CalendarEvent {
 
 	private String eventName, oldName;
 	private ArrayList<User> participants = new ArrayList<User>();
 	private ArrayList<User> eventListeners = new ArrayList<User>();
-	private Room room;
+	private String room;
 	private Date startDate; //Starttid for event
 	private Date endDate; //Sluttid for event
 	
@@ -23,7 +27,9 @@ public class CalendarEvent {
 			participants.get(i).getCalendar().addEvent(this);
 			eventListeners.add(participants.get(i));
 		}
-		//MÅ HUSKE Å SETTE ROM AUTOMATISK
+		
+		
+			
 	}
 	
 	public String getEventName(){
@@ -58,11 +64,11 @@ public class CalendarEvent {
 		fireCalendarEventHasChanged();
 	}
 	
-	public Room getRoom(){
+	public String getRoom(){
 		return room;
 	}
 	
-	public void setRoom(Room room){ // M� endres i databasen
+	public void setRoom(String room){ // M� endres i databasen
 		this.room = room;
 		fireCalendarEventHasChanged();
 	}
@@ -115,6 +121,37 @@ public class CalendarEvent {
 	
 	public void removeListener(User user){
 		eventListeners.remove(user);
+	}
+	
+	public String getAvailableRoomNameIfAvailable(){
+		Query query = db.DBConnector.makeQuery("SELECT enddate, startdate FROM calendarevent;");
+		ResultSet result = query.getResult();
+		
+		Date start = this.startDate;
+		Date end = this.endDate;
+		Interval interval = new Interval(start, end);
+		
+		
+		try{
+			while (result.next()) {
+				Interval interval1 = new Interval(result.getDate("startdate"), result.getDate("enddate"));
+				if (interval.overlap(interval, interval1)){
+					room = result.getString("room");
+				}
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		query.close();
+		
+		return room;
+		
+	}
+	
+	public Room getAvailableRoom(){
+		String roomname = getAvailableRoomNameIfAvailable();
+		
 	}
 }
 

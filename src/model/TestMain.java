@@ -25,8 +25,10 @@ public class TestMain {
 		Room rom1 = new Room("Zevs");
 		
 		
+		
 		Date startdato = new Date(2000, 7, 7, 11, 45);
 		Date sluttdato = new Date(2000, 7, 7, 12, 11);
+		Interval interval = new Interval(startdato, sluttdato);
 		CalendarEvent tivoli = new CalendarEvent("Tivoli", startdato, brukere, sluttdato );
 		
 		tivoli.setRoom(rom1);
