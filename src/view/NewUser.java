@@ -3,6 +3,7 @@ package view;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JPanel;
 
@@ -22,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import db.UserDBC;
 import main.PasswordHash;
 import model.User;
 
@@ -161,27 +163,19 @@ public class NewUser {
 			String givenName = textField_1.getText();
 			String lastName = textField_2.getText();
 			String password = textField_3.getText();
+			String confirmPassword = textField_4.getText();
 			try{
-				User user = new User(givenName, lastName, userName, password);
-				CalendarWindow cw = new CalendarWindow();
-				cw.main(null);
-				
-			}catch (IllegalArgumentException f){
-				//creates panel
-				JPanel panel_4 = new JPanel();
-				panel_4.setBounds(69, 54, 123, 173);
-				frame.getContentPane().add(panel_4);
-				panel_4.setLayout(new GridLayout(0, 1, 0, 0));
-				
-				//generates errormessage
-				JTextArea txtrErrorMessage = new JTextArea();
-				txtrErrorMessage.setLineWrap(true);
-				txtrErrorMessage.setBackground(SystemColor.window);
-				txtrErrorMessage.setText("Error. Please try again.");
-				panel_4.add(txtrErrorMessage);
+				if (password.equals(confirmPassword)){					
+					User user = new User(givenName, lastName, userName, password);
+					UserDBC.addUser(user);
+					CalendarWindow cw = new CalendarWindow();
+					cw.main(null);
+				} else JOptionPane.showMessageDialog(frame, "Password does not match. Please try again!");
 			}
-			CalendarWindow cw = new CalendarWindow();
-			cw.main(null);
+			catch (IllegalArgumentException f){
+				System.out.println("Hello mann");
+				JOptionPane.showMessageDialog(frame, "Username already taken. Please try again!");
+			}
 		}
 	}
 	private class SwingAction_1 extends AbstractAction {
