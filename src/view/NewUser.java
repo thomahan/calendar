@@ -1,104 +1,74 @@
 package view;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JSplitPane;
-import javax.swing.JPanel;
-
 import java.awt.FlowLayout;
-
-import javax.swing.JTextField;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-
 import java.awt.GridLayout;
 import java.awt.SystemColor;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.AbstractAction;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.Action;
-
-import db.UserDBC;
-import main.PasswordHash;
-import model.User;
-
-public class NewUser {
-
-	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+public class NewUser extends JFrame {
+	private final String FRAME_TITLE = "Calendar Program Registration";
 	private JPanel panel_1;
-	private final Action action = new SwingAction();
-	private final Action action_1 = new SwingAction_1();
+	private JTextField usernameField;
+	private JTextField firstNameField;
+	private JTextField lastNameField;
+	private JPasswordField passwordField;
+	private JPasswordField passwordConfirmField;
+	private JButton registerButton;
+	private JButton cancelButton;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					NewUser window = new NewUser();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		NewUser window = new NewUser();
+		window.setVisible(true);
 	}
 
 	/**
 	 * Create the application.
 	 */
 	public NewUser() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		this.setTitle(FRAME_TITLE);
+		this.setBounds(100, 100, 450, 300);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(186, 54, 154, 173);
-		frame.getContentPane().add(panel);
+		this.getContentPane().add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		textField = new JTextField();
-		panel.add(textField);
-		textField.setColumns(10);
+		usernameField = new JTextField();
+		panel.add(usernameField);
+		usernameField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		firstNameField = new JTextField();
+		panel.add(firstNameField);
+		firstNameField.setColumns(10);
 		
-		textField_2 = new JTextField();
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		lastNameField = new JTextField();
+		panel.add(lastNameField);
+		lastNameField.setColumns(10);
 		
-		textField_3 = new JTextField();
-		panel.add(textField_3);
-		textField_3.setColumns(10);
+		passwordField = new JPasswordField();
+		panel.add(passwordField);
+		passwordField.setColumns(10);
 		
-		textField_4 = new JTextField();
-		panel.add(textField_4);
-		textField_4.setColumns(10);
+		passwordConfirmField = new JPasswordField();
+		panel.add(passwordConfirmField);
+		passwordConfirmField.setColumns(10);
 		
 		panel_1 = new JPanel();
 		panel_1.setBounds(96, 6, 244, 38);
-		frame.getContentPane().add(panel_1);
+		this.getContentPane().add(panel_1);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JTextArea txtrPleaseFillIn = new JTextArea();
@@ -107,7 +77,7 @@ public class NewUser {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(69, 54, 123, 173);
-		frame.getContentPane().add(panel_2);
+		this.getContentPane().add(panel_2);
 		panel_2.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JTextArea txtrUsername = new JTextArea();
@@ -142,49 +112,60 @@ public class NewUser {
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBounds(124, 236, 273, 36);
-		frame.getContentPane().add(panel_3);
+		this.getContentPane().add(panel_3);
 		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton btnConfirm = new JButton("Confirm");
-		btnConfirm.setAction(action);
-		panel_3.add(btnConfirm);
+		registerButton = new JButton("Register");
+		panel_3.add(registerButton);
 		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setAction(action_1);
-		panel_3.add(btnCancel);
+		cancelButton = new JButton("Cancel");
+		panel_3.add(cancelButton);
+
+		this.setVisible(true);
 	}
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "Confirm");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-			String userName = textField.getText().toLowerCase();
-			String givenName = textField_1.getText();
-			String lastName = textField_2.getText();
-			String password = textField_3.getText();
-			String confirmPassword = textField_4.getText();
-			try{
-				if (password.equals(confirmPassword)){					
-					User user = new User(givenName, lastName, userName, password);
-					UserDBC.addUser(user);
-					CalendarWindow cw = new CalendarWindow();
-					cw.main(null);
-				} else JOptionPane.showMessageDialog(frame, "Password does not match. Please try again!");
-			}
-			catch (IllegalArgumentException f){
-				System.out.println("Hello mann");
-				JOptionPane.showMessageDialog(frame, "Username already taken. Please try again!");
-			}
-		}
+			
+	public String getUsername() {
+		return usernameField.getText();
 	}
-	private class SwingAction_1 extends AbstractAction {
-		public SwingAction_1() {
-			putValue(NAME, "Quit");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-			System.exit(0);
-		}
+				
+	public String getFirstName() {
+		return usernameField.getText();
 	}
+				
+	public String getLastName() {
+		return usernameField.getText();
+	}
+	
+	public String getPassword() {
+		String password = "";
+		for (char c : this.passwordField.getPassword()) {
+			password = password + c;
+		}
+		return password;
+	}
+		
+	public String getPasswordConfirm() {
+		String password = "";
+		for (char c : this.passwordConfirmField.getPassword()) {
+			password = password + c;
+		}
+		return password;
+	}
+
+	public void addRegisterListener(ActionListener listenerForRegisterButton) {
+		registerButton.addActionListener(listenerForRegisterButton);
+	}
+	
+	public void addCancelButtonListener(ActionListener listenerForCancelButton) {
+		cancelButton.addActionListener(listenerForCancelButton);
+	}
+	
+	public void displayRegisterMessage(String username) {
+		JOptionPane.showMessageDialog(this, "User '"+username+"' successfully created.", "Registration successful!", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public void displayErrorMessage(String errorMessage) {
+		JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
 }
