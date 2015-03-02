@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class User implements CalendarEventListener, GroupListener {
-	private final int id;
+	
 	private String firstName;
 	private String lastName;
 	private String username;
@@ -15,7 +15,7 @@ public class User implements CalendarEventListener, GroupListener {
 	private String passwordHash;
 
 	private Calendar calendar;
-	private static final AtomicInteger count = new AtomicInteger(0);
+	
 	private ArrayList<Group> groups = new ArrayList<Group>();
 	Scanner scanner = new Scanner(System.in);
 	
@@ -31,7 +31,7 @@ public class User implements CalendarEventListener, GroupListener {
 			throw new IllegalArgumentException("Username already in use.");
 		}
 
-		this.id = count.incrementAndGet();
+		
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
