@@ -1,16 +1,20 @@
 package model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
+
+import db.Query;
 
 public class Room {
 	
 	
 	private String name;
-	private Date date;
 	
 	
 	public Room(String name){
 		this.name = name;
+		RoomList.addroom(this);
 	}
 	
 	public String getName(){
@@ -21,8 +25,6 @@ public class Room {
 		this.name = name;
 	}
 	
-//	public boolean isAvailable(){
-//		
-//	}
+	
 
 }
