@@ -12,7 +12,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class LogIn extends JFrame {
-	private final String FRAME_TITLE = "Calendar Program";
+	private final String FRAME_TITLE = "Calendar Program Login";
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private JButton loginButton;
