@@ -3,23 +3,28 @@ package view;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class ProofOfConceptView extends JFrame {
+public class LoginView extends JFrame {
 	
-	private JTextField usernameField = new JTextField(10);
-	private JPasswordField passwordField = new JPasswordField(10);
-	private JButton loginButton = new JButton("Log in");
+	private JTextField usernameField;
+	private JPasswordField passwordField;
+	private JButton loginButton;
 	
-	public ProofOfConceptView() {
+	public LoginView() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(200, 200);
 	
-		JPanel pocPanel = new JPanel();
-	
-		pocPanel.add(usernameField);
-		pocPanel.add(passwordField);
-		pocPanel.add(loginButton);
-		
-		this.add(pocPanel);
+		JPanel loginPanel = new JPanel();
+		this.add(loginPanel);
+
+		usernameField = new JTextField(10);
+		loginPanel.add(usernameField);
+
+		passwordField = new JPasswordField(10);
+		loginPanel.add(passwordField);
+
+		loginButton = new JButton("Log in");
+		loginPanel.add(loginButton);
+
 		this.setVisible(true);
 	}
 	

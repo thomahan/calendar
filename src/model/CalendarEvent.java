@@ -152,6 +152,8 @@ public class CalendarEvent {
 	public Room getAvailableRoom(){
 		String roomname = getAvailableRoomNameIfAvailable();
 		
+		for(Room room : roomlist)
+		
 	}
 }
 
