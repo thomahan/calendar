@@ -22,12 +22,11 @@ public class UserDBC {
 
 		try {
 			if (result.next()) {
-				int id = result.getInt("id");
 				String salt = result.getString("salt");
 				String passwordHash = result.getString("password_hash");
 				String firstName = result.getString("first_name");
 				String lastName = result.getString("last_name");
-				user = new User(id, firstName, lastName, username, salt, passwordHash);
+				user = new User(username, salt, passwordHash, firstName, lastName);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
