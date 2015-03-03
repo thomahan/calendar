@@ -43,12 +43,12 @@ public class UserDBC {
 	 */
 	public static void addUser(User user) {
 		DBConnector.makeStatement(""
-				+ "INSERT INTO user (first_name, last_name, username, salt, password_hash) "
-				+ "VALUES ('"+user.getFirstName()+"', "
-						 +"'"+user.getLastName()+"', "
-						 +"'"+user.getUsername()+"', "
+				+ "INSERT INTO user (username, salt, password_hash, first_name, last_name) "
+				+ "VALUES ('"+user.getUsername()+"', "
 						 +"'"+user.getSalt()+"', "
-						 +"'"+user.getHashResult()+"');");
+						 +"'"+user.getHashResult()+"', "
+						 +"'"+user.getFirstName()+"', "
+						 +"'"+user.getLastName()+"');");
 		
 	}
 	
