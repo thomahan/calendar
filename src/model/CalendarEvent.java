@@ -122,38 +122,38 @@ public class CalendarEvent {
 		eventListeners.remove(user);
 	}
 	
-	public String getAvailableRoomNameIfAvailable(){
-		Query query = db.DBConnector.makeQuery("SELECT enddate, startdate FROM calendarevent;");
-		ResultSet result = query.getResult();
-		
-		Date start = this.startDate;
-		Date end = this.endDate;
-		Interval interval = new Interval(start, end);
-		
-		
-		try{
-			while (result.next()) {
-				Interval interval1 = new Interval(result.getDate("startdate"), result.getDate("enddate"));
-				if (interval.overlap(interval, interval1)){
-					room = result.getString("room");
-				}
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		query.close();
-		
-		return room;
-		
-	}
+//	public String getAvailableRoomNameIfAvailable(){
+//		Query query = db.DBConnector.makeQuery("SELECT enddate, startdate FROM calendarevent;");
+//		ResultSet result = query.getResult();
+//		
+//		Date start = this.startDate;
+//		Date end = this.endDate;
+//		Interval interval = new Interval(start, end);
+//		
+//		
+//		try{
+//			while (result.next()) {
+//				Interval interval1 = new Interval(result.getDate("startdate"), result.getDate("enddate"));
+//				if (interval.overlap(interval, interval1)){
+//					room = result.getString("room");
+//				}
+//			} 
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		query.close();
+//		
+//		return room;
+//		
+//	}
 	
-	public Room getAvailableRoom(){
-		String roomname = getAvailableRoomNameIfAvailable();
-		
-		for(Room room : roomlist)
-		
-	}
+//	public Room getAvailableRoom(){
+//		String roomname = getAvailableRoomNameIfAvailable();
+//		
+//		for(Room room : roomlist)
+//		
+//	}
 }
 
 
