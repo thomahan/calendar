@@ -17,9 +17,11 @@ public class CalendarEvent {
 	private Date endDate; //Sluttid for event
 	private String location;
 	private User creator;
+	private final int id;
+	private String description;
 	
 	
-	public CalendarEvent(String eventName, Date startDate, User user, Date endDate, String location){
+	public CalendarEvent(String eventName, Date startDate, User user, Date endDate, String location, int id, String description){
 		this.eventName = eventName;
 		this.startDate = startDate;
 		this.creator = user;
@@ -29,6 +31,8 @@ public class CalendarEvent {
 		participants.add(user);
 		user.getCalendar().addEvent(this);
 		eventListeners.add(user);
+		this.id = id;
+		this.description = description;
 	}
 	
 	public String getEventName(){
@@ -131,6 +135,18 @@ public class CalendarEvent {
 
 	public User getCreator() {
 		return creator;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	
