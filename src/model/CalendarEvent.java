@@ -78,7 +78,6 @@ public class CalendarEvent {
 			Invitation invitation = new Invitation(this);
 			invitation.sendInvitationToUser(user);
 			if (invitation.reply == true){
-				System.out.println("Hei");
 				participants.add(user);
 				user.getCalendar().addEvent(this);
 				eventListeners.add(user);
