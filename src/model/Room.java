@@ -10,7 +10,9 @@ public class Room {
 	
 	
 	private String name;
+	private int size;
 	// private final int id;
+	
 	
 	
 	public Room(String name){
