@@ -110,8 +110,15 @@ public class Controller {
 	class CancelButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			System.out.println("Successful listen!");
 			closeRegisterView();
+			openLoginView();
+		}
+	}
+
+	class LogoutButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			closeCalendarView();
 			openLoginView();
 		}
 	}
@@ -121,6 +128,7 @@ public class Controller {
 		this.loginView.addLoginListener(new LoginListener());
 		this.loginView.addRegisterButtonListener(new RegisterButtonListener());
 	}
+
 	
 	private void closeLoginView() {
 		loginView.dispose();
@@ -133,7 +141,7 @@ public class Controller {
 		this.registerView.addRegisterListener(new RegisterListener());
 		this.registerView.addCancelButtonListener(new CancelButtonListener());
 	}
-	
+
 	private void closeRegisterView() {
 		registerView.dispose();
 		registerView = null;
@@ -141,6 +149,12 @@ public class Controller {
 	
 	private void openCalendarView() {
 		calendarView = new CalendarProgram();
-		calendarView.main(null);
+		this.calendarView.addLogoutButtonListener(new LogoutButtonListener());
+	}
+	
+	private void closeCalendarView() {
+		calendarView.dispose();
+		calendarView = null;
+		user = null;
 	}
 }

@@ -37,56 +37,39 @@ import java.util.GregorianCalendar;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-public class CalendarProgram {
+public class CalendarProgram extends JFrame {
 	private final String FRAME_TITLE = "Calendar Program";
-	private JFrame frame;
+	static int realYear, realMonth, realDay, currentYear, currentMonth;
+
 	private static JTable table;
 	private static DefaultTableModel mtblCalendar;
 	private JScrollPane stblCalendar;
 	private JTextField txtMonth;
-	static int realYear, realMonth, realDay, currentYear, currentMonth;
-	private final Action action = new SwingAction();
+	private JButton logoutButton;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CalendarProgram window = new CalendarProgram();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		CalendarProgram window = new CalendarProgram();
 	}
 
 	/**
 	 * Create the application.
 	 */
 	public CalendarProgram() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setTitle(FRAME_TITLE);
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 600, 375);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		this.setTitle(FRAME_TITLE);
+		this.setResizable(false);
+		this.setBounds(100, 100, 600, 375);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(null);
 		
 		//create controls
 		mtblCalendar = new DefaultTableModel(){public boolean isCellEditable(int rowIndex, int mColIndex){return false;}};
 			
 		JPanel panel = new JPanel();
 		panel.setBounds(6, 6, 296, 341);
-		frame.getContentPane().add(panel);
+		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JPanel panel_4 = new JPanel();
@@ -164,7 +147,7 @@ public class CalendarProgram {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(314, 6, 280, 341);
-		frame.getContentPane().add(panel_1);
+		this.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		JPanel panel_2 = new JPanel();
@@ -176,10 +159,9 @@ public class CalendarProgram {
 		btnAddNewEvent.setBounds(6, 6, 124, 29);
 		panel_2.add(btnAddNewEvent);
 		
-		JButton button_2 = new JButton("Add New Event");
-		button_2.setAction(action);
-		button_2.setBounds(138, 6, 124, 29);
-		panel_2.add(button_2);
+		logoutButton = new JButton("Log out");
+		logoutButton.setBounds(138, 6, 124, 29);
+		panel_2.add(logoutButton);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBounds(6, 55, 268, 280);
@@ -194,6 +176,7 @@ public class CalendarProgram {
 		//Refresh calendar
 		refreshCalendar(realMonth, realYear); //Refresh calendar
 		
+		this.setVisible(true);
 	}
 	
 	public static void refreshCalendar(int month, int year) {
@@ -241,17 +224,9 @@ public class CalendarProgram {
 			return this;  
 		}
 	}
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "Log out");
-			putValue(SHORT_DESCRIPTION, "Closes the calendar window. You have to log in again");
-		}
-		public void actionPerformed(ActionEvent e) {
-			String name = "man";
-			System.exit(0);
-		}
+		
+	public void addLogoutButtonListener(ActionListener listenerForLogoutButton) {
+		logoutButton.addActionListener(listenerForLogoutButton);
 	}
-	
-	
 	
 }
