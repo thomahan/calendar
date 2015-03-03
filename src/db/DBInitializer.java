@@ -14,14 +14,14 @@ public class DBInitializer {
 	/**
 	 * Creates empty tables in the database
 	 */
-	public static void initializeDB() {
+	public static void createTables() {
 		executeSqlFile(createTablesFile);
 	}
 
 	/**
 	 * Populates the tables with test data
 	 */
-	public static void insertTestData() {
+	public static void insertValues() {
 		executeSqlFile(insertValuesFile);
 	}
 
