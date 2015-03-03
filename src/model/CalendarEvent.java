@@ -15,21 +15,20 @@ public class CalendarEvent {
 	private String room;
 	private Date startDate; //Starttid for event
 	private Date endDate; //Sluttid for event
+	private String location;
+	private User creator;
 	
 	
-	public CalendarEvent(String eventName, Date startDate, ArrayList<User> participants, Date endDate){
+	public CalendarEvent(String eventName, Date startDate, User user, Date endDate, String location){
 		this.eventName = eventName;
 		this.startDate = startDate;
-		this.participants = participants;
+		this.creator = user;
 		this.endDate = endDate;
+		this.location = location;
 		oldName = this.eventName;
-		for (int i = 0; i < participants.size(); i++) {
-			participants.get(i).getCalendar().addEvent(this);
-			eventListeners.add(participants.get(i));
-		}
-		
-		
-			
+		participants.add(user);
+		user.getCalendar().addEvent(this);
+		eventListeners.add(user);
 	}
 	
 	public String getEventName(){
@@ -121,6 +120,22 @@ public class CalendarEvent {
 	public void removeListener(User user){
 		eventListeners.remove(user);
 	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public User getCreator() {
+		return creator;
+	}
+	
+	
+	
+	
 	
 //	public String getAvailableRoomNameIfAvailable(){
 //		Query query = db.DBConnector.makeQuery("SELECT enddate, startdate FROM calendarevent;");
