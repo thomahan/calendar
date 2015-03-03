@@ -8,21 +8,21 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class DBInitializer {
-	private static String initializationFile = "src/db/dbinit.sql";
-	private static String testDataFile = "src/db/db_test_data_insertion.sql";
+	private static String createTablesFile = "src/db/db_create_tables.sql";
+	private static String insertValuesFile = "src/db/db_insert_values.sql";
 	
 	/**
 	 * Creates empty tables in the database
 	 */
 	public static void initializeDB() {
-		executeSqlFile(initializationFile);
+		executeSqlFile(createTablesFile);
 	}
 
 	/**
 	 * Populates the tables with test data
 	 */
 	public static void insertTestData() {
-		executeSqlFile(testDataFile);
+		executeSqlFile(insertValuesFile);
 	}
 
 	/**
