@@ -3,6 +3,7 @@ package view;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class NewEvent {
 
@@ -38,6 +39,11 @@ public class NewEvent {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(6, 6, 438, 266);
+		frame.getContentPane().add(panel);
+		panel.setLayout(null);
 	}
-
 }

@@ -11,6 +11,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 
 import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTable;
@@ -33,6 +34,9 @@ import java.awt.TextArea;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
 public class CalendarProgram {
 	private final String FRAME_TITLE = "Calendar Program";
 	private JFrame frame;
@@ -41,6 +45,7 @@ public class CalendarProgram {
 	private JScrollPane stblCalendar;
 	private JTextField txtMonth;
 	static int realYear, realMonth, realDay, currentYear, currentMonth;
+	private final Action action = new SwingAction();
 
 	/**
 	 * Launch the application.
@@ -168,8 +173,13 @@ public class CalendarProgram {
 		panel_2.setLayout(null);
 		
 		JButton btnAddNewEvent = new JButton("Add New Event");
-		btnAddNewEvent.setBounds(65, 6, 138, 29);
+		btnAddNewEvent.setBounds(6, 6, 124, 29);
 		panel_2.add(btnAddNewEvent);
+		
+		JButton button_2 = new JButton("Add New Event");
+		button_2.setAction(action);
+		button_2.setBounds(138, 6, 124, 29);
+		panel_2.add(button_2);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBounds(6, 55, 268, 280);
@@ -231,4 +241,17 @@ public class CalendarProgram {
 			return this;  
 		}
 	}
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "Log out");
+			putValue(SHORT_DESCRIPTION, "Closes the calendar window. You have to log in again");
+		}
+		public void actionPerformed(ActionEvent e) {
+			String name = "man";
+			System.exit(0);
+		}
+	}
+	
+	
+	
 }
