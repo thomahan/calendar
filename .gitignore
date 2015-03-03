@@ -10,6 +10,7 @@ bin/
 *.ear
 *.war
 *.jar
+*.zip
 
 !lib/mysql-connector-java-5.1.34-bin.jar
 
