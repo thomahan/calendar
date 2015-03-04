@@ -24,8 +24,8 @@ public class TestMain {
 //		ArrayList<User> brukere1 = new ArrayList<User>();
 //		brukere1.add(Helene);
 //		brukere1.add(Aksel);
-		Room rom1 = new Room("Zevs", 3, 5);
-		Room rom2 = new Room("Biblo", 6, 8);
+		Room rom1 = new Room(3, "Zevs", 5);
+		Room rom2 = new Room(6, "Biblo", 8);
 		
 		
 		Date startdato1 = new Date(2000, 7, 7, 11, 45);
