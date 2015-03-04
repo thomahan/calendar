@@ -4,7 +4,6 @@ import main.PasswordHash;
 import model.User;
 
 import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
@@ -17,7 +16,7 @@ public class UserTest {
 		String salt = PasswordHash.nextSalt();
 		String passwordHash = PasswordHash.hashPassword(salt, password);
 		
-		User user = new User(1, "Nils", "Nilsen", username, salt, passwordHash);
+		User user = new User(username, salt, passwordHash, "Nils", "Nilsen");
 		
 		assertTrue(user.isPasswordCorrect(password));
 		assertFalse(user.isPasswordCorrect(wrongPassword));
