@@ -1,25 +1,20 @@
 package model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-
-import db.Query;
-
 public class Room {
 	
-	
-	private String name;
-	private int size;
 	private final int id;
+	private String name;
+	private int seatCount;
 	
-	
-	
-	public Room(String name, int id, int size){
-		this.name = name;
+	public Room(int id, String name, int size){
 		this.id = id;
-		this.size = size;
+		this.name = name;
+		this.seatCount = size;
 		main.Controller.getRoomlist().add(this);
+	}
+		
+	public int getId(){
+		return id;
 	}
 	
 	public String getName(){
@@ -30,13 +25,8 @@ public class Room {
 		this.name = name;
 	}
 	
-	public int getSize(){
-		return size;
+	public int getSeatCount(){
+		return seatCount;
 	}
-	
-	public int getId(){
-		return id;
-	}
-	
 
 }
