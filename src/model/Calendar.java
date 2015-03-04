@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 
@@ -27,14 +28,25 @@ public class Calendar {
 	public boolean isValidEvent(CalendarEvent event){
 		if (events.contains(event)){ 
 			return false;
-		}  else {
-			return true;
-		}
+		}  else if(eventsOverlap(event)){
+			return false;
+		} return true;
 		
-		// Ufullstendig metode. Må korrigere for tid (sjekke om avtale eksisterer på det gitte tidspunkt fra før).
-		// For å se om brukeren har en event i det tidsrommet. 
+		
 	}
 	
+	// Returns true if events overlap
+	private boolean eventsOverlap(CalendarEvent newEvent){
+		Date start1 = newEvent.getStartDate();
+		Date end1 = newEvent.getEndDate();
+		Interval int1 = new Interval(start1, end1);
+		
+		for (CalendarEvent event : events){
+			if (int1.overlap(int1, new Interval(event.getStartDate(), event.getEndDate()))){
+				return true;
+			}
+		} return false;
+	}
 
 	
 	public void showMyEvents(){

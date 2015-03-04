@@ -49,12 +49,12 @@ public class CalendarEvent {
 		fireCalendarEventHasChanged();
 	}
 	
-	public long getStartDate(){
-		return startDate.getTime();
+	public Date getStartDate(){
+		return startDate;
 	}
 	
-	public long getEndDate(){
-		return endDate.getTime();
+	public Date getEndDate(){
+		return endDate;
 	}
 	
 	public void setStartDate(Date date){
