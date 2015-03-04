@@ -11,13 +11,15 @@ public class Room {
 	
 	private String name;
 	private int size;
-	// private final int id;
+	private final int id;
 	
 	
 	
-	public Room(String name){
+	public Room(String name, int id, int size){
 		this.name = name;
-		RoomList.addroom(this);
+		this.id = id;
+		this.size = size;
+		main.Controller.getRoomlist().add(this);
 	}
 	
 	public String getName(){
@@ -28,6 +30,13 @@ public class Room {
 		this.name = name;
 	}
 	
+	public int getSize(){
+		return size;
+	}
+	
+	public int getId(){
+		return id;
+	}
 	
 
 }

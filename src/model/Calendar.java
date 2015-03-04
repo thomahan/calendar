@@ -21,11 +21,11 @@ public class Calendar {
 	}
 	
 	public void removeEvent(CalendarEvent event){
-		events.remove(event); // Må fjernes fra databasen
+		events.remove(event); 
 	}
 	
 	public boolean isValidEvent(CalendarEvent event){
-		if (events.contains(event)){ // pluss sjekke databasen
+		if (events.contains(event)){ 
 			return false;
 		}  else {
 			return true;

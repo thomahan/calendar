@@ -12,7 +12,7 @@ public class CalendarEvent {
 	private String eventName, oldName;
 	private ArrayList<User> participants = new ArrayList<User>();
 	private ArrayList<User> eventListeners = new ArrayList<User>();
-	private String room;
+	private Room room;
 	private Date startDate; //Starttid for event
 	private Date endDate; //Sluttid for event
 	private String location;
@@ -67,11 +67,11 @@ public class CalendarEvent {
 		fireCalendarEventHasChanged();
 	}
 	
-	public String getRoom(){
+	public Room getRoom(){
 		return room;
 	}
 	
-	public void setRoom(String room){ // M� endres i databasen
+	public void setRoom(Room room){ // M� endres i databasen
 		this.room = room;
 		fireCalendarEventHasChanged();
 	}

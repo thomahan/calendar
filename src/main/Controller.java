@@ -2,7 +2,10 @@ package main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import model.Room;
+import model.RoomList;
 import model.User;
 import view.CalendarProgram;
 import view.LogIn;
@@ -14,6 +17,7 @@ public class Controller {
 	private CalendarProgram calendarView;
 	private NewUser registerView;
 	private User user;
+	private static ArrayList<Room> roomlist = new ArrayList<Room>();
 	
 	public Controller() {
 		openLoginView();
@@ -156,5 +160,17 @@ public class Controller {
 		calendarView.dispose();
 		calendarView = null;
 		user = null;
+	}
+	
+	public void addToRoomlist(Room room){
+		roomlist.add(room);
+	}
+	
+	public void removeFromRoomlist(Room room){
+		roomlist.remove(room);
+	}
+	
+	public static ArrayList<Room> getRoomlist(){
+		return roomlist;
 	}
 }
