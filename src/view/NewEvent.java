@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -12,10 +13,11 @@ import javax.swing.JTextField;
 public class NewEvent extends JFrame {
 
 	private final String FRAME_TITLE = "Create new appointment";
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField appointmentTitleField;
+	private JTextField startTimeField;
+	private JTextField endTimeField;
+	private JTextField locationField;
+	private JTextArea descriptionArea;
 	private JButton createButton;
 
 	/**
@@ -39,63 +41,63 @@ public class NewEvent extends JFrame {
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(6, 6, 118, 254);
-		panel.add(panel_1);
-		panel_1.setLayout(null);
+		JPanel labelPanel = new JPanel();
+		labelPanel.setBounds(6, 6, 118, 254);
+		panel.add(labelPanel);
+		labelPanel.setLayout(null);
 		
-		JLabel lblName = new JLabel("Name");
-		lblName.setBounds(6, 6, 61, 16);
-		panel_1.add(lblName);
+		JLabel lblTitle = new JLabel("Title");
+		lblTitle.setBounds(6, 6, 61, 16);
+		labelPanel.add(lblTitle);
 		
-		JLabel lblDate = new JLabel("Startdate");
+		JLabel lblDate = new JLabel("Start");
 		lblDate.setBounds(6, 51, 61, 16);
-		panel_1.add(lblDate);
+		labelPanel.add(lblDate);
 		
-		JLabel lblEnddate = new JLabel("Enddate");
+		JLabel lblEnddate = new JLabel("End");
 		lblEnddate.setBounds(6, 90, 61, 16);
-		panel_1.add(lblEnddate);
+		labelPanel.add(lblEnddate);
 		
-		JLabel lblRoom = new JLabel("Room");
-		lblRoom.setBounds(6, 131, 61, 16);
-		panel_1.add(lblRoom);
+		JLabel lblLocation = new JLabel("Location");
+		lblLocation.setBounds(6, 131, 61, 16);
+		labelPanel.add(lblLocation);
 		
-		JLabel lblDescriptions = new JLabel("Descriptions");
+		JLabel lblDescriptions = new JLabel("Description");
 		lblDescriptions.setBounds(6, 175, 93, 16);
-		panel_1.add(lblDescriptions);
+		labelPanel.add(lblDescriptions);
 		
 		createButton = new JButton("Create");
 		createButton.setBounds(6, 219, 117, 29);
-		panel_1.add(createButton);
+		labelPanel.add(createButton);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(136, 6, 296, 254);
-		panel.add(panel_2);
-		panel_2.setLayout(null);
+		JPanel inputPanel = new JPanel();
+		inputPanel.setBounds(136, 6, 296, 254);
+		panel.add(inputPanel);
+		inputPanel.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(6, 6, 134, 28);
-		panel_2.add(textField);
-		textField.setColumns(10);
+		appointmentTitleField = new JTextField();
+		appointmentTitleField.setBounds(6, 6, 134, 28);
+		inputPanel.add(appointmentTitleField);
+		appointmentTitleField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(6, 46, 134, 28);
-		panel_2.add(textField_1);
-		textField_1.setColumns(10);
+		startTimeField = new JTextField();
+		startTimeField.setBounds(6, 46, 134, 28);
+		inputPanel.add(startTimeField);
+		startTimeField.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(6, 86, 134, 28);
-		panel_2.add(textField_2);
-		textField_2.setColumns(10);
+		endTimeField = new JTextField();
+		endTimeField.setBounds(6, 86, 134, 28);
+		inputPanel.add(endTimeField);
+		endTimeField.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(6, 126, 134, 28);
-		panel_2.add(textField_3);
-		textField_3.setColumns(10);
+		locationField = new JTextField();
+		locationField.setBounds(6, 126, 134, 28);
+		inputPanel.add(locationField);
+		locationField.setColumns(10);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(6, 166, 284, 82);
-		panel_2.add(textArea);
+		descriptionArea = new JTextArea();
+		descriptionArea.setBounds(6, 166, 284, 82);
+		inputPanel.add(descriptionArea);
 
 		this.setVisible(true);
 	}
@@ -103,6 +105,42 @@ public class NewEvent extends JFrame {
 			
 	public void addCreateButtonListener(ActionListener createButtonListener) {
 		createButton.addActionListener(createButtonListener);
+	}
+
+	public String getStartTime() {
+		return startTimeField.getText();
+	}
+
+	public String getEndTime() {
+		return endTimeField.getText();
+	}
+
+	public String getAlarmTime() {
+		return "";//alarmTimeField.getText();
+	}
+			
+	public String getAppointmentTitle() {
+		return appointmentTitleField.getText();
+	}
+
+	public String getDescription() {
+		return descriptionArea.getText();
+	}
+
+	public String getAppointmentLocation() {
+		return locationField.getText();
+	}
+	
+	public int getRoomId() {
+		return 0;
+	}
+	
+	public void displayErrorMessage(String errorMessage) {
+		JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
+	public void displayAppointmentCreationMessage(String title) {
+		JOptionPane.showMessageDialog(this, "Appointment '"+title+"' created.", "Appointment creation successful!", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 }
