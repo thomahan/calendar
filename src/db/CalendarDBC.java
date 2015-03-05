@@ -1,17 +1,12 @@
 package db;
 
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.Date;
 
-import model.Calendar;
 import model.CalendarEvent;
-import model.User;
 
 public class CalendarDBC {
-	
+/*	
 	public static  getCalendarEvent(int appointmentId, String username) {
 		CalendarEvent calendarEvent = null;
 
@@ -97,21 +92,41 @@ public class CalendarDBC {
 
 		return calendarEventList;
 	}
+*/
+	/**
+	 * Adds an appointment to the database
+	 * @param startTime
+	 * @param endTime
+	 * @param alarmTime
+	 * @param description
+	 * @param location
+	 * @param username
+	 * @param roomId
+	 */
+	public static void addEvent(Date startTimeDate, Date endTimeDate, Date alarmTimeDate, String description, String location, String username, int roomId){
+		Timestamp startTime = new Timestamp(startTimeDate.getTime());
+		Timestamp endTime = new Timestamp(endTimeDate.getTime());
+		Timestamp alarmTime = new Timestamp(alarmTimeDate.getTime());
 
-	public static void addEvent(String username, CalendarEvent event){
-		
-		
-		
+		DBConnector.makeStatement(""
+			+ "INSERT INTO appointment (start_time, end_time, alarm_time, description, location, creator, room_id) "
+			+ "VALUES ('"+startTime+"', "
+					 +"'"+endTime+"', "
+					 +"'"+alarmTime+"', "
+					 +"'"+description+"', "
+					 +"'"+location+"', "
+					 +"'"+username+"', "
+					 +"'"+roomId+"');");
 	}
 	
 	public static void removeEvent(String username, CalendarEvent event){
 		
 		
 	}
-	
+/*	
 	public static Calendar getCalendar(String username){
 		
 	}
-	
+*/	
 	
 }
