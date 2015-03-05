@@ -1,11 +1,9 @@
 package db;
 
 import db.UserDBC;
-import main.PasswordHash;
 import model.User;
 
 import org.junit.Test;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -15,7 +13,7 @@ public class UserDBCTest {
 		String username = "user1";
 		
 		User user = UserDBC.getUser(username);
-		System.out.println(user.getEmployeeID()+user.getName()+user.getUsername()+user.getSalt()+user.getHashResult());
+		System.out.println(user.getName()+user.getUsername()+user.getSalt()+user.getHashResult());
 		
 		assertEquals(username, user.getUsername());
 		assertNotNull(user.getSalt());
