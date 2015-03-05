@@ -30,12 +30,20 @@ import view.CalendarWindow.tblCalendarRenderer;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.TextArea;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+
+import model.CalendarEvent;
 
 public class CalendarProgram extends JFrame {
 	private final String FRAME_TITLE = "Calendar Program";
@@ -44,8 +52,13 @@ public class CalendarProgram extends JFrame {
 	private static JTable table;
 	private static DefaultTableModel mtblCalendar;
 	private JScrollPane stblCalendar;
-	private JTextField txtMonth;
 	private JButton logoutButton;
+	private static JComboBox comboBox;
+	private static JLabel lblNewLabel;
+	private final Action action = new SwingAction();
+	private final Action action_1 = new SwingAction_1();
+	private static MouseListener mouseListener;
+	private static ArrayList<CalendarEvent> events;
 
 	/**
 	 * Launch the application.
@@ -77,21 +90,13 @@ public class CalendarProgram extends JFrame {
 		panel.add(panel_4);
 		panel_4.setLayout(null);
 		
-		txtMonth = new JTextField();
-		txtMonth.setText("Month");
-		txtMonth.setBounds(6, 6, 94, 28);
-		panel_4.add(txtMonth);
-		txtMonth.setColumns(10);
-		
-		JSpinner spinner = new JSpinner();
-		spinner.setBounds(226, 6, 37, 28);
-		panel_4.add(spinner);
-		
 		JButton button = new JButton("<<");
+		button.setAction(action_1);
 		button.setBounds(112, 7, 45, 29);
 		panel_4.add(button);
 		
 		JButton button_1 = new JButton(">>");
+		button_1.setAction(action);
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -99,13 +104,20 @@ public class CalendarProgram extends JFrame {
 		button_1.setBounds(150, 7, 45, 29);
 		panel_4.add(button_1);
 		
+		comboBox = new JComboBox();
+		comboBox.setBounds(195, 8, 83, 27);
+		panel_4.add(comboBox);
+		
+		lblNewLabel = new JLabel("Month");
+		lblNewLabel.setBounds(6, 12, 106, 16);
+		panel_4.add(lblNewLabel);
+		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBounds(6, 55, 284, 280);
 		panel.add(panel_5);
 		panel_5.setLayout(null);
 		
 		table = new JTable(mtblCalendar);
-//		table.setBounds(6, 6, 272, 193);
 		stblCalendar = new JScrollPane(table);
 		panel_5.add(stblCalendar);
 		stblCalendar.setBounds(6,6,272,268);
@@ -145,6 +157,10 @@ public class CalendarProgram extends JFrame {
 		currentMonth = realMonth;
 		currentYear = realYear;		
 		
+		//Populate JComboBox with a selection of years
+		for (int i=realYear-10; i<=realYear+10; i++)
+			comboBox.addItem(String.valueOf(i));
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(314, 6, 280, 341);
 		this.getContentPane().add(panel_1);
@@ -172,9 +188,15 @@ public class CalendarProgram extends JFrame {
 		textArea.setEditable(false);
 		textArea.setBounds(10, 10, 248, 260);
 		panel_3.add(textArea);
+
+		//Add mouse listener
+		table.addMouseListener(new MouseHandler());
 		
 		//Refresh calendar
 		refreshCalendar(realMonth, realYear); //Refresh calendar
+		
+		
+		comboBox.addActionListener(new cmbYear_Action());
 		
 		this.setVisible(true);
 	}
@@ -184,6 +206,10 @@ public class CalendarProgram extends JFrame {
 		String[] months =  {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 		int nod, som; //Number Of Days, Start Of Month
 	
+		//Allow/disallow buttons
+		comboBox.setSelectedItem(String.valueOf(year)); //Select the correct year in the combo box
+		lblNewLabel.setText(months[month]); //Refresh the month label at the top
+		
 		//Clear table
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 7; j++)
@@ -201,32 +227,126 @@ public class CalendarProgram extends JFrame {
 			int column  =  (i+som-2)%7;
 			mtblCalendar.setValueAt(i, row, column);
 		}		
-		//Apply renderers: If so: create a tblCalendarRenderer-class which extends DefaultTableCellRenderer
-				table.setDefaultRenderer(table.getColumnClass(0), new tblCalendarRenderer());
+//		//Apply renderers: If so: create a tblCalendarRenderer-class which extends DefaultTableCellRenderer
+//				table.setDefaultRenderer(table.getColumnClass(0), new tblCalendarRenderer());
+//	}
+//	
+//	static class tblCalendarRenderer extends DefaultTableCellRenderer{
+//		public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column){
+//			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+//			if (column == 5 || column == 6){ //Week-end
+//				setBackground(new Color(255, 220, 220));
+//			}
+//			else{ //Week
+//				setBackground(new Color(255, 255, 255));
+//			}
+//			if (value != null){
+//				if (Integer.parseInt(value.toString()) == realDay && currentMonth == realMonth && currentYear == realYear){ //Today
+//					setBackground(new Color(220, 220, 255));
+//				}
+//			}
+//			setBorder(null);
+//			setForeground(Color.black);
+//			return this;  
+//		}
 	}
+
 	
-	static class tblCalendarRenderer extends DefaultTableCellRenderer{
-		public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column){
-			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
-			if (column == 5 || column == 6){ //Week-end
-				setBackground(new Color(255, 220, 220));
-			}
-			else{ //Week
-				setBackground(new Color(255, 255, 255));
-			}
-			if (value != null){
-				if (Integer.parseInt(value.toString()) == realDay && currentMonth == realMonth && currentYear == realYear){ //Today
-					setBackground(new Color(220, 220, 255));
-				}
-			}
-			setBorder(null);
-			setForeground(Color.black);
-			return this;  
-		}
-	}
-		
 	public void addLogoutButtonListener(ActionListener listenerForLogoutButton) {
 		logoutButton.addActionListener(listenerForLogoutButton);
+	}
+	
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, ">>");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+			if (currentMonth == 11) {
+				currentMonth = 0;
+				currentYear += 1;
+			}else {
+				currentMonth += 1;
+			}
+			refreshCalendar(currentMonth, currentYear);
+		}
+
+	}
+	private class SwingAction_1 extends AbstractAction {
+		public SwingAction_1() {
+			putValue(NAME, "<<");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+			if (currentMonth == 0){
+				currentMonth = 11;
+				currentYear -= 1;
+			}else{
+				currentMonth -= 1;
+			}
+			refreshCalendar(currentMonth, currentYear);
+		}
+	}
+	
+	private class cmbYear_Action implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (comboBox.getSelectedItem() != null){
+				String b = comboBox.getSelectedItem().toString();
+				currentYear = Integer.parseInt(b);
+				refreshCalendar(currentMonth, currentYear);
+			}
+		}	
+	}
+	
+	
+	private class MouseHandler implements MouseListener {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			int row = table.rowAtPoint(e.getPoint());
+		    int col = table.columnAtPoint(e.getPoint());
+			refreshEventWindow(getDate(row,col));
+			
+		}
+		
+		@SuppressWarnings("deprecation")
+		private Date getDate(int row, int col) {
+			int day = (Integer) table.getModel().getValueAt(row, col);
+			Date clickedDay = new Date(currentYear - 1900, currentMonth, day);
+			return clickedDay;
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	public static void refreshEventWindow(Date date){
+		System.out.println(date.toString());
+		events = new ArrayList<CalendarEvent>();
+			
 	}
 	
 }
