@@ -2,7 +2,11 @@ package main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import model.Room;
 import model.User;
@@ -10,9 +14,13 @@ import view.CalendarProgram;
 import view.LogIn;
 import view.NewEvent;
 import view.NewUser;
+import db.AppointmentDBC;
 import db.UserDBC;
 
 public class Controller {
+	private static final String DATE_FORMAT = "yyyy-MM-dd";
+	private DateFormat simpleDateFormat;
+
 	private LogIn loginView;
 	private NewUser registrationView;
 	private CalendarProgram calendarView;
@@ -21,8 +29,10 @@ public class Controller {
 	private User user;
 	private static ArrayList<Room> roomlist = new ArrayList<Room>();
 	
+
 	public Controller() {
 		openLoginView();
+		simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
 	}
 	
 	class LoginListener implements ActionListener {
@@ -127,7 +137,45 @@ public class Controller {
 	class CreateAppointmentListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			closeAppointmentCreationView();
+			try {
+				String startTime = appointmentCreationView.getStartTime();
+				String endTime = appointmentCreationView.getEndTime();
+				String alarmTime = appointmentCreationView.getAlarmTime();
+				String title = appointmentCreationView.getAppointmentTitle();
+				String description = appointmentCreationView.getDescription();
+				String location = appointmentCreationView.getAppointmentLocation();
+				int roomId = appointmentCreationView.getRoomId();
+
+				Date startTimeDate = simpleDateFormat.parse(startTime);
+				Date endTimeDate = simpleDateFormat.parse(endTime);
+				Date alarmTimeDate;
+				if (alarmTime.length() > 0) {
+					alarmTimeDate = simpleDateFormat.parse(alarmTime);
+				} else {
+					alarmTimeDate = null;
+				}
+				
+				if (title.length() <= 0) {
+					throw new Exception("Title must be specified.");
+				} else if (startTime == null) {
+					throw new Exception("Start time must be specified.");
+				} else if (endTime == null) {
+					throw new Exception("End time must be specified.");
+				}
+				
+				location = location.length() > 0 ? location : null;
+				description = description.length() > 0 ? description : null;
+
+				int appointmentId = AppointmentDBC.addAppointment(startTimeDate, endTimeDate, alarmTimeDate, title, description, location, user.getUsername(), roomId);
+				AppointmentDBC.addInvitation(appointmentId, user.getUsername(), "ACCEPTED");
+
+				appointmentCreationView.displayAppointmentCreationMessage(title);
+
+				closeAppointmentCreationView();
+			} catch (Exception e) {
+				e.printStackTrace();
+				appointmentCreationView.displayErrorMessage(e.getMessage());
+			}
 		}
 	}
 
@@ -136,13 +184,11 @@ public class Controller {
 		loginView.addLoginButtonListener(new LoginListener());
 		loginView.addRegisterButtonListener(new OpenRegistrationListener());
 	}
-
 	
 	private void closeLoginView() {
 		loginView.dispose();
 		loginView = null;
 	}
-	
 	
 	private void openRegisterView() {
 		registrationView = new NewUser();
