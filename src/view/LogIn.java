@@ -74,6 +74,14 @@ public class LogIn extends JFrame {
 		this.setVisible(true);
 	}
 		
+	public void addLoginButtonListener(ActionListener loginButtonListener) {
+		loginButton.addActionListener(loginButtonListener);
+	}
+	
+	public void addRegisterButtonListener(ActionListener registerButtonListener) {
+		registerButton.addActionListener(registerButtonListener);
+	}
+		
 	public String getUsername() {
 		return usernameField.getText();
 	}
@@ -85,15 +93,7 @@ public class LogIn extends JFrame {
 		}
 		return password;
 	}
-	
-	public void addLoginListener(ActionListener listenerForLoginButton) {
-		loginButton.addActionListener(listenerForLoginButton);
-	}
-	
-	public void addRegisterButtonListener(ActionListener listenerForRegisterButton) {
-		registerButton.addActionListener(listenerForRegisterButton);
-	}
-	
+
 	public void displayLoginMessage(String name) {
 		JOptionPane.showMessageDialog(this, "Logged in as "+name+".", "Login successful!", JOptionPane.INFORMATION_MESSAGE);
 	}
