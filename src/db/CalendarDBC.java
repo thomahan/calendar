@@ -1,5 +1,7 @@
 package db;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -103,20 +105,52 @@ public class CalendarDBC {
 	 * @param username
 	 * @param roomId
 	 */
-	public static void addEvent(Date startTimeDate, Date endTimeDate, Date alarmTimeDate, String description, String location, String username, int roomId){
+	public static int addEvent(Date startTimeDate, Date endTimeDate, Date alarmTimeDate, String description, String location, String username, int roomId){
 		Timestamp startTime = new Timestamp(startTimeDate.getTime());
 		Timestamp endTime = new Timestamp(endTimeDate.getTime());
-		Timestamp alarmTime = new Timestamp(alarmTimeDate.getTime());
-
+	
 		DBConnector.makeStatement(""
-			+ "INSERT INTO appointment (start_time, end_time, alarm_time, description, location, creator, room_id) "
+			+ "INSERT INTO appointment (start_time, end_time, description, creator) "
 			+ "VALUES ('"+startTime+"', "
 					 +"'"+endTime+"', "
-					 +"'"+alarmTime+"', "
 					 +"'"+description+"', "
-					 +"'"+location+"', "
-					 +"'"+username+"', "
-					 +"'"+roomId+"');");
+					 +"'"+username+"');");
+
+		// The following way of referring back to the appointment is unreliable.
+		// Code should be refactored with prepared statements to get the auto incremented value.
+		Query query = null;
+		int appointmentId = 0;
+		try {
+			query = DBConnector.makeQuery("SELECT id FROM appointment WHERE id = (SELECT MAX(id) FROM appointment WHERE creator ='"+username+"');");
+			ResultSet res = query.getResult();
+			if (res.next()) {
+				appointmentId = res.getInt("id");
+				System.out.print(appointmentId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+
+		if (alarmTimeDate != null) {
+			Timestamp alarmTime = new Timestamp(alarmTimeDate.getTime());
+			DBConnector.makeStatement(""
+					+ "UPDATE appointment SET alarm_time = '"+alarmTime+"' "
+							+ "WHERE id = '"+appointmentId+"';");
+		}
+		if (location != null) {
+			DBConnector.makeStatement(""
+					+ "UPDATE appointment SET location = '"+location+"' "
+							+ "WHERE id = '"+appointmentId+"';");
+		}
+		if (roomId != 0) {
+			DBConnector.makeStatement(""
+					+ "UPDATE appointment SET room_id = '"+roomId+"' "
+							+ "WHERE id = '"+appointmentId+"';");
+		}
+		
+		return appointmentId;
 	}
 	
 	public static void removeEvent(String username, CalendarEvent event){
@@ -128,5 +162,13 @@ public class CalendarDBC {
 		
 	}
 */	
+	
+	public void addInvitation(int appointmentId, String username, String status) {
+		DBConnector.makeStatement(""
+			+ "INSERT INTO appointment_invitation (appointment_id, username, status) "
+			+ "VALUES ('"+appointmentId+"', "
+					 +"'"+username+"', "
+					 +"'"+status+"');");
+	}
 	
 }
