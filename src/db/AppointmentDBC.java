@@ -105,15 +105,15 @@ public class AppointmentDBC {
 	 * @param username
 	 * @param roomId
 	 */
-	public static int addAppointment(Date startTimeDate, Date endTimeDate, Date alarmTimeDate, String description, String location, String username, int roomId){
+	public static int addAppointment(Date startTimeDate, Date endTimeDate, Date alarmTimeDate, String title, String description, String location, String username, int roomId){
 		Timestamp startTime = new Timestamp(startTimeDate.getTime());
 		Timestamp endTime = new Timestamp(endTimeDate.getTime());
 	
 		DBConnector.makeStatement(""
-			+ "INSERT INTO appointment (start_time, end_time, description, creator) "
+			+ "INSERT INTO appointment (start_time, end_time, title, creator) "
 			+ "VALUES ('"+startTime+"', "
 					 +"'"+endTime+"', "
-					 +"'"+description+"', "
+					 +"'"+title+"', "
 					 +"'"+username+"');");
 
 		// The following way of referring back to the appointment is unreliable.
@@ -137,6 +137,11 @@ public class AppointmentDBC {
 			Timestamp alarmTime = new Timestamp(alarmTimeDate.getTime());
 			DBConnector.makeStatement(""
 					+ "UPDATE appointment SET alarm_time = '"+alarmTime+"' "
+							+ "WHERE id = '"+appointmentId+"';");
+		}
+		if (description != null) {
+			DBConnector.makeStatement(""
+					+ "UPDATE appointment SET description = '"+description+"' "
 							+ "WHERE id = '"+appointmentId+"';");
 		}
 		if (location != null) {
