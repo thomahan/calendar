@@ -8,13 +8,16 @@ import model.Room;
 import model.User;
 import view.CalendarProgram;
 import view.LogIn;
+import view.NewEvent;
 import view.NewUser;
 import db.UserDBC;
 
 public class Controller {
 	private LogIn loginView;
-	private CalendarProgram calendarView;
 	private NewUser registerView;
+	private CalendarProgram calendarView;
+	private NewEvent createAppointmentView;
+
 	private User user;
 	private static ArrayList<Room> roomlist = new ArrayList<Room>();
 	
@@ -25,12 +28,9 @@ public class Controller {
 	class LoginListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			String username;
-			String password;
-			
 			try {
-				username = loginView.getUsername();
-				password = loginView.getPassword();
+				String username = loginView.getUsername();
+				String password = loginView.getPassword();
 				
 				if (username.length() <= 0) {
 					throw new Exception("Username must be specified.");
@@ -53,12 +53,10 @@ public class Controller {
 				user = null;
 				loginView.displayErrorMessage(e.getMessage());
 			}
-
 		}
-		
 	}
 
-	class RegisterButtonListener implements ActionListener {
+	class OpenRegistrationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			closeLoginView();
@@ -69,19 +67,12 @@ public class Controller {
 	class RegisterListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			String username;
-			String firstName;
-			String lastName;
-			String password;
-			String passwordConfirm;
-			User user;
-
 			try{
-				username = registerView.getUsername();
-				firstName = registerView.getFirstName();
-				lastName = registerView.getLastName();
-				password = registerView.getPassword();
-				passwordConfirm = registerView.getPasswordConfirm();
+				String username = registerView.getUsername();
+				String firstName = registerView.getFirstName();
+				String lastName = registerView.getLastName();
+				String password = registerView.getPassword();
+				String passwordConfirm = registerView.getPasswordConfirm();
 
 				if (username.length() <= 0) {
 					throw new Exception("Username must be specified.");
@@ -110,7 +101,7 @@ public class Controller {
 		
 	}
 
-	class CancelButtonListener implements ActionListener {
+	class CancelRegistrationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			closeRegisterView();
@@ -118,18 +109,32 @@ public class Controller {
 		}
 	}
 
-	class LogoutButtonListener implements ActionListener {
+	class LogoutListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			closeCalendarView();
 			openLoginView();
 		}
 	}
+	
+	class OpenAppointmentCreationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			openNewAppointmentView();
+		}
+	}
+	
+	class CreateAppointmentListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			closeNewAppointmentView();
+		}
+	}
 
 	private void openLoginView() {
-		this.loginView = new LogIn();
-		this.loginView.addLoginListener(new LoginListener());
-		this.loginView.addRegisterButtonListener(new RegisterButtonListener());
+		loginView = new LogIn();
+		loginView.addLoginButtonListener(new LoginListener());
+		loginView.addRegisterButtonListener(new OpenRegistrationListener());
 	}
 
 	
@@ -140,9 +145,9 @@ public class Controller {
 	
 	
 	private void openRegisterView() {
-		this.registerView = new NewUser();
-		this.registerView.addRegisterListener(new RegisterListener());
-		this.registerView.addCancelButtonListener(new CancelButtonListener());
+		registerView = new NewUser();
+		registerView.addRegisterListener(new RegisterListener());
+		registerView.addCancelButtonListener(new CancelRegistrationListener());
 	}
 
 	private void closeRegisterView() {
@@ -152,7 +157,7 @@ public class Controller {
 	
 	private void openCalendarView() {
 		calendarView = new CalendarProgram();
-		this.calendarView.addLogoutButtonListener(new LogoutButtonListener());
+		calendarView.addLogoutButtonListener(new LogoutListener());
 	}
 	
 	private void closeCalendarView() {
@@ -161,6 +166,17 @@ public class Controller {
 		user = null;
 	}
 	
+	private void openNewAppointmentView() {
+		createAppointmentView = new NewEvent();
+		createAppointmentView.addCreateButtonListener(new CreateAppointmentListener());
+	}
+		
+	private void closeNewAppointmentView() {
+		createAppointmentView.dispose();
+		calendarView = null;
+		user = null;
+	}
+
 	public void addToRoomlist(Room room){
 		roomlist.add(room);
 	}
