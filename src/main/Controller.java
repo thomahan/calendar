@@ -14,9 +14,9 @@ import db.UserDBC;
 
 public class Controller {
 	private LogIn loginView;
-	private NewUser registerView;
+	private NewUser registrationView;
 	private CalendarProgram calendarView;
-	private NewEvent createAppointmentView;
+	private NewEvent appointmentCreationView;
 
 	private User user;
 	private static ArrayList<Room> roomlist = new ArrayList<Room>();
@@ -68,11 +68,11 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			try{
-				String username = registerView.getUsername();
-				String firstName = registerView.getFirstName();
-				String lastName = registerView.getLastName();
-				String password = registerView.getPassword();
-				String passwordConfirm = registerView.getPasswordConfirm();
+				String username = registrationView.getUsername();
+				String firstName = registrationView.getFirstName();
+				String lastName = registrationView.getLastName();
+				String password = registrationView.getPassword();
+				String passwordConfirm = registrationView.getPasswordConfirm();
 
 				if (username.length() <= 0) {
 					throw new Exception("Username must be specified.");
@@ -87,14 +87,14 @@ public class Controller {
 				user = new User(firstName, lastName, username, password);
 				UserDBC.addUser(user);
 
-				registerView.displayRegisterMessage(username);
+				registrationView.displayRegisterMessage(username);
 
 				closeRegisterView();
 				openLoginView();
 
 			} catch (Exception e){
 				user = null;
-				registerView.displayErrorMessage(e.getMessage());
+				registrationView.displayErrorMessage(e.getMessage());
 			}
 
 		}
@@ -120,14 +120,14 @@ public class Controller {
 	class OpenAppointmentCreationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			openNewAppointmentView();
+			openAppointmentCreationView();
 		}
 	}
 	
 	class CreateAppointmentListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			closeNewAppointmentView();
+			closeAppointmentCreationView();
 		}
 	}
 
@@ -145,36 +145,39 @@ public class Controller {
 	
 	
 	private void openRegisterView() {
-		registerView = new NewUser();
-		registerView.addRegisterListener(new RegisterListener());
-		registerView.addCancelButtonListener(new CancelRegistrationListener());
+		registrationView = new NewUser();
+		registrationView.addRegisterListener(new RegisterListener());
+		registrationView.addCancelButtonListener(new CancelRegistrationListener());
 	}
 
 	private void closeRegisterView() {
-		registerView.dispose();
-		registerView = null;
+		registrationView.dispose();
+		registrationView = null;
 	}
 	
 	private void openCalendarView() {
 		calendarView = new CalendarProgram();
+		calendarView.addNewAppointmentButtonListener(new OpenAppointmentCreationListener());
 		calendarView.addLogoutButtonListener(new LogoutListener());
 	}
 	
 	private void closeCalendarView() {
 		calendarView.dispose();
 		calendarView = null;
+		if (appointmentCreationView != null) {
+			closeAppointmentCreationView();
+		}
 		user = null;
 	}
 	
-	private void openNewAppointmentView() {
-		createAppointmentView = new NewEvent();
-		createAppointmentView.addCreateButtonListener(new CreateAppointmentListener());
+	private void openAppointmentCreationView() {
+		appointmentCreationView = new NewEvent();
+		appointmentCreationView.addCreateButtonListener(new CreateAppointmentListener());
 	}
 		
-	private void closeNewAppointmentView() {
-		createAppointmentView.dispose();
-		calendarView = null;
-		user = null;
+	private void closeAppointmentCreationView() {
+		appointmentCreationView.dispose();
+		appointmentCreationView = null;
 	}
 
 	public void addToRoomlist(Room room){

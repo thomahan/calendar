@@ -1,62 +1,42 @@
 package view;
 
-import java.awt.EventQueue;
+import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import java.awt.GridLayout;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import javax.swing.JButton;
-import javax.swing.AbstractAction;
-import java.awt.event.ActionEvent;
-import javax.swing.Action;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
-public class NewEvent {
+public class NewEvent extends JFrame {
 
-	private JFrame frame;
+	private final String FRAME_TITLE = "Create new appointment";
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	private final Action action = new SwingAction();
+	private JButton createButton;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					NewEvent window = new NewEvent();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		NewEvent window = new NewEvent();
 	}
 
 	/**
 	 * Create the application.
 	 */
 	public NewEvent() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		this.setTitle(FRAME_TITLE);
+		this.setBounds(100, 100, 450, 300);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(6, 6, 438, 266);
-		frame.getContentPane().add(panel);
+		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
@@ -84,10 +64,9 @@ public class NewEvent {
 		lblDescriptions.setBounds(6, 175, 93, 16);
 		panel_1.add(lblDescriptions);
 		
-		JButton btnConfirm = new JButton("Confirm");
-		btnConfirm.setAction(action);
-		btnConfirm.setBounds(6, 219, 117, 29);
-		panel_1.add(btnConfirm);
+		createButton = new JButton("Create");
+		createButton.setBounds(6, 219, 117, 29);
+		panel_1.add(createButton);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(136, 6, 296, 254);
@@ -117,13 +96,13 @@ public class NewEvent {
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(6, 166, 284, 82);
 		panel_2.add(textArea);
+
+		this.setVisible(true);
 	}
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "Confirm");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-		}
+	
+			
+	public void addCreateButtonListener(ActionListener createButtonListener) {
+		createButton.addActionListener(createButtonListener);
 	}
+
 }
