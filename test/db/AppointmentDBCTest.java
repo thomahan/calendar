@@ -3,7 +3,7 @@ package db;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
-public class CalendarDBCTest {
+public class AppointmentDBCTest {
 	@SuppressWarnings("deprecation")
 	
 /*
@@ -23,6 +23,6 @@ public class CalendarDBCTest {
 	
 	@Test
 	public void addInvitationShouldInviteUserToAppointment() {
-		CalendarDBC.addInvitation(11, "user1", null);
+		AppointmentDBC.addInvitation(11, "user1", null);
 	}
 }

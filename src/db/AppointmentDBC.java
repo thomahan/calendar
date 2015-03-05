@@ -7,9 +7,9 @@ import java.util.Date;
 
 import model.CalendarEvent;
 
-public class CalendarDBC {
+public class AppointmentDBC {
 /*	
-	public static  getCalendarEvent(int appointmentId, String username) {
+	public static  getAppointment(int appointmentId, String username) {
 		CalendarEvent calendarEvent = null;
 
 		Query query = DBConnector.makeQuery(""
@@ -52,7 +52,7 @@ public class CalendarDBC {
 	}
 	
 	
-	public ArrayList<CalendarEvent> getAllCalendarEvents(String username) {
+	public ArrayList<CalendarEvent> getAllAppointments(String username) {
 		ArrayList<CalendarEvent> calendarEventList =  new ArrayList<CalendarEvent>();
 
 		Query query = DBConnector.makeQuery(""
@@ -105,7 +105,7 @@ public class CalendarDBC {
 	 * @param username
 	 * @param roomId
 	 */
-	public static int addEvent(Date startTimeDate, Date endTimeDate, Date alarmTimeDate, String description, String location, String username, int roomId){
+	public static int addAppointment(Date startTimeDate, Date endTimeDate, Date alarmTimeDate, String description, String location, String username, int roomId){
 		Timestamp startTime = new Timestamp(startTimeDate.getTime());
 		Timestamp endTime = new Timestamp(endTimeDate.getTime());
 	
