@@ -1,8 +1,7 @@
 package db;
 
-import java.util.Date;
-
 import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 public class CalendarDBCTest {
 	@SuppressWarnings("deprecation")
@@ -21,4 +20,9 @@ public class CalendarDBCTest {
 		CalendarDBC.addEvent(startTime, endTime, alarmTime, description, location, username, roomId);
 	}
 */
+	
+	@Test
+	public void addInvitationShouldInviteUserToAppointment() {
+		CalendarDBC.addInvitation(11, "user1", null);
+	}
 }
