@@ -12,9 +12,9 @@ public class TestMain {
 		
 		
 		User Adrian = new User("Adrian", "Isdahl", "adrianti", "ntnu");
-		User Adrian1 = new User("Adrian", "Isdahl", "adrianti", "ntnu");
-		User Adrian2 = new User("Adrian", "Isdahl", "adrianti", "ntnu");
-		User Adrian3 = new User("Adrian", "Isdahl", "adrianti", "ntnu");
+		User Adrian1 = new User("Adrian1", "Isdahl", "adrianti", "ntnu");
+		User Adrian2 = new User("Adrian2", "Isdahl", "adrianti", "ntnu");
+		User Adrian3 = new User("Adrian3", "Isdahl", "adrianti", "ntnu");
 		
 		ArrayList<User> brukere = new ArrayList<User>();
 		brukere.add(Adrian);
@@ -29,17 +29,21 @@ public class TestMain {
 		
 		
 		Date startdato1 = new Date(2000, 7, 7, 11, 45);
-		Date sluttdato1 = new Date(2000, 7, 7, 12, 11);
+		Date sluttdato1 = new Date(2000, 7, 7, 11, 50);
 		Interval interval1 = new Interval(startdato1, sluttdato1);
-		Date startdato2 = new Date(2000, 7, 7, 10, 15);
-		Date sluttdato2 = new Date(2000, 7, 7, 11, 44);
+		Date startdato2 = new Date(2000, 7, 7, 11, 51);
+		Date sluttdato2 = new Date(2000, 7, 7, 11, 52);
 		Interval interval2 = new Interval(startdato2, sluttdato2);
+		
+//		interval1.overlap(interval2);
+//		
 		CalendarEvent tivoli = new CalendarEvent("Tivoli", startdato1, Adrian, sluttdato1, "Skolen", 5, "Lekser");
 		CalendarEvent tivoli1 = new CalendarEvent("Lanparty", startdato2, Adrian, sluttdato2, "Tyholt", 8, "Lekser");
 		tivoli.setRoom(rom1);
 		tivoli1.setRoom(rom2);
 		
-		Adrian.getCalendar().showMyEvents();
+		tivoli.addParticipant(Adrian1);
+		Adrian.getCalendar().showEventsOnADay(startdato1);
 		
 		
 		

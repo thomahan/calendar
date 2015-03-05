@@ -54,6 +54,7 @@ public class CalendarEvent {
 		return endDate;
 	}
 	
+
 	public Date getAlarmDate() {
 		return alarmDate;
 	}
@@ -61,6 +62,12 @@ public class CalendarEvent {
 	public void setAlarmDate(Date alarmDate) {
 		this.alarmDate = alarmDate;
 	}
+
+
+	public ArrayList<User> getParticipants(){
+		return participants;
+	}
+	
 
 	public void setStartDate(Date date){
 		this.startDate.setTime(date.getTime()); //M� endres i databasen

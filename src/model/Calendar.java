@@ -42,7 +42,7 @@ public class Calendar {
 		Interval int1 = new Interval(start1, end1);
 		
 		for (CalendarEvent event : events){
-			if (int1.overlap(int1, new Interval(event.getStartDate(), event.getEndDate()))){
+			if (int1.overlap(new Interval(event.getStartDate(), event.getEndDate()))){
 				return true;
 			}
 		} return false;
@@ -52,10 +52,29 @@ public class Calendar {
 	public void showMyEvents(){
 		for (CalendarEvent event: events){
 			System.out.println("Event name: " + event.getEventName() + ", Starting: " + event.getStartDate() + ", Ending: " + event.getEndDate() + ", Room: " + event.getRoom().getName());
-			
 		}
 	}
 	
+	public void showEventsOnADay(Date date) {
+
+		for (CalendarEvent event : events) {
+			if ((event.getStartDate().getYear() == date.getYear())
+					&& (event.getStartDate().getMonth() == date.getMonth())
+					&& (event.getStartDate().getDay() == date.getDay())) {
+				System.out.println("Event name: " + event.getEventName()
+						+ "\nStart: " + event.getStartDate().getHours() + ":"
+						+ event.getStartDate().getMinutes() + "\nEnd: "
+						+ event.getEndDate().getHours() + ":"
+						+ event.getEndDate().getMinutes() + "\nRoom: "
+						+ event.getRoom().getName() + "\nLocation: "
+						+ event.getLocation() + "\nDescription: " + event.getDescription());
+				for (User user : event.getParticipants()){
+					System.out.print(user.getFirstName() + " " + user.getLastName() + ", ");
+					
+				} System.out.println("\n");
+			} 
+		}
+	}
 	
 	
 	
