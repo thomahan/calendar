@@ -153,22 +153,29 @@ public class CalendarDBC {
 		return appointmentId;
 	}
 	
+	/**
+	 * Adds an invitation to the database between a user and an appointment
+	 * @param appointmentId
+	 * @param username
+	 * @param status
+	 */
+	public static void addInvitation(int appointmentId, String username, String status) {
+		if (status != null) {
+			DBConnector.makeStatement(""
+					+ "INSERT INTO appointment_invitation (appointment_id, username, status) "
+					+ "VALUES ('"+appointmentId+"', "
+					 		+"'"+username+"', "
+					 		+"'"+status+"');");
+		} else {
+			DBConnector.makeStatement(""
+					+ "INSERT INTO appointment_invitation (appointment_id, username) "
+					+ "VALUES ('"+appointmentId+"', "
+					 		+"'"+username+"');");
+		}
+	}
+		
 	public static void removeEvent(String username, CalendarEvent event){
 		
 		
 	}
-/*	
-	public static Calendar getCalendar(String username){
-		
-	}
-*/	
-	
-	public void addInvitation(int appointmentId, String username, String status) {
-		DBConnector.makeStatement(""
-			+ "INSERT INTO appointment_invitation (appointment_id, username, status) "
-			+ "VALUES ('"+appointmentId+"', "
-					 +"'"+username+"', "
-					 +"'"+status+"');");
-	}
-	
 }
