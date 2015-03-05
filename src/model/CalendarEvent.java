@@ -1,11 +1,7 @@
 package model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-
-import db.Query;
 
 public class CalendarEvent {
 
@@ -15,6 +11,7 @@ public class CalendarEvent {
 	private Room room;
 	private Date startDate; //Starttid for event
 	private Date endDate; //Sluttid for event
+	private Date alarmDate;
 	private String location;
 	private User creator;
 	private final int id;
@@ -57,6 +54,14 @@ public class CalendarEvent {
 		return endDate;
 	}
 	
+	public Date getAlarmDate() {
+		return alarmDate;
+	}
+		
+	public void setAlarmDate(Date alarmDate) {
+		this.alarmDate = alarmDate;
+	}
+
 	public void setStartDate(Date date){
 		this.startDate.setTime(date.getTime()); //M� endres i databasen
 		fireCalendarEventHasChanged();
