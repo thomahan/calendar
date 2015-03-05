@@ -53,6 +53,7 @@ public class CalendarProgram extends JFrame {
 	private static DefaultTableModel mtblCalendar;
 	private JScrollPane stblCalendar;
 	private JButton logoutButton;
+	private JButton newAppointmentButton;
 	private static JComboBox comboBox;
 	private static JLabel lblNewLabel;
 	private final Action action = new SwingAction();
@@ -171,9 +172,9 @@ public class CalendarProgram extends JFrame {
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 		
-		JButton btnAddNewEvent = new JButton("Add New Event");
-		btnAddNewEvent.setBounds(6, 6, 124, 29);
-		panel_2.add(btnAddNewEvent);
+		newAppointmentButton = new JButton("Add New Event");
+		newAppointmentButton.setBounds(6, 6, 124, 29);
+		panel_2.add(newAppointmentButton);
 		
 		logoutButton = new JButton("Log out");
 		logoutButton.setBounds(138, 6, 124, 29);
@@ -251,9 +252,12 @@ public class CalendarProgram extends JFrame {
 //		}
 	}
 
+	public void addNewAppointmentButtonListener(ActionListener newAppointmentButtonListener) {
+		logoutButton.addActionListener(newAppointmentButtonListener);
+	}
 	
-	public void addLogoutButtonListener(ActionListener listenerForLogoutButton) {
-		logoutButton.addActionListener(listenerForLogoutButton);
+	public void addLogoutButtonListener(ActionListener logoutButtonListener) {
+		logoutButton.addActionListener(logoutButtonListener);
 	}
 	
 	private class SwingAction extends AbstractAction {
