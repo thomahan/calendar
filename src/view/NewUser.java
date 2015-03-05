@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -71,7 +72,7 @@ public class NewUser extends JFrame {
 		this.getContentPane().add(panel_1);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JTextArea txtrPleaseFillIn = new JTextArea();
+		JLabel txtrPleaseFillIn = new JLabel();
 		txtrPleaseFillIn.setText("Please fill in required information");
 		panel_1.add(txtrPleaseFillIn);
 		
@@ -80,32 +81,27 @@ public class NewUser extends JFrame {
 		this.getContentPane().add(panel_2);
 		panel_2.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JTextArea txtrUsername = new JTextArea();
-		txtrUsername.setLineWrap(true);
+		JLabel txtrUsername = new JLabel();
 		txtrUsername.setBackground(SystemColor.window);
 		txtrUsername.setText("Username");
 		panel_2.add(txtrUsername);
 		
-		JTextArea txtrGivenName = new JTextArea();
-		txtrGivenName.setLineWrap(true);
+		JLabel txtrGivenName = new JLabel();
 		txtrGivenName.setBackground(SystemColor.window);
 		txtrGivenName.setText("Given name");
 		panel_2.add(txtrGivenName);
 		
-		JTextArea txtrLastName = new JTextArea();
-		txtrLastName.setLineWrap(true);
+		JLabel txtrLastName = new JLabel();
 		txtrLastName.setBackground(SystemColor.window);
 		txtrLastName.setText("Last name");
 		panel_2.add(txtrLastName);
 		
-		JTextArea txtrPassword = new JTextArea();
-		txtrPassword.setLineWrap(true);
+		JLabel txtrPassword = new JLabel();
 		txtrPassword.setBackground(SystemColor.window);
 		txtrPassword.setText("Password");
 		panel_2.add(txtrPassword);
 		
-		JTextArea txtrConfirmPassword = new JTextArea();
-		txtrConfirmPassword.setLineWrap(true);
+		JLabel txtrConfirmPassword = new JLabel();
 		txtrConfirmPassword.setBackground(SystemColor.window);
 		txtrConfirmPassword.setText("Confirm password");
 		panel_2.add(txtrConfirmPassword);
