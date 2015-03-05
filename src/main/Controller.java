@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import model.Room;
-import model.RoomList;
 import model.User;
 import view.CalendarProgram;
 import view.LogIn;
