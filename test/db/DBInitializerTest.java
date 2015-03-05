@@ -23,7 +23,7 @@ public class DBInitializerTest {
 		query.close();
 		assertFalse(hasTable);
 
-		DBInitializer.initializeDB();
+		DBInitializer.createTables();
 
 		query = DBConnector.makeQuery("SHOW TABLES;");
 		result = query.getResult();
