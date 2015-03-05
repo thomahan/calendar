@@ -253,7 +253,7 @@ public class CalendarProgram extends JFrame {
 	}
 
 	public void addNewAppointmentButtonListener(ActionListener newAppointmentButtonListener) {
-		logoutButton.addActionListener(newAppointmentButtonListener);
+		newAppointmentButton.addActionListener(newAppointmentButtonListener);
 	}
 	
 	public void addLogoutButtonListener(ActionListener logoutButtonListener) {
