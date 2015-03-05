@@ -51,27 +51,5 @@ public class UserDBC {
 						 +"'"+user.getLastName()+"');");
 		
 	}
-	
-	/**
-	 * Verifies whether a username is unique
-	 * @param username
-	 * @return boolean
-	 */
-	public static boolean isUsernameUnique(String username){
-		Query query = db.DBConnector.makeQuery("SELECT username FROM user;");
-		ResultSet result = query.getResult();
-		
-		try{
-			while (result.next()) {
-				if (result.getString("username").equals(username)){
-					return false;
-				}
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		query.close();
-		return true;
-	}
+
 }

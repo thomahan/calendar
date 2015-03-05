@@ -27,11 +27,6 @@ public class User implements CalendarEventListener, GroupListener {
 	 * @param password
 	 */
 	public User(String firstName, String lastName, String username, String password) { //Legg til person i database, password hashes
-		if (!db.UserDBC.isUsernameUnique(username)) { // Her m� det sjekkes opp mot database at det ikke eksisterer en bruker med samme navn. Kaste Illegal argument exception
-			throw new IllegalArgumentException("Username already in use.");
-		}
-
-		
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
@@ -56,8 +51,6 @@ public class User implements CalendarEventListener, GroupListener {
 		this.lastName = lastName;
 		this.calendar = new Calendar(this);
 	}
-	
-	
 	
 	public boolean isPasswordCorrect(String password) {
 		String passwordHashCandidate = PasswordHash.hashPassword(this.salt, password);
