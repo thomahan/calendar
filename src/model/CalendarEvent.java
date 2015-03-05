@@ -5,31 +5,31 @@ import java.util.Date;
 
 public class CalendarEvent {
 
+	private final int id;
 	private String eventName, oldName;
-	private ArrayList<User> participants = new ArrayList<User>();
-	private ArrayList<User> eventListeners = new ArrayList<User>();
-	private Room room;
 	private Date startDate; //Starttid for event
 	private Date endDate; //Sluttid for event
 	private Date alarmDate;
+	private String description;
 	private String location;
 	private User creator;
-	private final int id;
-	private String description;
+	private Room room;
+	private ArrayList<User> participants = new ArrayList<User>();
+	private ArrayList<User> eventListeners = new ArrayList<User>();
 	
-	
+
 	public CalendarEvent(String eventName, Date startDate, User user, Date endDate, String location, int id, String description){
+		this.id = id;
 		this.eventName = eventName;
 		this.startDate = startDate;
-		this.creator = user;
 		this.endDate = endDate;
+		this.description = description;
 		this.location = location;
+		this.creator = user;
 		oldName = this.eventName;
 		participants.add(user);
 		user.getCalendar().addEvent(this);
 		eventListeners.add(user);
-		this.id = id;
-		this.description = description;
 	}
 	
 	public String getEventName(){
