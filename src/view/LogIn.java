@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -39,7 +40,7 @@ public class LogIn extends JFrame {
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JTextArea txtrUsername = new JTextArea();
+		JLabel txtrUsername = new JLabel();
 		txtrUsername.setBounds(5, 11, 62, 16);
 		txtrUsername.setText("Username");
 		panel.add(txtrUsername);
@@ -53,7 +54,7 @@ public class LogIn extends JFrame {
 		usernameField.setColumns(10);
 		panel.add(usernameField);
 		
-		JTextArea txtrPassword = new JTextArea();
+		JLabel txtrPassword = new JLabel();
 		txtrPassword.setBounds(10, 44, 59, 16);
 		txtrPassword.setText("Password");
 		panel.add(txtrPassword);
