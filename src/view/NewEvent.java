@@ -11,6 +11,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class NewEvent extends JFrame {
+	// TODO: Add field for alarmTime, roomId. Add cancel button?
 
 	private final String FRAME_TITLE = "Create new appointment";
 	private JTextField appointmentTitleField;
