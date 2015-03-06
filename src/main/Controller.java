@@ -18,7 +18,7 @@ import db.AppointmentDBC;
 import db.UserDBC;
 
 public class Controller {
-	private static final String DATE_FORMAT = "yyyy-MM-dd";
+	private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm";
 	private DateFormat simpleDateFormat;
 
 	private LogIn loginView;
