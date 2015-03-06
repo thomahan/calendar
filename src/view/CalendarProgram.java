@@ -1,38 +1,10 @@
 package view;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-
-import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JScrollBar;
-import javax.swing.JSpinner;
-import javax.swing.JButton;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-
-import view.CalendarWindow.btnNext_Action;
-import view.CalendarWindow.btnPrev_Action;
-import view.CalendarWindow.cmbYear_Action;
-import view.CalendarWindow.tblCalendarRenderer;
-
-import java.awt.event.ActionListener;
+import java.awt.TextArea;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.TextArea;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,8 +12,15 @@ import java.util.GregorianCalendar;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 import model.Appointment;
 
@@ -61,12 +40,14 @@ public class CalendarProgram extends JFrame {
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
 	private static MouseListener mouseListener;
-	private static ArrayList<Appointment> events;
+	private ArrayList<Appointment> dailyAppointmentList;
+	private Date selectedDate;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		@SuppressWarnings("unused")
 		CalendarProgram window = new CalendarProgram();
 	}
 
@@ -254,14 +235,7 @@ public class CalendarProgram extends JFrame {
 //		}
 	}
 
-	public void addNewAppointmentButtonListener(ActionListener newAppointmentButtonListener) {
-		newAppointmentButton.addActionListener(newAppointmentButtonListener);
-	}
-	
-	public void addLogoutButtonListener(ActionListener logoutButtonListener) {
-		logoutButton.addActionListener(logoutButtonListener);
-	}
-	
+	@SuppressWarnings("serial")
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, ">>");
@@ -278,6 +252,7 @@ public class CalendarProgram extends JFrame {
 		}
 
 	}
+	@SuppressWarnings("serial")
 	private class SwingAction_1 extends AbstractAction {
 		public SwingAction_1() {
 			putValue(NAME, "<<");
@@ -308,51 +283,55 @@ public class CalendarProgram extends JFrame {
 	private class MouseHandler implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
 			int row = table.rowAtPoint(e.getPoint());
 		    int col = table.columnAtPoint(e.getPoint());
 			refreshEventWindow(getDate(row,col));
-			
 		}
 		
 		@SuppressWarnings("deprecation")
 		private Date getDate(int row, int col) {
 			int day = (Integer) table.getModel().getValueAt(row, col);
 			Date clickedDay = new Date(currentYear - 1900, currentMonth, day);
+			selectedDate = clickedDay;
 			return clickedDay;
-			
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
-
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
-
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
-
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
-		
 	}
 	
-	public static void refreshEventWindow(Date date){
+	public void refreshEventWindow(Date date){
 		System.out.println(date.toString());
-		events = new ArrayList<Appointment>();
-			
+		dailyAppointmentList = new ArrayList<Appointment>();
 	}
 	
+	public void addNewAppointmentButtonListener(ActionListener newAppointmentButtonListener) {
+		newAppointmentButton.addActionListener(newAppointmentButtonListener);
+	}
+	
+	public void addLogoutButtonListener(ActionListener logoutButtonListener) {
+		logoutButton.addActionListener(logoutButtonListener);
+	}
+		
+	public void addSelectDateListener(MouseListener selectDateListener) {
+		table.addMouseListener(selectDateListener);
+	}
+	
+	public Date getSelectDate() {
+		return selectedDate;
+	}
+	
+	public void setDailyAppointmentList(ArrayList<Appointment> dailyAppointmentList) {
+		this.dailyAppointmentList = dailyAppointmentList;
+	}
 }
