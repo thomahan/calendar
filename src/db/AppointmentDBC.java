@@ -54,15 +54,21 @@ public class AppointmentDBC {
 	
 */	
 
-/*
-	public ArrayList<CalendarEvent> getAppointmentList(String username) {
-		ArrayList<CalendarEvent> appointmentList =  new ArrayList<CalendarEvent>();
+	@SuppressWarnings("deprecation")
+	public static ArrayList<Appointment> getAppointmentList(String username, Date selectedDate) {
+		ArrayList<Appointment> appointmentList =  new ArrayList<Appointment>();
+		
+		Timestamp lowerTimeStamp = new Timestamp(selectedDate.getTime());
+		Timestamp upperTimeStamp = new Timestamp(selectedDate.getTime());
+		upperTimeStamp.setHours(23);
+		upperTimeStamp.setMinutes(59);
 
 		Query query = DBConnector.makeQuery(""
 				+ "SELECT appointment_id, start_time, end_time, alarm_time, title, creator, status, is_visible "
 				+ "FROM appointment_invitation "
 				+ "JOIN appointment_invitation ON appointment.id = appointment_invitation.appointment_id "
-				+ "WHERE username = '"+username+"';");
+				+ "WHERE username = '"+username+"' "
+						+ "AND start_time >= '"+lowerTimeStamp+"' AND start_time <='"+upperTimeStamp+"';");
 		ResultSet result = query.getResult();
 
 		try {
@@ -79,10 +85,10 @@ public class AppointmentDBC {
 				
 				Date startTimeDate = new Date(startTime.getTime());
 				Date endTimeDate = new Date(endTime.getTime());
-				Date alirmTimeDate = new Date(alarmTime.getTime());
+				Date alarmTimeDate = new Date(alarmTime.getTime());
 				boolean canEdit = (username.equals(creator));
 
-				CalendarEvent appointment = new CalendarEvent(appointmentId, startTimeDate, endTimeDate, alarmTimeDate, title, canEdit, status, isVisible);
+				Appointment appointment = new Appointment(appointmentId, startTimeDate, endTimeDate, alarmTimeDate, title, canEdit, status, isVisible);
 
 				appointmentList.add(appointment);
 			}
@@ -94,7 +100,7 @@ public class AppointmentDBC {
 
 		return appointmentList;
 	}
-*/
+
 	/**
 	 * Adds an appointment to the database
 	 * @param startTime
