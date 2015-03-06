@@ -6,34 +6,33 @@ import java.util.Date;
 public class Appointment {
 
 	private final int id;
-	private String eventName, oldName;
 	private Date startDate; //Starttid for event
 	private Date endDate; //Sluttid for event
 	private Date alarmDate;
+	private String title, oldName;
 	private String description;
 	private String location;
-	private User creator;
 	private Room room;
+	private User creator;
 	private ArrayList<User> participants = new ArrayList<User>();
 	private ArrayList<User> eventListeners = new ArrayList<User>();
+	private boolean canEdit;
+	private String status;
+	private boolean isVisible;
 	
 
-	public Appointment(String eventName, Date startDate, User user, Date endDate, String location, int id, String description){
+	public Appointment(int id, Date startDate, Date endDate, Date alarmDate, String title, boolean canEdit, String status, boolean isVisible){
 		this.id = id;
-		this.eventName = eventName;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.description = description;
-		this.location = location;
-		this.creator = user;
-		oldName = this.eventName;
-		participants.add(user);
-		user.getCalendar().addEvent(this);
-		eventListeners.add(user);
+		this.title = title;
+		this.canEdit = canEdit;
+		this.status = status;
+		this.isVisible = isVisible;
 	}
 	
 	public String getEventName(){
-		return eventName;
+		return title;
 	}
 	
 	public String getOldName(){
@@ -41,8 +40,8 @@ public class Appointment {
 	}
 	
 	public void setEventName(String eventName){
-		oldName = this.eventName;
-		this.eventName = eventName;
+		oldName = this.title;
+		this.title = eventName;
 		fireCalendarEventHasChanged();
 	}
 	
