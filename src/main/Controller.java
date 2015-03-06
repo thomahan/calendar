@@ -28,7 +28,6 @@ public class Controller {
 
 	private User user;
 	private static ArrayList<Room> roomlist = new ArrayList<Room>();
-	
 
 	public Controller() {
 		openLoginView();
@@ -178,7 +177,13 @@ public class Controller {
 			}
 		}
 	}
-
+	
+	class selectDateListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+		}
+	}
+	
 	private void openLoginView() {
 		loginView = new LogIn();
 		loginView.addLoginButtonListener(new LoginListener());

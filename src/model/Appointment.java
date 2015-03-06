@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class CalendarEvent {
+public class Appointment {
 
 	private final int id;
 	private String eventName, oldName;
@@ -18,7 +18,7 @@ public class CalendarEvent {
 	private ArrayList<User> eventListeners = new ArrayList<User>();
 	
 
-	public CalendarEvent(String eventName, Date startDate, User user, Date endDate, String location, int id, String description){
+	public Appointment(String eventName, Date startDate, User user, Date endDate, String location, int id, String description){
 		this.id = id;
 		this.eventName = eventName;
 		this.startDate = startDate;

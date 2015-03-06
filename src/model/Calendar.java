@@ -9,23 +9,23 @@ public class Calendar {
 
 	private String calendarName;
 	private User owner;
-	private ArrayList<CalendarEvent> events = new ArrayList<CalendarEvent>();
+	private ArrayList<Appointment> events = new ArrayList<Appointment>();
 	
 	public Calendar(User owner){
 		this.owner = owner;
 	}
 	
-	public void addEvent(CalendarEvent event){ // Må også legges til i databasen
+	public void addEvent(Appointment event){ // Mï¿½ ogsï¿½ legges til i databasen
 		if (isValidEvent(event))events.add(event);
 		else throw new IllegalArgumentException("Unable to add event. Either you have an existing event at this time, or the event is already added. Please check your events ");
 
 	}
 	
-	public void removeEvent(CalendarEvent event){
+	public void removeEvent(Appointment event){
 		events.remove(event); 
 	}
 	
-	public boolean isValidEvent(CalendarEvent event){
+	public boolean isValidEvent(Appointment event){
 		if (events.contains(event)){ 
 			return false;
 		}  else if(eventsOverlap(event)){
@@ -36,12 +36,12 @@ public class Calendar {
 	}
 	
 	// Returns true if events overlap
-	private boolean eventsOverlap(CalendarEvent newEvent){
+	private boolean eventsOverlap(Appointment newEvent){
 		Date start1 = newEvent.getStartDate();
 		Date end1 = newEvent.getEndDate();
 		Interval int1 = new Interval(start1, end1);
 		
-		for (CalendarEvent event : events){
+		for (Appointment event : events){
 			if (int1.overlap(new Interval(event.getStartDate(), event.getEndDate()))){
 				return true;
 			}
@@ -50,14 +50,14 @@ public class Calendar {
 
 	
 	public void showMyEvents(){
-		for (CalendarEvent event: events){
+		for (Appointment event: events){
 			System.out.println("Event name: " + event.getEventName() + ", Starting: " + event.getStartDate() + ", Ending: " + event.getEndDate() + ", Room: " + event.getRoom().getName());
 		}
 	}
 	
 	public void showEventsOnADay(Date date) {
 
-		for (CalendarEvent event : events) {
+		for (Appointment event : events) {
 			if ((event.getStartDate().getYear() == date.getYear())
 					&& (event.getStartDate().getMonth() == date.getMonth())
 					&& (event.getStartDate().getDay() == date.getDay())) {

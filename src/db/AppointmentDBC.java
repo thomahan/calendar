@@ -3,9 +3,10 @@ package db;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 
-import model.CalendarEvent;
+import model.Appointment;
 
 public class AppointmentDBC {
 /*	
@@ -51,40 +52,39 @@ public class AppointmentDBC {
 		return calendarEvent;
 	}
 	
-	
-	public ArrayList<CalendarEvent> getAllAppointments(String username) {
-		ArrayList<CalendarEvent> calendarEventList =  new ArrayList<CalendarEvent>();
+*/	
+
+/*
+	public ArrayList<CalendarEvent> getAppointmentList(String username) {
+		ArrayList<CalendarEvent> appointmentList =  new ArrayList<CalendarEvent>();
 
 		Query query = DBConnector.makeQuery(""
-				+ "SELECT appointment_id, start_time, end_time, alarm_time, description, location, creator, room_id, name, seat_count, status, is_visible "
+				+ "SELECT appointment_id, start_time, end_time, alarm_time, title, creator, status, is_visible "
 				+ "FROM appointment_invitation "
 				+ "JOIN appointment_invitation ON appointment.id = appointment_invitation.appointment_id "
-				+ "JOIN room ON appointment.roomid = room.id;");
+				+ "WHERE username = '"+username+"';");
 		ResultSet result = query.getResult();
 
 		try {
-			if (result.next()) {
+			while (result.next()) {
 				int appointmentId = result.getInt("appointment_id");
 				Timestamp startTime = result.getTimestamp("start_time");
 				Timestamp endTime = result.getTimestamp("end_time");
 				Timestamp alarmTime = result.getTimestamp("alarm_time");
-				String description = result.getString("description");
-				String location = result.getString("location");
+				String title = result.getString("title");
 				String creator = result.getString("creator");
 
 				String status = result.getString("status");
 				boolean isVisible = result.getBoolean("is_visible");
-
-				int roomId = result.getInt("room_id");
-				String roomName = result.getString("name");
-				int seatCount = result.getInt("seat_count");
 				
-
+				Date startTimeDate = new Date(startTime.getTime());
+				Date endTimeDate = new Date(endTime.getTime());
+				Date alirmTimeDate = new Date(alarmTime.getTime());
 				boolean canEdit = (username.equals(creator));
 
-				CalendarEvent calendarEvent = new CalendarEvent(appointmentId, startTime, endTime, description, location, canEdit, status, isVisible);
+				CalendarEvent appointment = new CalendarEvent(appointmentId, startTimeDate, endTimeDate, alarmTimeDate, title, canEdit, status, isVisible);
 
-				calendarEventList.add(calendarEvent);
+				appointmentList.add(appointment);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -92,7 +92,7 @@ public class AppointmentDBC {
 			query.close();
 		}
 
-		return calendarEventList;
+		return appointmentList;
 	}
 */
 	/**
@@ -125,7 +125,6 @@ public class AppointmentDBC {
 			ResultSet res = query.getResult();
 			if (res.next()) {
 				appointmentId = res.getInt("id");
-				System.out.print(appointmentId);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -178,9 +177,5 @@ public class AppointmentDBC {
 					 		+"'"+username+"');");
 		}
 	}
-		
-	public static void removeEvent(String username, CalendarEvent event){
-		
-		
-	}
+
 }

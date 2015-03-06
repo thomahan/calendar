@@ -37,8 +37,8 @@ public class TestMain {
 		
 		interval1.overlap(interval2);
 		
-		CalendarEvent tivoli = new CalendarEvent("Tivoli", startdato1, Adrian, sluttdato1, "Skolen", 5, "Lekser");
-		CalendarEvent tivoli1 = new CalendarEvent("Lanparty", startdato2, Adrian, sluttdato2, "Tyholt", 8, "Lekser");
+		Appointment tivoli = new Appointment("Tivoli", startdato1, Adrian, sluttdato1, "Skolen", 5, "Lekser");
+		Appointment tivoli1 = new Appointment("Lanparty", startdato2, Adrian, sluttdato2, "Tyholt", 8, "Lekser");
 		tivoli.setRoom(rom1);
 		tivoli1.setRoom(rom2);
 //		

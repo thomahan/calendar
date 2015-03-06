@@ -43,7 +43,7 @@ import javax.swing.Action;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import model.CalendarEvent;
+import model.Appointment;
 
 public class CalendarProgram extends JFrame {
 	// TODO: Add show hidden option
@@ -61,7 +61,7 @@ public class CalendarProgram extends JFrame {
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
 	private static MouseListener mouseListener;
-	private static ArrayList<CalendarEvent> events;
+	private static ArrayList<Appointment> events;
 
 	/**
 	 * Launch the application.
@@ -351,7 +351,7 @@ public class CalendarProgram extends JFrame {
 	
 	public static void refreshEventWindow(Date date){
 		System.out.println(date.toString());
-		events = new ArrayList<CalendarEvent>();
+		events = new ArrayList<Appointment>();
 			
 	}
 	

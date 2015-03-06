@@ -2,12 +2,12 @@ package model;
 
 public class Invitation {
 
-	private CalendarEvent event;
+	private Appointment event;
 	public boolean reply;
 	// HashMap(User user, boolean answer);
 	
 	
-	public Invitation(CalendarEvent event){
+	public Invitation(Appointment event){
 		this.event = event;
 	}
 	
