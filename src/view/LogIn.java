@@ -9,9 +9,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class LogIn extends JFrame {
 	private final String FRAME_TITLE = "Calendar Program Login";
 	private JTextField usernameField;
@@ -23,6 +23,7 @@ public class LogIn extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		@SuppressWarnings("unused")
 		LogIn login = new LogIn();
 	}
 
