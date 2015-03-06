@@ -6,8 +6,8 @@ public class Interval {
 
 	
 	
-	public static Date startTime;
-	public static Date endTime;
+	public Date startTime;
+	public Date endTime;
 	
 
 	
@@ -23,13 +23,13 @@ public class Interval {
 		System.out.println(this.endTime);
 		System.out.println(databaseSjekk.startTime);
 		System.out.println(databaseSjekk.endTime);
-		if(this.endTime.compareTo(databaseSjekk.startTime) < 0){
+		if(this.endTime.before(databaseSjekk.startTime) && this.startTime.before(databaseSjekk.endTime)){
 			System.out.println("Første if");
 			return false;
-		} else if (this.startTime.compareTo(databaseSjekk.endTime) > 0){
+		} else if (this.startTime.after(databaseSjekk.endTime) && this.endTime.after(databaseSjekk.startTime)){
 			System.out.println("Andre if");
 			return false;
 		}System.out.println("true"); 
-		return false;
+		return true;
 	}
 }
