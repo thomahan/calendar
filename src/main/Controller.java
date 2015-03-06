@@ -2,12 +2,15 @@ package main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import model.Appointment;
 import model.Room;
 import model.User;
 import view.CalendarProgram;
@@ -27,10 +30,13 @@ public class Controller {
 	private NewEvent appointmentCreationView;
 
 	private User user;
+	private Date selectedDate;
+	private ArrayList<Appointment> dailyAppointmentList;
 	private static ArrayList<Room> roomlist = new ArrayList<Room>();
 
 	public Controller() {
 		openLoginView();
+		//openCalendarView();
 		simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
 	}
 	
@@ -178,9 +184,26 @@ public class Controller {
 		}
 	}
 	
-	class selectDateListener implements ActionListener {
+	class SelectDateListener implements MouseListener {
 		@Override
-		public void actionPerformed(ActionEvent actionEvent) {
+		public void mouseClicked(MouseEvent arg0) {
+			System.out.println("Clicky, clicky!");
+			selectedDate = calendarView.getSelectDate();
+			System.out.println(selectedDate);
+			dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+		}
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+		}
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+		}
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
 		}
 	}
 	
@@ -210,6 +233,7 @@ public class Controller {
 		calendarView = new CalendarProgram();
 		calendarView.addNewAppointmentButtonListener(new OpenAppointmentCreationListener());
 		calendarView.addLogoutButtonListener(new LogoutListener());
+		calendarView.addSelectDateListener(new SelectDateListener());
 	}
 	
 	private void closeCalendarView() {
