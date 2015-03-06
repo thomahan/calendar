@@ -46,6 +46,8 @@ import javax.swing.JLabel;
 import model.CalendarEvent;
 
 public class CalendarProgram extends JFrame {
+	// TODO: Add show hidden option
+	
 	private final String FRAME_TITLE = "Calendar Program";
 	static int realYear, realMonth, realDay, currentYear, currentMonth;
 
