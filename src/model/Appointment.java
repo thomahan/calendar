@@ -164,12 +164,21 @@ public class Appointment {
 	
 	@Override
 	public String toString() {
+		String summary = "";
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 		String alarmString = (alarmDate != null) ? df.format(alarmDate) : "";
 		String statusString = (status == null) ? "Not answered" : status;
 
-		return title+": "+df.format(startDate)+" - "+df.format(endDate)+" ("+alarmString+") "+statusString;
+		summary += title+": "+df.format(startDate)+" - "+df.format(endDate)+" ("+alarmString+") "+statusString;
+		summary += (location != null) ? "\nDescription: "+description : "";
+		summary += (location != null) ? "\nLocation: "+location : "";
+		if (room != null) {
+			String seatCountString = (room.getSeatCount() == 1) ? "seat" : "seats";
+			summary += (room != null) ? "\nRoom: "+room.getId()+" "+room.getName()+" ("+room.getSeatCount()+" "+seatCountString+")" : "";
+		}
+		
+		return summary;
 	}
 
 //	public String getAvailableRoomNameIfAvailable(){
