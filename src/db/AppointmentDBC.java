@@ -58,15 +58,15 @@ public class AppointmentDBC {
 	public static ArrayList<Appointment> getAppointmentList(String username, Date selectedDate) {
 		ArrayList<Appointment> appointmentList =  new ArrayList<Appointment>();
 		
-		Timestamp lowerTimeStamp = new Timestamp(selectedDate.getTime());
-		Timestamp upperTimeStamp = new Timestamp(selectedDate.getTime());
-		upperTimeStamp.setHours(23);
-		upperTimeStamp.setMinutes(59);
+		Timestamp lowerTime = new Timestamp(selectedDate.getTime());
+		Timestamp upperTime = new Timestamp(selectedDate.getTime());
+		upperTime.setHours(23);
+		upperTime.setMinutes(59);
 
 		Query query = DBConnector.makeQuery(""
 				+ "SELECT id, start_time, end_time, alarm_time, title, creator, status, is_visible "
 				+ "FROM appointment JOIN appointment_invitation ON appointment.id = appointment_invitation.appointment_id "
-				+ "WHERE username = '"+username+"' AND start_time > '"+lowerTimeStamp+"' AND start_time <'"+upperTimeStamp+"';");
+				+ "WHERE username = '"+username+"' AND start_time > '"+lowerTime+"' AND start_time <'"+upperTime+"';");
 		ResultSet result = query.getResult();
 
 		try {
@@ -80,17 +80,14 @@ public class AppointmentDBC {
 
 				String status = result.getString("status");
 				boolean isVisible = result.getBoolean("is_visible");
-				Date startTimeDate = new Date(startTime.getTime());
-				Date endTimeDate = new Date(endTime.getTime());
+				Date startDate = new Date(startTime.getTime());
+				Date endDate = new Date(endTime.getTime());
 
-				Date alarmTimeDate = null;
-				if (alarmTime != null) {
-					alarmTimeDate = new Date(alarmTime.getTime());
-				}
+				Date alarmDate = (alarmTime != null) ? new Date(alarmTime.getTime()) : null;
 
 				boolean canEdit = (username.equals(creator));
 
-				Appointment appointment = new Appointment(appointmentId, startTimeDate, endTimeDate, alarmTimeDate, title, canEdit, status, isVisible);
+				Appointment appointment = new Appointment(appointmentId, startDate, endDate, alarmDate, title, canEdit, status, isVisible);
 
 				appointmentList.add(appointment);
 			}
@@ -113,9 +110,9 @@ public class AppointmentDBC {
 	 * @param username
 	 * @param roomId
 	 */
-	public static int addAppointment(Date startTimeDate, Date endTimeDate, Date alarmTimeDate, String title, String description, String location, String username, int roomId){
-		Timestamp startTime = new Timestamp(startTimeDate.getTime());
-		Timestamp endTime = new Timestamp(endTimeDate.getTime());
+	public static int addAppointment(Date startDate, Date endDate, Date alarmDate, String title, String description, String location, String username, int roomId){
+		Timestamp startTime = new Timestamp(startDate.getTime());
+		Timestamp endTime = new Timestamp(endDate.getTime());
 	
 		DBConnector.makeStatement(""
 			+ "INSERT INTO appointment (start_time, end_time, title, creator) "
@@ -140,8 +137,8 @@ public class AppointmentDBC {
 			query.close();
 		}
 
-		if (alarmTimeDate != null) {
-			Timestamp alarmTime = new Timestamp(alarmTimeDate.getTime());
+		if (alarmDate != null) {
+			Timestamp alarmTime = new Timestamp(alarmDate.getTime());
 			DBConnector.makeStatement(""
 					+ "UPDATE appointment SET alarm_time = '"+alarmTime+"' "
 							+ "WHERE id = '"+appointmentId+"';");
