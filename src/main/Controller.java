@@ -21,7 +21,7 @@ import db.AppointmentDBC;
 import db.UserDBC;
 
 public class Controller {
-	private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm";
+	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 	private DateFormat simpleDateFormat;
 
 	private LogIn loginView;
@@ -38,6 +38,10 @@ public class Controller {
 		openLoginView();
 		//openCalendarView();
 		simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+
+		selectedDate = new Date();
+		selectedDate.setHours(0);
+		selectedDate.setMinutes(0);
 	}
 	
 	class LoginListener implements ActionListener {
@@ -136,6 +140,8 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			openAppointmentCreationView();
+			appointmentCreationView.setStartTime(simpleDateFormat.format(selectedDate));
+			appointmentCreationView.setEndTime(simpleDateFormat.format(selectedDate));
 		}
 	}
 	
@@ -151,13 +157,13 @@ public class Controller {
 				String location = appointmentCreationView.getAppointmentLocation();
 				int roomId = appointmentCreationView.getRoomId();
 
-				Date startTimeDate = simpleDateFormat.parse(startTime);
-				Date endTimeDate = simpleDateFormat.parse(endTime);
-				Date alarmTimeDate;
+				Date startDate = simpleDateFormat.parse(startTime);
+				Date endDate = simpleDateFormat.parse(endTime);
+				Date alarmDate;
 				if (alarmTime.length() > 0) {
-					alarmTimeDate = simpleDateFormat.parse(alarmTime);
+					alarmDate = simpleDateFormat.parse(alarmTime);
 				} else {
-					alarmTimeDate = null;
+					alarmDate = null;
 				}
 				
 				if (title.length() <= 0) {
@@ -171,12 +177,15 @@ public class Controller {
 				location = location.length() > 0 ? location : null;
 				description = description.length() > 0 ? description : null;
 
-				int appointmentId = AppointmentDBC.addAppointment(startTimeDate, endTimeDate, alarmTimeDate, title, description, location, user.getUsername(), roomId);
-				AppointmentDBC.addInvitation(appointmentId, user.getUsername(), "ACCEPTED");
+				int appointmentId = AppointmentDBC.addAppointment(startDate, endDate, alarmDate, title, description, location, user.getUsername(), roomId);
+				AppointmentDBC.addInvitation(appointmentId, user.getUsername(), "Accepted");
 
 				appointmentCreationView.displayAppointmentCreationMessage(title);
 
 				closeAppointmentCreationView();
+				
+				dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
+				calendarView.setDailyAppointmentList(dailyAppointmentList);
 			} catch (Exception e) {
 				e.printStackTrace();
 				appointmentCreationView.displayErrorMessage(e.getMessage());
@@ -184,13 +193,19 @@ public class Controller {
 		}
 	}
 	
+	class CancelAppointmentCreationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			closeAppointmentCreationView();
+		}
+	}
+	
 	class SelectDateListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			System.out.println("Clicky, clicky!");
 			selectedDate = calendarView.getSelectDate();
-			System.out.println(selectedDate);
 			dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
+			calendarView.setDailyAppointmentList(dailyAppointmentList);
 		}
 
 		@Override
@@ -248,6 +263,7 @@ public class Controller {
 	private void openAppointmentCreationView() {
 		appointmentCreationView = new NewEvent();
 		appointmentCreationView.addCreateButtonListener(new CreateAppointmentListener());
+		appointmentCreationView.addCancelButtonListener(new CancelAppointmentCreationListener());
 	}
 		
 	private void closeAppointmentCreationView() {
