@@ -10,6 +10,12 @@ import model.Appointment;
 import model.Room;
 
 public class AppointmentDBC {
+	/**
+	 * Returns an appointment from the database
+	 * @param appointmentId
+	 * @param username
+	 * @return Appointment
+	 */
 	public static Appointment getAppointment(int appointmentId, String username) {
 		Appointment appointment =  null;
 
@@ -65,6 +71,12 @@ public class AppointmentDBC {
 		return appointment;
 	}
 
+	/**
+	 * Returns alist of appointments that starts on a specified date
+	 * @param username
+	 * @param selectedDate
+	 * @return List of appointments for specified date
+	 */
 	@SuppressWarnings("deprecation")
 	public static ArrayList<Appointment> getAppointmentList(String username, Date selectedDate) {
 		ArrayList<Appointment> appointmentList =  new ArrayList<Appointment>();
@@ -176,6 +188,16 @@ public class AppointmentDBC {
 	}
 	
 	/**
+	 * Deletes an appointment from the database
+	 * @param appointmentId
+	 */
+	public static void removeAppointment(int appointmentId) {
+		DBConnector.makeStatement(""
+				+ "DELETE appointment "
+				+ "WHERE id = '"+appointmentId+"';");
+	}
+
+	/**
 	 * Adds an invitation to the database between a user and an appointment
 	 * @param appointmentId
 	 * @param username
@@ -194,6 +216,17 @@ public class AppointmentDBC {
 					+ "VALUES ('"+appointmentId+"', "
 					 		+"'"+username+"');");
 		}
+	}
+	
+	/**
+	 * Removes an invitation from the database
+	 * @param appointmentId
+	 * @param username
+	 */
+	public static void removeInvitation(int appointmentId, String username) {
+		DBConnector.makeStatement(""
+				+ "DELETE appointment_invitation "
+				+ "WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"';");
 	}
 
 }
