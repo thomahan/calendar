@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -37,9 +38,11 @@ public class CalendarProgram extends JFrame {
 	private JButton newAppointmentButton;
 	private static JComboBox comboBox;
 	private static JLabel lblNewLabel;
+	private TextArea dailyAppointmentListArea;
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
 	private static MouseListener mouseListener;
+
 	private ArrayList<Appointment> dailyAppointmentList;
 	private Date selectedDate;
 
@@ -168,10 +171,10 @@ public class CalendarProgram extends JFrame {
 		panel_1.add(panel_3);
 		panel_3.setLayout(null);
 		
-		TextArea textArea = new TextArea();
-		textArea.setEditable(false);
-		textArea.setBounds(10, 10, 248, 260);
-		panel_3.add(textArea);
+		dailyAppointmentListArea = new TextArea();
+		dailyAppointmentListArea.setEditable(false);
+		dailyAppointmentListArea.setBounds(10, 10, 248, 260);
+		panel_3.add(dailyAppointmentListArea);
 
 		//Add mouse listener
 		table.addMouseListener(new MouseHandler());
@@ -332,5 +335,16 @@ public class CalendarProgram extends JFrame {
 	
 	public void setDailyAppointmentList(ArrayList<Appointment> dailyAppointmentList) {
 		this.dailyAppointmentList = dailyAppointmentList;
+
+		String makeThisListInteractive = "";
+		if (dailyAppointmentList.isEmpty()) {
+			makeThisListInteractive = "No appointments";
+		} else {
+			for (Appointment a : dailyAppointmentList) {
+				makeThisListInteractive = makeThisListInteractive+a+"\n";
+			}
+		}
+		
+		dailyAppointmentListArea.setText(makeThisListInteractive);
 	}
 }
