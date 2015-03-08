@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class AppointmentDBCTest {
 	@SuppressWarnings("deprecation")
-	
+/*	
 	@Test
 	public void appointmentShouldBeAddedToDatabase() {
 		Date startTime = new Date(2015-1900, 4, 8, 16, 15, 00);
@@ -28,7 +28,7 @@ public class AppointmentDBCTest {
 	public void addInvitationShouldInviteUserToAppointment() {
 		//AppointmentDBC.addInvitation(11, "user", null);
 	}
-	
+*/	
 	@Test
 	public void appointmentListShouldBeRetrieved() {
 		Date selectedDate = new Date(2015-1900, 2, 5);
