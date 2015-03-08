@@ -311,7 +311,6 @@ public class CalendarProgram extends JFrame {
 	}
 	
 	public void refreshEventWindow(Date date){
-		System.out.println(date.toString());
 		dailyAppointmentList = new ArrayList<Appointment>();
 	}
 	
