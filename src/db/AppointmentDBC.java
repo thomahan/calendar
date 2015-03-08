@@ -66,7 +66,7 @@ public class AppointmentDBC {
 		Query query = DBConnector.makeQuery(""
 				+ "SELECT id, start_time, end_time, alarm_time, title, creator, status, is_visible "
 				+ "FROM appointment JOIN appointment_invitation ON appointment.id = appointment_invitation.appointment_id "
-				+ "WHERE username = '"+username+"' AND start_time > '"+lowerTime+"' AND start_time <'"+upperTime+"';");
+				+ "WHERE username = '"+username+"' AND start_time >= '"+lowerTime+"' AND start_time <='"+upperTime+"';");
 		ResultSet result = query.getResult();
 
 		try {
@@ -83,7 +83,11 @@ public class AppointmentDBC {
 				Date startDate = new Date(startTime.getTime());
 				Date endDate = new Date(endTime.getTime());
 
-				Date alarmDate = (alarmTime != null) ? new Date(alarmTime.getTime()) : null;
+				Date alarmDate = null;
+				if (alarmTime != null) {
+					alarmDate = new Date(alarmTime.getTime());
+				}
+
 
 				boolean canEdit = (username.equals(creator));
 
