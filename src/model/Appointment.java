@@ -1,10 +1,11 @@
 package model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Appointment {
-
 	private final int id;
 	private Date startDate; //Starttid for event
 	private Date endDate; //Sluttid for event
@@ -13,24 +14,38 @@ public class Appointment {
 	private String description;
 	private String location;
 	private Room room;
-	private User creator;
-	private ArrayList<User> participants = new ArrayList<User>();
-	private ArrayList<User> eventListeners = new ArrayList<User>();
 	private boolean canEdit;
 	private String status;
 	private boolean isVisible;
-	
 
+	private User creator;
+	private ArrayList<User> participants = new ArrayList<User>();
+	private ArrayList<User> eventListeners = new ArrayList<User>();
+		
 	public Appointment(int id, Date startDate, Date endDate, Date alarmDate, String title, boolean canEdit, String status, boolean isVisible){
 		this.id = id;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.alarmDate = alarmDate;
 		this.title = title;
 		this.canEdit = canEdit;
 		this.status = status;
 		this.isVisible = isVisible;
 	}
+		
+	public void setDescription(String description) {
+		this.description = description;
+	}
+		
+	public void setLocation(String location) {
+		this.location = location;
+	}
 	
+	public void setRoom(Room room){ // M� endres i databasen
+		this.room = room;
+		fireCalendarEventHasChanged();
+	}
+
 	public String getEventName(){
 		return title;
 	}
@@ -81,12 +96,7 @@ public class Appointment {
 	public Room getRoom(){
 		return room;
 	}
-	
-	public void setRoom(Room room){ // M� endres i databasen
-		this.room = room;
-		fireCalendarEventHasChanged();
-	}
-	
+
 	public void addParticipant(User user){ //M� ogs� legges til i database
 		if (participants.contains(user) == false){
 			Invitation invitation = new Invitation(this);
@@ -140,10 +150,6 @@ public class Appointment {
 		return location;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
 	public User getCreator() {
 		return creator;
 	}
@@ -155,15 +161,17 @@ public class Appointment {
 	public String getDescription() {
 		return description;
 	}
+	
+	@Override
+	public String toString() {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-	public void setDescription(String description) {
-		this.description = description;
+		String alarmString = (alarmDate != null) ? df.format(alarmDate) : "";
+		String statusString = (status == null) ? "Not answered" : status;
+
+		return title+": "+df.format(startDate)+" - "+df.format(endDate)+" ("+alarmString+") "+statusString;
 	}
-	
-	
-	
-	
-	
+
 //	public String getAvailableRoomNameIfAvailable(){
 //		Query query = db.DBConnector.makeQuery("SELECT enddate, startdate FROM calendarevent;");
 //		ResultSet result = query.getResult();
@@ -197,5 +205,3 @@ public class Appointment {
 //		
 //	}
 }
-
-
