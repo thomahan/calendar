@@ -32,6 +32,7 @@ public class Controller {
 
 	private User user;
 	private Date selectedDate;
+	private int selectedAppointmentId;
 	private ArrayList<Appointment> dailyAppointmentList;
 	private static ArrayList<Room> roomlist = new ArrayList<Room>();
 
@@ -237,6 +238,15 @@ public class Controller {
 		}
 	}
 
+	class DeleteAppointmentListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//int appointmentId = appointmentView.getAppointmentId();
+			//AppointmentDBC.removeAppointment(appointmentId);
+			closeAppointmentView();
+			
+		}
+	}
 	private void openLoginView() {
 		loginView = new LogIn();
 		loginView.addLoginButtonListener(new LoginListener());
@@ -288,6 +298,7 @@ public class Controller {
 	
 	private void openAppointmentView() {
 		appointmentView = null;
+		selectedAppointmentId = 0;
 	}
 		
 	private void closeAppointmentView() {
