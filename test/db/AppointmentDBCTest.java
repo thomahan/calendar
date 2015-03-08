@@ -1,6 +1,9 @@
 package db;
 
+import java.util.ArrayList;
 import java.util.Date;
+
+import model.Appointment;
 
 import org.junit.Test;
 
@@ -20,10 +23,22 @@ public class AppointmentDBCTest {
 		
 		AppointmentDBC.addAppointment(startTime, endTime, alarmTime, title, description, location, username, roomId);
 	}
-/*
+
 	@Test
 	public void addInvitationShouldInviteUserToAppointment() {
-		AppointmentDBC.addInvitation(11, "user1", null);
+		//AppointmentDBC.addInvitation(11, "user", null);
 	}
-	*/
+	
+	@Test
+	public void appointmentListShouldBeRetrieved() {
+		Date selectedDate = new Date(2015-1900, 2, 5);
+		System.out.println(selectedDate);
+		ArrayList<Appointment> appointmentList = AppointmentDBC.getAppointmentList("user", selectedDate);
+		
+		System.out.println(appointmentList.size());
+		for (Appointment a : appointmentList) {
+			System.out.println(a);
+			System.out.println(a.getEventName());
+		}
+	}
 }

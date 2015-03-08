@@ -64,16 +64,14 @@ public class AppointmentDBC {
 		upperTimeStamp.setMinutes(59);
 
 		Query query = DBConnector.makeQuery(""
-				+ "SELECT appointment_id, start_time, end_time, alarm_time, title, creator, status, is_visible "
-				+ "FROM appointment_invitation "
-				+ "JOIN appointment_invitation ON appointment.id = appointment_invitation.appointment_id "
-				+ "WHERE username = '"+username+"' "
-						+ "AND start_time >= '"+lowerTimeStamp+"' AND start_time <='"+upperTimeStamp+"';");
+				+ "SELECT id, start_time, end_time, alarm_time, title, creator, status, is_visible "
+				+ "FROM appointment JOIN appointment_invitation ON appointment.id = appointment_invitation.appointment_id "
+				+ "WHERE username = '"+username+"' AND start_time > '"+lowerTimeStamp+"' AND start_time <'"+upperTimeStamp+"';");
 		ResultSet result = query.getResult();
 
 		try {
 			while (result.next()) {
-				int appointmentId = result.getInt("appointment_id");
+				int appointmentId = result.getInt("id");
 				Timestamp startTime = result.getTimestamp("start_time");
 				Timestamp endTime = result.getTimestamp("end_time");
 				Timestamp alarmTime = result.getTimestamp("alarm_time");
@@ -82,10 +80,14 @@ public class AppointmentDBC {
 
 				String status = result.getString("status");
 				boolean isVisible = result.getBoolean("is_visible");
-				
 				Date startTimeDate = new Date(startTime.getTime());
 				Date endTimeDate = new Date(endTime.getTime());
-				Date alarmTimeDate = new Date(alarmTime.getTime());
+
+				Date alarmTimeDate = null;
+				if (alarmTime != null) {
+					alarmTimeDate = new Date(alarmTime.getTime());
+				}
+
 				boolean canEdit = (username.equals(creator));
 
 				Appointment appointment = new Appointment(appointmentId, startTimeDate, endTimeDate, alarmTimeDate, title, canEdit, status, isVisible);
