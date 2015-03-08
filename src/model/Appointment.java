@@ -170,7 +170,7 @@ public class Appointment {
 		String alarmString = (alarmDate != null) ? df.format(alarmDate) : "";
 		String statusString = (status == null) ? "Not answered" : status;
 
-		summary += title+": "+df.format(startDate)+" - "+df.format(endDate)+" ("+alarmString+") "+statusString;
+		summary += id+" "+title+": "+df.format(startDate)+" - "+df.format(endDate)+" ("+alarmString+") "+statusString;
 		summary += (location != null) ? "\nDescription: "+description : "";
 		summary += (location != null) ? "\nLocation: "+location : "";
 		if (room != null) {
