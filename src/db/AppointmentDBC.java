@@ -215,11 +215,21 @@ public class AppointmentDBC {
 		}
 	}
 	
+	/**
+	 * Marks an invitation as accepted in the database
+	 * @param appointmentId
+	 * @param username
+	 */
 	public static void acceptInvitation(int appointmentId, String username) {
 		DBConnector.makeStatement(""
 			+ "UPDATE appointment_invitation SET status = 'Accepted' WHERE appointment_id = '"+appointmentId+"';");
 	}
 	
+	/**
+	 * Marks an invitation as declined in the database
+	 * @param appointmentId
+	 * @param username
+	 */
 	public static void declineInvitation(int appointmentId, String username) {
 		DBConnector.makeStatement(""
 			+ "UPDATE appointment_invitation SET status = 'Declined' WHERE appointment_id = '"+appointmentId+"';");
