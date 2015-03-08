@@ -20,6 +20,7 @@ public class NewEvent extends JFrame {
 	private JTextField locationField;
 	private JTextArea descriptionArea;
 	private JButton createButton;
+	private JButton cancelButton;
 
 	/**
 	 * Launch the application.
@@ -33,17 +34,17 @@ public class NewEvent extends JFrame {
 	 */
 	public NewEvent() {
 		this.setTitle(FRAME_TITLE);
-		this.setBounds(100, 100, 450, 300);
+		this.setBounds(100, 100, 450, 350);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(6, 6, 438, 266);
+		panel.setBounds(6, 6, 438, 316);
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JPanel labelPanel = new JPanel();
-		labelPanel.setBounds(6, 6, 118, 254);
+		labelPanel.setBounds(6, 6, 118, 304);
 		panel.add(labelPanel);
 		labelPanel.setLayout(null);
 		
@@ -68,9 +69,14 @@ public class NewEvent extends JFrame {
 		labelPanel.add(lblDescriptions);
 		
 		createButton = new JButton("Create");
-		createButton.setBounds(6, 219, 117, 29);
+		createButton.setBounds(6, 219, 110, 29);
 		labelPanel.add(createButton);
-		
+			
+		cancelButton = new JButton("Cancel");
+		cancelButton.setBounds(6, 260, 110, 29);
+		labelPanel.add(cancelButton);
+
+
 		JPanel inputPanel = new JPanel();
 		inputPanel.setBounds(136, 6, 296, 254);
 		panel.add(inputPanel);
@@ -107,6 +113,10 @@ public class NewEvent extends JFrame {
 	public void addCreateButtonListener(ActionListener createButtonListener) {
 		createButton.addActionListener(createButtonListener);
 	}
+			
+	public void addCancelButtonListener(ActionListener cancelButtonListener) {
+		cancelButton.addActionListener(cancelButtonListener);
+	}
 
 	public String getStartTime() {
 		return startTimeField.getText();
@@ -136,6 +146,14 @@ public class NewEvent extends JFrame {
 		return 0;
 	}
 	
+	public void setStartTime(String startTime) {
+		startTimeField.setText(startTime);
+	}
+	
+	public void setEndTime(String endTime) {
+		endTimeField.setText(endTime);
+	}
+
 	public void displayErrorMessage(String errorMessage) {
 		JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 	}
