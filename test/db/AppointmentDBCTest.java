@@ -28,7 +28,7 @@ public class AppointmentDBCTest {
 	public void addInvitationShouldInviteUserToAppointment() {
 		//AppointmentDBC.addInvitation(11, "user", null);
 	}
-*/	
+
 	@Test
 	public void appointmentListShouldBeRetrieved() {
 		Date selectedDate = new Date(2015-1900, 2, 5);
@@ -38,7 +38,13 @@ public class AppointmentDBCTest {
 		System.out.println(appointmentList.size());
 		for (Appointment a : appointmentList) {
 			System.out.println(a);
-			System.out.println(a.getEventName());
 		}
+	}
+	
+	*/
+	@Test
+	public void appointmentShouldBeRetrieved() {
+		Appointment appointment = AppointmentDBC.getAppointment(15, "user");
+		System.out.println(appointment);
 	}
 }
