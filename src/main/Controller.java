@@ -28,6 +28,7 @@ public class Controller {
 	private NewUser registrationView;
 	private CalendarProgram calendarView;
 	private NewEvent appointmentCreationView;
+	private NewEvent appointmentView; // Change this to correct GUI class once created
 
 	private User user;
 	private Date selectedDate;
@@ -222,6 +223,20 @@ public class Controller {
 		}
 	}
 	
+	class ShowAppointmentListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			openAppointmentView();
+		}
+	}
+	
+	class CloseAppointmentListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			closeAppointmentView();
+		}
+	}
+
 	private void openLoginView() {
 		loginView = new LogIn();
 		loginView.addLoginButtonListener(new LoginListener());
@@ -269,6 +284,15 @@ public class Controller {
 	private void closeAppointmentCreationView() {
 		appointmentCreationView.dispose();
 		appointmentCreationView = null;
+	}
+	
+	private void openAppointmentView() {
+		appointmentView = null;
+	}
+		
+	private void closeAppointmentView() {
+		appointmentView.dispose();
+		appointmentView = null;
 	}
 
 	public void addToRoomlist(Room room){
