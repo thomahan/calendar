@@ -2,6 +2,8 @@ package db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.User;
 
@@ -35,6 +37,35 @@ public class UserDBC {
 		}
 
 		return user;
+	}
+
+	/**
+	 * Returns a list of users from the database
+	 * @return List of users
+	 */
+	public static List<User> getUserList() {
+		ArrayList<User> userList = new ArrayList<User>();
+
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT username, first_name, last_name "
+				+ "FROM user;");
+		ResultSet result = query.getResult();
+
+		try {
+			while (result.next()) {
+				String username = result.getString("username");
+				String firstName = result.getString("first_name");
+				String lastName = result.getString("last_name");
+				User user = new User(username, "", "", firstName, lastName);
+				userList.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+
+		return userList;
 	}
 
 	/**

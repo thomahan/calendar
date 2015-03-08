@@ -1,13 +1,13 @@
 package db;
 
-import db.UserDBC;
+import java.util.List;
+
 import model.User;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class UserDBCTest {
+	/*
 	@Test
 	public void userShouldBeRetrievable() {
 		String username = "user1";
@@ -32,5 +32,14 @@ public class UserDBCTest {
 		User dbUser = UserDBC.getUser("user3");
 		
 		assertEquals(user.getUsername(), dbUser.getUsername());
+	}
+	*/
+	
+	@Test
+	public void userListShouldBeRetrievable() {
+		List<User> userList = UserDBC.getUserList();
+		for (User u : userList) {
+			System.out.println(u);
+		}
 	}
 }
