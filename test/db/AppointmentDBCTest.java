@@ -1,8 +1,7 @@
 package db;
 
-import java.util.ArrayList;
-import java.util.Date;
-
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import model.Appointment;
 
 import org.junit.Test;
@@ -40,11 +39,35 @@ public class AppointmentDBCTest {
 			System.out.println(a);
 		}
 	}
-	
-	*/
+*/	
 	@Test
 	public void appointmentShouldBeRetrieved() {
-		Appointment appointment = AppointmentDBC.getAppointment(15, "user");
+		Appointment appointment = AppointmentDBC.getAppointment(65, "user");
 		System.out.println(appointment);
+	}
+/*
+	@Test
+	public void appointmentShouldBeRemoved() {
+		Appointment appointment = AppointmentDBC.getAppointment(63, "user");
+		assertNotNull(appointment);
+		
+		AppointmentDBC.removeAppointment(63);
+		appointment = AppointmentDBC.getAppointment(63, "user");
+		assertNull(appointment);
+	}
+	*/
+/*	
+	@Test
+	public void onlyInvitationShouldBeRemoved() {
+		AppointmentDBC.removeInvitation(64, "user");
+		Appointment appointment = AppointmentDBC.getAppointment(64, "user");
+		assertNotNull(appointment);
+	}
+	*/
+	
+	@Test
+	public void invitationShouldBeAcceptedOrDeclined() {
+		AppointmentDBC.acceptInvitation(65, "user");
+		AppointmentDBC.declineInvitation(66, "user");
 	}
 }

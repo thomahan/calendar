@@ -20,13 +20,11 @@ public class AppointmentDBC {
 		Appointment appointment =  null;
 
 		Query query = DBConnector.makeQuery(""
-				+ "SELECT appointment_id, start_time, end_time, alarm_time, title, description, location, creator, status, is_visible, room_id, name, seat_count "
+				+ "SELECT appointment_id, start_time, end_time, alarm_time, title, description, location, creator, status, is_visible, room_id "
 				+ "FROM appointment "
 				+ "JOIN appointment_invitation ON appointment.id = appointment_invitation.appointment_id "
-				+ "JOIN room ON appointment.room_id = room.id "
-				+ "WHERE appointment_id = '"+appointmentId+"';");
+				+ "WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"';");
 		ResultSet result = query.getResult();
-
 		try {
 			if (result.next()) {
 				Timestamp startTime = result.getTimestamp("start_time");
@@ -39,10 +37,8 @@ public class AppointmentDBC {
 
 				String status = result.getString("status");
 				boolean isVisible = result.getBoolean("is_visible");
-
+				
 				int roomId = result.getInt("room_id");
-				String roomName = result.getString("name");
-				int seatCount = result.getInt("seat_count");
 
 				Date startDate = new Date(startTime.getTime());
 				Date endDate = new Date(endTime.getTime());
@@ -58,9 +54,10 @@ public class AppointmentDBC {
 				appointment.setLocation(location);
 				
 				if (roomId != 0) {
-					Room room = new Room(roomId, roomName, seatCount);
+					Room room = getRoom(roomId);
 					appointment.setRoom(room);
 				}
+				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -193,7 +190,7 @@ public class AppointmentDBC {
 	 */
 	public static void removeAppointment(int appointmentId) {
 		DBConnector.makeStatement(""
-				+ "DELETE appointment "
+				+ "DELETE FROM appointment "
 				+ "WHERE id = '"+appointmentId+"';");
 	}
 
@@ -218,6 +215,15 @@ public class AppointmentDBC {
 		}
 	}
 	
+	public static void acceptInvitation(int appointmentId, String username) {
+		DBConnector.makeStatement(""
+			+ "UPDATE appointment_invitation SET status = 'Accepted' WHERE appointment_id = '"+appointmentId+"';");
+	}
+	
+	public static void declineInvitation(int appointmentId, String username) {
+		DBConnector.makeStatement(""
+			+ "UPDATE appointment_invitation SET status = 'Declined' WHERE appointment_id = '"+appointmentId+"';");
+	}
 	/**
 	 * Removes an invitation from the database
 	 * @param appointmentId
@@ -225,8 +231,37 @@ public class AppointmentDBC {
 	 */
 	public static void removeInvitation(int appointmentId, String username) {
 		DBConnector.makeStatement(""
-				+ "DELETE appointment_invitation "
+				+ "DELETE FROM appointment_invitation "
 				+ "WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"';");
 	}
+	
+	/**
+	 * Returns a room with a given ID
+	 * @param roomId
+	 * @return Room
+	 */
+	public static Room getRoom(int roomId) {
+		Room room =  null;
 
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT name, seat_count "
+				+ "FROM room "
+				+ "WHERE id = "+roomId+";");
+		ResultSet result = query.getResult();
+
+		try {
+			if (result.next()) {
+				String name = result.getString("name");
+				int seatCount = result.getInt("seat_count");
+
+				room = new Room(roomId, name, seatCount);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+
+		return room;	
+	}
 }
