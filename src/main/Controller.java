@@ -14,6 +14,7 @@ import model.Appointment;
 import model.Room;
 import model.User;
 import view.CalendarProgram;
+import view.ChooseRoom;
 import view.InvitePerson;
 import view.LogIn;
 import view.NewEvent;
@@ -29,15 +30,19 @@ public class Controller {
 	private NewUser registrationView;
 	private CalendarProgram calendarView;
 	private NewEvent appointmentCreationView;
-	private NewEvent appointmentView; // Change this to correct GUI class once created
 	private InvitePerson invitePersonView;
 	//private InviteGroup inviteGroupView;
+	private ChooseRoom roomReservationView;
 
 	private User user;
 	private Date selectedDate;
 	private int selectedAppointmentId;
-	private ArrayList<User> userList;
+	private List<User> userList;
+	private List<User> invitedUserList;
+	private int reservedRoomId;
+	private List<Room> availableRoomList;
 	private ArrayList<Appointment> dailyAppointmentList;
+
 	private static ArrayList<Room> roomlist = new ArrayList<Room>();
 
 	public Controller() {
@@ -49,6 +54,7 @@ public class Controller {
 		selectedDate.setHours(0);
 		selectedDate.setMinutes(0);
 		userList = new ArrayList<User>();
+		invitedUserList = new ArrayList<User>();
 	}
 	
 	class LoginListener implements ActionListener {
@@ -162,7 +168,7 @@ public class Controller {
 				String title = appointmentCreationView.getAppointmentTitle();
 				String description = appointmentCreationView.getDescription();
 				String location = appointmentCreationView.getAppointmentLocation();
-				int roomId = appointmentCreationView.getRoomId();
+				//int roomId = appointmentCreationView.getRoomId();
 
 				Date startDate = simpleDateFormat.parse(startTime);
 				Date endDate = simpleDateFormat.parse(endTime);
@@ -184,9 +190,15 @@ public class Controller {
 				location = location.length() > 0 ? location : null;
 				description = description.length() > 0 ? description : null;
 
-				int appointmentId = AppointmentDBC.addAppointment(startDate, endDate, alarmDate, title, description, location, user.getUsername(), roomId);
+				int appointmentId = AppointmentDBC.addAppointment(startDate, endDate, alarmDate, title, description, location, user.getUsername(), reservedRoomId);
 				AppointmentDBC.addInvitation(appointmentId, user.getUsername(), "Accepted");
 
+				for (User u : invitedUserList) {
+					AppointmentDBC.addInvitation(appointmentId, u.getUsername(), null);
+				}
+
+				//invitedUserList.clear();
+				
 				appointmentCreationView.displayAppointmentCreationMessage(title);
 
 				closeAppointmentCreationView();
@@ -241,24 +253,11 @@ public class Controller {
 		}
 	}
 	
-	class CloseAppointmentListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			closeAppointmentView();
-		}
-	}
-
-	class DeleteAppointmentListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-		}
-	}
-	
 	class OpenInvitePersonViewListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			invitePersonView = new InvitePerson();
+			invitePersonView.addConfirmButtonListener(new InvitePersonListener());
 			
 			userList = UserDBC.getUserList();
 			invitePersonView.setUserList(userList);
@@ -269,14 +268,15 @@ public class Controller {
 	class InvitePersonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			closeInvitationView();
+			invitedUserList = invitePersonView.getInvitedPersons();
+			closeInvitePersonView();
 		}
 	}
 	
 	class CancelInvitePersonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			closeInvitationView();
+			closeInvitePersonView();
 		}
 	}
 	
@@ -292,6 +292,53 @@ public class Controller {
 		}
 
 	}
+	
+	class OpenAppointmentEditListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			openAppointmentCreationView();
+			Appointment appointment = AppointmentDBC.getAppointment(selectedAppointmentId, user.getUsername());
+
+			appointmentCreationView.setStartTime(simpleDateFormat.format(appointment.getStartDate()));
+			appointmentCreationView.setEndTime(simpleDateFormat.format(appointment.getEndDate()));
+		}	
+	}
+	
+	class DeleteAppointmentListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			Appointment appointment = calendarView.getSelectedAppointment();
+
+			AppointmentDBC.removeInvitation(appointment.getId(), user.getUsername());
+			if (appointment.isEditable()) {
+				AppointmentDBC.removeAppointment(appointment.getId());
+			}
+
+			dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
+			calendarView.setDailyAppointmentList(dailyAppointmentList);
+		}
+	}
+	
+	class OpenRoomReservationViewListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			roomReservationView = new ChooseRoom();
+			roomReservationView.addConfirmButtonListener(new ReserveRoomListener());
+			
+			availableRoomList = AppointmentDBC.getRoomList();
+			roomReservationView.setRoomList(availableRoomList);
+		}
+
+	}
+	
+	class ReserveRoomListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			reservedRoomId = roomReservationView.getSelectedRoom().getId();
+			
+		}
+	}
+
 	private void openLoginView() {
 		loginView = new LogIn();
 		loginView.addLoginButtonListener(new LoginListener());
@@ -320,6 +367,8 @@ public class Controller {
 		calendarView.addLogoutButtonListener(new LogoutListener());
 		calendarView.addSelectDateListener(new SelectDateListener());
 
+		calendarView.addEditButtonListener(new OpenAppointmentCreationListener());
+		calendarView.addDeleteButtonListener(new DeleteAppointmentListener());
 	}
 	
 	private void closeCalendarView() {
@@ -344,19 +393,9 @@ public class Controller {
 		appointmentCreationView.dispose();
 		appointmentCreationView = null;
 	}
-	
-	private void openAppointmentView() {
-		appointmentView = null;
-		selectedAppointmentId = 0;
-	}
-		
-	private void closeAppointmentView() {
-		appointmentView.dispose();
-		appointmentView = null;
-	}
 
-	private void closeInvitationView() {
-		//invitePersonView.dispose();
+	private void closeInvitePersonView() {
+		invitePersonView.dispose();
 		invitePersonView = null;
 	}
 
