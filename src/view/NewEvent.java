@@ -10,8 +10,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.AbstractAction;
+
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.Action;
+
+import model.User;
 
 public class NewEvent extends JFrame {
 	// TODO: Add field for alarmTime, roomId. Add cancel button?
@@ -26,7 +32,8 @@ public class NewEvent extends JFrame {
 	private JButton cancelButton;
 	private JButton invitePersonButton;
 	private JButton inviteGroupButton;
-
+	private ArrayList<User> invitedUsers;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -182,4 +189,18 @@ public class NewEvent extends JFrame {
 	public void displayAppointmentCreationMessage(String title) {
 		JOptionPane.showMessageDialog(this, "Appointment '"+title+"' created.", "Appointment creation successful!", JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	public void setAppointmentTitleField(String title) {
+		appointmentTitleField.setText(title);
+	}
+	
+	public void setLocationField(String location){
+		locationField.setText(location);
+	}
+	
+	public void setDescriptionArea(String description) {
+		descriptionArea.setText(description);
+	}
+
+		
 }
