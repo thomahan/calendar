@@ -42,7 +42,7 @@ public class AppointmentDBCTest {
 */	
 	@Test
 	public void appointmentShouldBeRetrieved() {
-		Appointment appointment = AppointmentDBC.getAppointment(65, "user");
+		Appointment appointment = AppointmentDBC.getAppointment(79, "user");
 		System.out.println(appointment);
 	}
 /*
@@ -64,10 +64,11 @@ public class AppointmentDBCTest {
 		assertNotNull(appointment);
 	}
 	*/
-	
+/*	
 	@Test
 	public void invitationShouldBeAcceptedOrDeclined() {
 		AppointmentDBC.acceptInvitation(65, "user");
 		AppointmentDBC.declineInvitation(66, "user");
 	}
+	*/
 }
