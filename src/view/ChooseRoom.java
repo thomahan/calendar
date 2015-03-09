@@ -37,7 +37,7 @@ public class ChooseRoom extends JFrame {
 	 */
 	public ChooseRoom() {
 		this.setBounds(100, 100, 450, 300);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
 		panel = new JPanel();

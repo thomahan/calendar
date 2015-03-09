@@ -48,7 +48,7 @@ public class NewEvent extends JFrame {
 	public NewEvent() {
 		this.setTitle(FRAME_TITLE);
 		this.setBounds(100, 100, 450, 350);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
