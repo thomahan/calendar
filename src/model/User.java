@@ -140,6 +140,6 @@ public class User implements CalendarEventListener, GroupListener {
 	
 	@Override
 	public String toString() {
-		return username+": "+firstName+" "+lastName;
+		return firstName+" "+lastName;
 	}
 }
