@@ -227,7 +227,12 @@ public class Controller {
 	class ShowAppointmentListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			/*
+			int appointmentId = calendarView.getSelectedAppointment().getId();
+			Appointment appointment = AppointmentDBC.getAppointment(appointmentId, user.getUsername());
 			openAppointmentView();
+			appointmentView.setAppointment(appointment);
+			*/
 		}
 	}
 	
