@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -9,11 +11,19 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.JButton;
+
+import model.User;
 
 public class InvitePerson {
 
+	private static final ListModel String = null;
 	private JFrame frame;
+	private JButton btnCancel, btnConfirm;
+	private JList list;
+	private JPanel panel;
 
 	/**
 	 * Launch the application.
@@ -47,7 +57,7 @@ public class InvitePerson {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBounds(6, 6, 438, 266);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -56,11 +66,31 @@ public class InvitePerson {
 		lblInviteOtherPersons.setBounds(6, 6, 261, 16);
 		panel.add(lblInviteOtherPersons);
 		
-		JList list = new JList();
-		list.setBounds(16, 34, 352, 175);
-				
-		panel.add(list);
+		btnConfirm = new JButton("Confirm");
+		btnConfirm.setBounds(6, 221, 117, 29);
+		panel.add(btnConfirm);
 		
+		btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(151, 221, 117, 29);
+		panel.add(btnCancel);
 		
 	}
+	
+	public void addCancelButtonListener(ActionListener cancelButtonListener) {
+		btnCancel.addActionListener(cancelButtonListener);
+	}
+	
+	public void addConfirmButtonListener(ActionListener confirmButtonListener) {
+		btnConfirm.addActionListener(confirmButtonListener);
+	}
+	
+	public void setUserList(ArrayList<User> users) {
+		DefaultListModel<String> listModel = new DefaultListModel<>();
+		for (User user : users) {
+			listModel.addElement(user.toString());
+		}
+		list = new JList<>(listModel);
+		panel.add(list);
+	}
+	
 }
