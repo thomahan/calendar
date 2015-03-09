@@ -31,19 +31,21 @@ public class TestMain {
 		Date startdato1 = new Date(2000, 7, 7, 11, 45);
 		Date sluttdato1 = new Date(2000, 7, 7, 11, 50);
 		Interval interval1 = new Interval(startdato1, sluttdato1);
-		Date startdato2 = new Date(2000, 7, 7, 11, 48);
-		Date sluttdato2 = new Date(2000, 7, 7, 11, 49);
+		Date startdato2 = new Date(2000, 7, 7, 11, 46);
+		Date sluttdato2 = new Date(2000, 7, 7, 11, 52);
 		Interval interval2 = new Interval(startdato2, sluttdato2);
 		
 		interval1.overlap(interval2);
 		
-		Appointment tivoli = new Appointment("Tivoli", startdato1, Adrian, sluttdato1, "Skolen", 5, "Lekser");
-		Appointment tivoli1 = new Appointment("Lanparty", startdato2, Adrian, sluttdato2, "Tyholt", 8, "Lekser");
+		Appointment tivoli = new Appointment(1, startdato1, sluttdato1, startdato1, "Skolen", true, "Lekser", true);
+		Appointment tivoli1 = new Appointment(1, startdato2, sluttdato2, startdato2, "hjemem", true, "Ler", true);
 		tivoli.setRoom(rom1);
 		tivoli1.setRoom(rom2);
 //		
-//		tivoli.addParticipant(Adrian1);
-//		Adrian.getCalendar().showEventsOnADay(startdato1);
+		tivoli.addParticipant(Adrian);
+		tivoli1.addParticipant(Adrian);
+		//tivoli.addParticipant(Adrian);
+		Adrian.getCalendar().showEventsOnADay(startdato1);
 		
 		
 		
