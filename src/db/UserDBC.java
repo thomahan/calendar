@@ -43,7 +43,7 @@ public class UserDBC {
 	 * Returns a list of users from the database
 	 * @return List of users
 	 */
-	public static ArrayList<User> getUserList() {
+	public static List<User> getUserList() {
 		ArrayList<User> userList = new ArrayList<User>();
 
 		Query query = DBConnector.makeQuery(""
