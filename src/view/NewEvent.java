@@ -9,6 +9,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.AbstractAction;
+import java.awt.event.ActionEvent;
+import javax.swing.Action;
 
 public class NewEvent extends JFrame {
 	// TODO: Add field for alarmTime, roomId. Add cancel button?
@@ -21,6 +24,8 @@ public class NewEvent extends JFrame {
 	private JTextArea descriptionArea;
 	private JButton createButton;
 	private JButton cancelButton;
+	private JButton invitePersonButton;
+	private JButton inviteGroupButton;
 
 	/**
 	 * Launch the application.
@@ -105,6 +110,14 @@ public class NewEvent extends JFrame {
 		descriptionArea = new JTextArea();
 		descriptionArea.setBounds(6, 166, 284, 82);
 		inputPanel.add(descriptionArea);
+		
+		invitePersonButton = new JButton("Invite persons");
+		invitePersonButton.setBounds(162, 7, 117, 29);
+		inputPanel.add(invitePersonButton);
+		
+		inviteGroupButton= new JButton("Invite groups");
+		inviteGroupButton.setBounds(162, 47, 117, 29);
+		inputPanel.add(inviteGroupButton);
 
 		this.setVisible(true);
 	}
@@ -116,6 +129,14 @@ public class NewEvent extends JFrame {
 			
 	public void addCancelButtonListener(ActionListener cancelButtonListener) {
 		cancelButton.addActionListener(cancelButtonListener);
+	}
+	
+	public void addInvitePersonButtonListener(ActionListener invitePersonButtonListener) {
+		invitePersonButton.addActionListener(invitePersonButtonListener);
+	}
+	
+	public void addInviteGroupButtonListener(ActionListener inviteGroupButtonListener) {
+		inviteGroupButton.addActionListener(inviteGroupButtonListener);
 	}
 
 	public String getStartTime() {
@@ -161,5 +182,4 @@ public class NewEvent extends JFrame {
 	public void displayAppointmentCreationMessage(String title) {
 		JOptionPane.showMessageDialog(this, "Appointment '"+title+"' created.", "Appointment creation successful!", JOptionPane.INFORMATION_MESSAGE);
 	}
-
 }
