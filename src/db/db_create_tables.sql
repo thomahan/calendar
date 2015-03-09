@@ -45,3 +45,18 @@ CREATE TABLE IF NOT EXISTS appointment_invitation (
 	CONSTRAINT FOREIGN KEY (username) REFERENCES user(username) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS appointment_change (
+	appointment_id INT NOT NULL,
+	change_time DATETIME NOT NULL,
+	start_time DATETIME,
+	end_time DATETIME,
+	alarm_time DATETIME,
+	title VARCHAR(256),
+	description VARCHAR(256),
+	location VARCHAR(256),
+	creator VARCHAR(64),
+	room_id INT,
+	PRIMARY KEY (appointment_id, change_time),
+	CONSTRAINT FOREIGN KEY (appointment_id) REFERENCES appointment(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (room_id) REFERENCES room(id) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB;
