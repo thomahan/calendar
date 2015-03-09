@@ -30,13 +30,14 @@ public class Controller {
 	private CalendarProgram calendarView;
 	private NewEvent appointmentCreationView;
 	private NewEvent appointmentView; // Change this to correct GUI class once created
-	private InvitePerson invitationView;
+	private InvitePerson invitePersonView;
+	//private InviteGroup inviteGroupView;
 
 	private User user;
 	private Date selectedDate;
 	private int selectedAppointmentId;
-	private List<User> userList;
-	private List<Appointment> dailyAppointmentList;
+	private ArrayList<User> userList;
+	private ArrayList<Appointment> dailyAppointmentList;
 	private static ArrayList<Room> roomlist = new ArrayList<Room>();
 
 	public Controller() {
@@ -250,39 +251,47 @@ public class Controller {
 	class DeleteAppointmentListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//int appointmentId = appointmentView.getAppointmentId();
-			//AppointmentDBC.removeAppointment(appointmentId);
-			closeAppointmentView();
 			
 		}
 	}
 	
-	class OpenInvitationViewListener implements ActionListener {
+	class OpenInvitePersonViewListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			invitationView = new InvitePerson;
-			invitationView.addInviteButtonListener(new InviteListener());
-			invitationView.addCancelButtonListener(new CancelInvitationListener());
+			invitePersonView = new InvitePerson();
+			
 			userList = UserDBC.getUserList();
-			invitationView.setUserList(userList);
+			invitePersonView.setUserList(userList);
 		}
 
 	}
 	
-	class InviteListener implements ActionListener {
+	class InvitePersonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			closeInvitationView();
 		}
 	}
 	
-	class CancelInvitationListener implements ActionListener {
+	class CancelInvitePersonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			closeInvitationView();
 		}
 	}
+	
+	class OpenInviteGroupViewListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			/*
+			inviteGroupView = new InvitePerson();
+			
+			groupList = UserDBC.getGroupList();
+			inviteGroupView.setUserList(groupList);
+			*/
+		}
 
+	}
 	private void openLoginView() {
 		loginView = new LogIn();
 		loginView.addLoginButtonListener(new LoginListener());
@@ -310,6 +319,7 @@ public class Controller {
 		calendarView.addNewAppointmentButtonListener(new OpenAppointmentCreationListener());
 		calendarView.addLogoutButtonListener(new LogoutListener());
 		calendarView.addSelectDateListener(new SelectDateListener());
+
 	}
 	
 	private void closeCalendarView() {
@@ -325,6 +335,9 @@ public class Controller {
 		appointmentCreationView = new NewEvent();
 		appointmentCreationView.addCreateButtonListener(new CreateAppointmentListener());
 		appointmentCreationView.addCancelButtonListener(new CancelAppointmentCreationListener());
+		appointmentCreationView.addInvitePersonButtonListener(new OpenInvitePersonViewListener());
+		appointmentCreationView.addInviteGroupButtonListener(new OpenInviteGroupViewListener());
+		appointmentCreationView.addCancelButtonListener(new CancelInvitePersonListener());
 	}
 		
 	private void closeAppointmentCreationView() {
@@ -343,8 +356,8 @@ public class Controller {
 	}
 
 	private void closeInvitationView() {
-		invitationView.dispose();
-		invitationView = null;
+		//invitePersonView.dispose();
+		invitePersonView = null;
 	}
 
 	public void addToRoomlist(Room room){
