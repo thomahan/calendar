@@ -55,8 +55,7 @@ public class CalendarProgram extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		@SuppressWarnings("unused")
-		CalendarProgram window = new CalendarProgram();
+		new CalendarProgram();
 	}
 
 	/**
@@ -347,7 +346,6 @@ public class CalendarProgram extends JFrame {
 	public Date getSelectDate() {
 		return selectedDate;
 	}
-	
 	public Appointment getSelectedAppointment() {
 		return dailyAppointmentListBox.getSelectedValue();
 	}
