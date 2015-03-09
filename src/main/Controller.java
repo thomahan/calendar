@@ -332,9 +332,11 @@ public class Controller {
 		public void actionPerformed(ActionEvent actionEvent) {
 			Appointment appointment = calendarView.getSelectedAppointment();
 
-			AppointmentDBC.removeInvitation(appointment.getId(), user.getUsername());
-			if (appointment.isEditable()) {
-				AppointmentDBC.removeAppointment(appointment.getId());
+			if (appointment != null) {
+				AppointmentDBC.removeInvitation(appointment.getId(), user.getUsername());
+				if (appointment.isEditable()) {
+					AppointmentDBC.removeAppointment(appointment.getId());
+				}
 			}
 
 			dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
