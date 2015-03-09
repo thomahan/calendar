@@ -18,7 +18,7 @@ public class Appointment {
 	private boolean editable;
 	private String status;
 	private boolean isVisible;
-	private ArrayList<Room> roomList = new ArrayList<Room>();
+	//private ArrayList<Room> roomList = new ArrayList<Room>();
 
 	private User creator;
 	private ArrayList<User> participants = new ArrayList<User>();
@@ -33,7 +33,7 @@ public class Appointment {
 		this.editable = editable;
 		this.status = status;
 		this.isVisible = isVisible;
-		this.roomList = main.Controller.getRoomlist();
+		//this.roomList = main.Controller.getRoomlist();
 	}
 		
 	public void setDescription(String description) {
@@ -187,7 +187,7 @@ public class Appointment {
 		
 		return summary;
 	}
-	
+/*	
 	public Room getAvailableRoom(Date start, Date end){
 		Interval int1 = new Interval(start, end);
 		for(Room room : roomList) {
@@ -202,4 +202,5 @@ public class Appointment {
 		}
 		return room;
 	}
+	*/
 }
