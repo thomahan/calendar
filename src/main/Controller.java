@@ -11,10 +11,12 @@ import java.util.Date;
 import java.util.List;
 
 import model.Appointment;
+import model.Group;
 import model.Room;
 import model.User;
 import view.CalendarProgram;
 import view.ChooseRoom;
+import view.InviteGroup;
 import view.InvitePerson;
 import view.LogIn;
 import view.NewEvent;
@@ -31,7 +33,7 @@ public class Controller {
 	private CalendarProgram calendarView;
 	private NewEvent appointmentCreationView;
 	private InvitePerson invitePersonView;
-	//private InviteGroup inviteGroupView;
+	private InviteGroup groupInvitationView;
 	private ChooseRoom roomReservationView;
 
 	private User user;
@@ -39,6 +41,7 @@ public class Controller {
 	private int selectedAppointmentId;
 	private List<User> userList;
 	private List<User> invitedUserList;
+	private List<Group> groupList;
 	private int reservedRoomId;
 	private List<Room> availableRoomList;
 	private ArrayList<Appointment> dailyAppointmentList;
@@ -47,7 +50,6 @@ public class Controller {
 
 	public Controller() {
 		openLoginView();
-		//openCalendarView();
 		simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
 
 		selectedDate = new Date();
@@ -55,8 +57,59 @@ public class Controller {
 		selectedDate.setMinutes(0);
 		userList = new ArrayList<User>();
 		invitedUserList = new ArrayList<User>();
+		availableRoomList = new ArrayList<Room>();
 	}
 	
+	class OpenRegistrationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			closeLoginView();
+			openRegisterView();
+		}
+	}
+
+	class RegisterListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			try {
+				String username = registrationView.getUsername();
+				String firstName = registrationView.getFirstName();
+				String lastName = registrationView.getLastName();
+				String password = registrationView.getPassword();
+				String passwordConfirm = registrationView.getPasswordConfirm();
+
+				if (username.length() <= 0) {
+					throw new Exception("Username must be specified.");
+				} else if (UserDBC.getUser(username) != null) {
+						throw new Exception("Username is already taken.");
+				} else if (password.length() <= 0) {
+					throw new Exception("Password must be specified.");
+				} else if (!password.equals(passwordConfirm)){					
+					throw new Exception("Passwords do not match.");
+				}
+				
+				user = new User(firstName, lastName, username, password);
+				UserDBC.addUser(user);
+
+				registrationView.displayRegisterMessage(username);
+
+				closeRegisterView();
+				openLoginView();
+			} catch (Exception e){
+				user = null;
+				registrationView.displayErrorMessage(e.getMessage());
+			}
+		}
+	}
+
+	class CancelRegistrationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			closeRegisterView();
+			openLoginView();
+		}
+	}
+
 	class LoginListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
@@ -85,59 +138,6 @@ public class Controller {
 				user = null;
 				loginView.displayErrorMessage(e.getMessage());
 			}
-		}
-	}
-
-	class OpenRegistrationListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent actionEvent) {
-			closeLoginView();
-			openRegisterView();
-		}
-	}
-
-	class RegisterListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent actionEvent) {
-			try{
-				String username = registrationView.getUsername();
-				String firstName = registrationView.getFirstName();
-				String lastName = registrationView.getLastName();
-				String password = registrationView.getPassword();
-				String passwordConfirm = registrationView.getPasswordConfirm();
-
-				if (username.length() <= 0) {
-					throw new Exception("Username must be specified.");
-				} else if (UserDBC.getUser(username) != null) {
-						throw new Exception("Username is already taken.");
-				} else if (password.length() <= 0) {
-					throw new Exception("Password must be specified.");
-				} else if (!password.equals(passwordConfirm)){					
-					throw new Exception("Passwords do not match.");
-				}
-				
-				user = new User(firstName, lastName, username, password);
-				UserDBC.addUser(user);
-
-				registrationView.displayRegisterMessage(username);
-
-				closeRegisterView();
-				openLoginView();
-
-			} catch (Exception e){
-				user = null;
-				registrationView.displayErrorMessage(e.getMessage());
-			}
-
-		}
-		
-	}
-
-	class CancelRegistrationListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent actionEvent) {
-			closeRegisterView();
-			openLoginView();
 		}
 	}
 
@@ -192,12 +192,15 @@ public class Controller {
 
 				int appointmentId = AppointmentDBC.addAppointment(startDate, endDate, alarmDate, title, description, location, user.getUsername(), reservedRoomId);
 				AppointmentDBC.addInvitation(appointmentId, user.getUsername(), "Accepted");
+				if (invitedUserList.contains(user)) {
+					invitedUserList.remove(user);
+				}
 
 				for (User u : invitedUserList) {
 					AppointmentDBC.addInvitation(appointmentId, u.getUsername(), null);
 				}
 
-				//invitedUserList.clear();
+				invitedUserList.clear();
 				
 				appointmentCreationView.displayAppointmentCreationMessage(title);
 
@@ -219,6 +222,97 @@ public class Controller {
 		}
 	}
 	
+	class OpenUserInvitationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			invitePersonView = new InvitePerson();
+			invitePersonView.addConfirmButtonListener(new InviteUserListener());
+			invitePersonView.addCancelButtonListener(new CancelUserInvitationListener());
+			
+			userList = UserDBC.getUserList();
+			// This should be done differently
+			List<User> removeList = new ArrayList<User>();
+			for (User u : userList) {
+				if (u.getUsername().equals(user.getUsername())) {
+					removeList.add(u);
+				}
+			}
+			
+			for (User r : removeList) {
+				userList.remove(r);
+				
+			}
+			invitePersonView.setUserList(userList);
+		}
+
+	}
+	
+	class InviteUserListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			invitedUserList = invitePersonView.getInvitedPersons();
+			closeInvitePersonView();
+		}
+	}
+	
+	class CancelUserInvitationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			closeInvitePersonView();
+		}
+	}
+	
+	class OpenGroupInvitationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			groupInvitationView = new InviteGroup();
+			groupInvitationView.addCancelButtonListener(new CancelGroupInvitationListener());
+			
+			/*
+			groupList = UserDBC.getGroupList();
+			inviteGroupView.setGroupist(groupList);
+			*/
+		}
+	}
+
+	class CancelGroupInvitationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			groupInvitationView.dispose();
+			groupInvitationView = null;
+		}
+	}
+
+	class OpenRoomReservationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			roomReservationView = new ChooseRoom();
+			roomReservationView.addConfirmButtonListener(new ReserveRoomListener());
+			roomReservationView.addCancelButtonListener(new CancelRoomReservationListener());
+			
+			//availableRoomList = AppointmentDBC.getRoomList();
+			roomReservationView.setRoomList(availableRoomList);
+		}
+
+	}
+	
+	class ReserveRoomListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			reservedRoomId = roomReservationView.getSelectedRoom().getId();
+			
+		}
+	}
+	
+	class CancelRoomReservationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			roomReservationView.dispose();
+			roomReservationView = null;
+			
+		}
+	}
+	
 	class SelectDateListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
@@ -227,81 +321,10 @@ public class Controller {
 			calendarView.setDailyAppointmentList(dailyAppointmentList);
 		}
 
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-		}
-		@Override
-		public void mouseExited(MouseEvent arg0) {
-		}
-		@Override
-		public void mousePressed(MouseEvent arg0) {
-		}
-		@Override
-		public void mouseReleased(MouseEvent arg0) {
-		}
-	}
-	
-	class ShowAppointmentListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			/*
-			int appointmentId = calendarView.getSelectedAppointment().getId();
-			Appointment appointment = AppointmentDBC.getAppointment(appointmentId, user.getUsername());
-			openAppointmentView();
-			appointmentView.setAppointment(appointment);
-			*/
-		}
-	}
-	
-	class OpenInvitePersonViewListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			invitePersonView = new InvitePerson();
-			invitePersonView.addConfirmButtonListener(new InvitePersonListener());
-			
-			userList = UserDBC.getUserList();
-			invitePersonView.setUserList(userList);
-		}
-
-	}
-	
-	class InvitePersonListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			invitedUserList = invitePersonView.getInvitedPersons();
-			closeInvitePersonView();
-		}
-	}
-	
-	class CancelInvitePersonListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			closeInvitePersonView();
-		}
-	}
-	
-	class OpenInviteGroupViewListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			/*
-			inviteGroupView = new InvitePerson();
-			
-			groupList = UserDBC.getGroupList();
-			inviteGroupView.setUserList(groupList);
-			*/
-		}
-
-	}
-	
-	class OpenAppointmentEditListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent actionEvent) {
-			openAppointmentCreationView();
-			Appointment appointment = AppointmentDBC.getAppointment(selectedAppointmentId, user.getUsername());
-
-			appointmentCreationView.setStartTime(simpleDateFormat.format(appointment.getStartDate()));
-			appointmentCreationView.setEndTime(simpleDateFormat.format(appointment.getEndDate()));
-		}	
+		@Override public void mouseEntered(MouseEvent arg0) {}
+		@Override public void mouseExited(MouseEvent arg0) {}
+		@Override public void mousePressed(MouseEvent arg0) {}
+		@Override public void mouseReleased(MouseEvent arg0) {}
 	}
 	
 	class DeleteAppointmentListener implements ActionListener {
@@ -318,26 +341,18 @@ public class Controller {
 			calendarView.setDailyAppointmentList(dailyAppointmentList);
 		}
 	}
-	
-	class OpenRoomReservationViewListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			roomReservationView = new ChooseRoom();
-			roomReservationView.addConfirmButtonListener(new ReserveRoomListener());
-			
-			availableRoomList = AppointmentDBC.getRoomList();
-			roomReservationView.setRoomList(availableRoomList);
-		}
 
+	class OpenAppointmentEditingListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			openAppointmentCreationView();
+			Appointment appointment = AppointmentDBC.getAppointment(selectedAppointmentId, user.getUsername());
+
+			appointmentCreationView.setStartTime(simpleDateFormat.format(appointment.getStartDate()));
+			appointmentCreationView.setEndTime(simpleDateFormat.format(appointment.getEndDate()));
+		}	
 	}
 	
-	class ReserveRoomListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			reservedRoomId = roomReservationView.getSelectedRoom().getId();
-			
-		}
-	}
 
 	private void openLoginView() {
 		loginView = new LogIn();
@@ -384,9 +399,9 @@ public class Controller {
 		appointmentCreationView = new NewEvent();
 		appointmentCreationView.addCreateButtonListener(new CreateAppointmentListener());
 		appointmentCreationView.addCancelButtonListener(new CancelAppointmentCreationListener());
-		appointmentCreationView.addInvitePersonButtonListener(new OpenInvitePersonViewListener());
-		appointmentCreationView.addInviteGroupButtonListener(new OpenInviteGroupViewListener());
-		appointmentCreationView.addCancelButtonListener(new CancelInvitePersonListener());
+		appointmentCreationView.addInvitePersonButtonListener(new OpenUserInvitationListener());
+		appointmentCreationView.addInviteGroupButtonListener(new OpenGroupInvitationListener());
+		appointmentCreationView.addChooseRoomButtonListener(new OpenRoomReservationListener());
 	}
 		
 	private void closeAppointmentCreationView() {
