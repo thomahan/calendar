@@ -171,20 +171,28 @@ public class Appointment {
 
 	@Override
 	public String toString() {
-		String summary = "";
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat time = new SimpleDateFormat("HH:mm");
+		DateFormat full = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-		String alarmString = (alarmDate != null) ? df.format(alarmDate) : "";
-		String statusString = (status == null) ? "Not answered" : status;
+		String summary = "<html>";
 
-		summary += id+" "+title+": "+df.format(startDate)+" - "+df.format(endDate)+" ("+alarmString+") "+statusString;
-		summary += (location != null) ? "\nDescription: "+description : "";
-		summary += (location != null) ? "\nLocation: "+location : "";
+		String statusString = (status != null) ? status : "Not replied";
+		summary += (date.format(startDate).equals(date.format(endDate))) ? time.format(startDate)+"-"+time.format(endDate) : full.format(startDate)+" - "+full.format(endDate);
+		summary += " ("+statusString+")<br>";
+		summary += (alarmDate != null) ? (date.format(startDate).equals(date.format(alarmDate))) ? "Alarm: "+time.format(alarmDate)+"<br>" : "Alarm:"+full.format(alarmDate)+"<br>" : "";
+
+		summary += title+"<br>";
+
+		summary += (description == null) ? "" : description+"<br>";
+		summary += (location != null) ? "Location: "+location+"<br>" : "";
 		if (room != null) {
 			String seatCountString = (room.getSeatCount() == 1) ? "seat" : "seats";
-			summary += (room != null) ? "\nRoom: "+room.getId()+" "+room.getName()+" ("+room.getSeatCount()+" "+seatCountString+")" : "";
+			summary += "Room: "+room.getId()+" "+room.getName()+" ("+room.getSeatCount()+" "+seatCountString+")<br>";
 		}
 		
+
+		summary += "</html>";
 		return summary;
 	}
 /*	
