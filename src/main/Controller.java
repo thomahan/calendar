@@ -4,16 +4,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import model.Appointment;
 import model.Room;
 import model.User;
 import view.CalendarProgram;
+import view.InvitePerson;
 import view.LogIn;
 import view.NewEvent;
 import view.NewUser;
@@ -29,11 +30,13 @@ public class Controller {
 	private CalendarProgram calendarView;
 	private NewEvent appointmentCreationView;
 	private NewEvent appointmentView; // Change this to correct GUI class once created
+	private InvitePerson invitationView;
 
 	private User user;
 	private Date selectedDate;
 	private int selectedAppointmentId;
-	private ArrayList<Appointment> dailyAppointmentList;
+	private List<User> userList;
+	private List<Appointment> dailyAppointmentList;
 	private static ArrayList<Room> roomlist = new ArrayList<Room>();
 
 	public Controller() {
@@ -44,6 +47,7 @@ public class Controller {
 		selectedDate = new Date();
 		selectedDate.setHours(0);
 		selectedDate.setMinutes(0);
+		userList = new ArrayList<User>();
 	}
 	
 	class LoginListener implements ActionListener {
@@ -252,6 +256,33 @@ public class Controller {
 			
 		}
 	}
+	
+	class OpenInvitationViewListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			invitationView = new InvitePerson;
+			invitationView.addInviteButtonListener(new InviteListener());
+			invitationView.addCancelButtonListener(new CancelInvitationListener());
+			userList = UserDBC.getUserList();
+			invitationView.setUserList(userList);
+		}
+
+	}
+	
+	class InviteListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			closeInvitationView();
+		}
+	}
+	
+	class CancelInvitationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			closeInvitationView();
+		}
+	}
+
 	private void openLoginView() {
 		loginView = new LogIn();
 		loginView.addLoginButtonListener(new LoginListener());
@@ -309,6 +340,11 @@ public class Controller {
 	private void closeAppointmentView() {
 		appointmentView.dispose();
 		appointmentView = null;
+	}
+
+	private void closeInvitationView() {
+		invitationView.dispose();
+		invitationView = null;
 	}
 
 	public void addToRoomlist(Room room){
