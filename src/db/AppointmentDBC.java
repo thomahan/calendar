@@ -84,7 +84,7 @@ public class AppointmentDBC {
 		upperTime.setMinutes(59);
 
 		Query query = DBConnector.makeQuery(""
-				+ "SELECT id, start_time, end_time, alarm_time, title, creator, status, is_visible "
+				+ "SELECT id, start_time, end_time, alarm_time, title, description, location, room_id, creator, status, is_visible "
 				+ "FROM appointment JOIN appointment_invitation ON appointment.id = appointment_invitation.appointment_id "
 				+ "WHERE username = '"+username+"' AND start_time >= '"+lowerTime+"' AND start_time <='"+upperTime+"';");
 		ResultSet result = query.getResult();
@@ -101,6 +101,10 @@ public class AppointmentDBC {
 				String status = result.getString("status");
 				boolean isVisible = result.getBoolean("is_visible");
 
+				String description = result.getString("description");
+				String location = result.getString("location");
+				int roomId = result.getInt("room_id");
+				
 				Date startDate = new Date(startTime.getTime());
 				Date endDate = new Date(endTime.getTime());
 				Date alarmDate = null;
@@ -111,6 +115,15 @@ public class AppointmentDBC {
 				boolean editable = (username.equals(creator));
 
 				Appointment appointment = new Appointment(appointmentId, startDate, endDate, alarmDate, title, editable, status, isVisible);
+
+				appointment.setDescription(description);
+				appointment.setLocation(location);
+				
+				if (roomId != 0) {
+					Room room = getRoom(roomId);
+					appointment.setRoom(room);
+				}
+
 				appointmentList.add(appointment);
 			}
 		} catch (SQLException e) {
