@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 
 import model.Appointment;
 
+@SuppressWarnings("serial")
 public class CalendarProgram extends JFrame {
 	// TODO: Add show hidden option
 	
@@ -37,11 +38,11 @@ public class CalendarProgram extends JFrame {
 	private JScrollPane stblCalendar;
 	private JButton logoutButton;
 	private JButton newAppointmentButton;
-	private JButton editAppointmentButton;
-	private JButton deleteAppointmentButton;
-	private static JComboBox comboBox;
+	private JButton editButton;
+	private JButton deleteButton;
+	private static JComboBox<String> comboBox;
 	private static JLabel lblNewLabel;
-	private JList dailyAppointmentListBox;
+	private JList<Appointment> dailyAppointmentListBox;
 	private DefaultListModel<Appointment> dailyAppointmentListModel;
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
@@ -182,13 +183,13 @@ public class CalendarProgram extends JFrame {
 		dailyAppointmentListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		appointmentPanel.add(dailyAppointmentListBox);
 		
-		editAppointmentButton = new JButton("Edit");
-		editAppointmentButton.setBounds(6, 275, 124, 29);
-		appointmentPanel.add(editAppointmentButton);
+		editButton = new JButton("Edit");
+		editButton.setBounds(6, 275, 124, 29);
+		appointmentPanel.add(editButton);
 		
-		deleteAppointmentButton = new JButton("Delete");
-		deleteAppointmentButton.setBounds(138, 275, 124, 29);
-		appointmentPanel.add(deleteAppointmentButton);
+		deleteButton = new JButton("Delete");
+		deleteButton.setBounds(138, 275, 124, 29);
+		appointmentPanel.add(deleteButton);
 
 		//Add mouse listener
 		table.addMouseListener(new MouseHandler());
@@ -342,9 +343,21 @@ public class CalendarProgram extends JFrame {
 	public void addSelectDateListener(MouseListener selectDateListener) {
 		table.addMouseListener(selectDateListener);
 	}
-	
+		
+	public void addEditButtonListener(ActionListener editButtonListener) {
+		editButton.addActionListener(editButtonListener);
+	}
+		
+	public void addDeleteButtonListener(ActionListener deleteButtonListener) {
+		deleteButton.addActionListener(deleteButtonListener);
+	}
+
 	public Date getSelectDate() {
 		return selectedDate;
+	}
+	
+	public Appointment getSelectedAppointment() {
+		return dailyAppointmentListBox.getSelectedValue();
 	}
 	
 	public void setDailyAppointmentList(ArrayList<Appointment> dailyAppointmentList) {
