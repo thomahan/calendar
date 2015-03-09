@@ -2,7 +2,7 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.List;
+import java.util.List;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -85,8 +85,8 @@ public class InvitePerson extends JFrame {
 		}
 	}
 	
-	public User[] getInvitedPersons(){
-		return (User[]) userListModel.getListDataListeners();
+	public List<User> getInvitedPersons(){
+		return userListBox.getSelectedValuesList();
 	}
 	
 }
