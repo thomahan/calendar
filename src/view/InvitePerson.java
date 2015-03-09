@@ -17,10 +17,9 @@ import javax.swing.JButton;
 
 import model.User;
 
-public class InvitePerson {
+public class InvitePerson extends JFrame {
 
 	private static final ListModel String = null;
-	private JFrame frame;
 	private JButton btnCancel, btnConfirm;
 	private JList list;
 	private JPanel panel;
@@ -31,37 +30,20 @@ public class InvitePerson {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InvitePerson window = new InvitePerson();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		InvitePerson window = new InvitePerson();
 	}
 
 	/**
 	 * Create the application.
 	 */
 	public InvitePerson() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		this.setBounds(100, 100, 450, 300);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(null);
 		
 		panel = new JPanel();
 		panel.setBounds(6, 6, 438, 266);
-		frame.getContentPane().add(panel);
+		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblInviteOtherPersons = new JLabel("Invite other persons using the menu");
@@ -79,14 +61,11 @@ public class InvitePerson {
 		userListModel = new DefaultListModel();
 		userListBox = new JList(userListModel);
 		userListBox.setBounds(10, 25, 248, 180);
-		userListBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		userListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		userListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		panel.add(userListBox);
-		userListModel.addElement("a");
-		userListModel.addElement("b");
-		userListModel.addElement("c");
 
-		
+		this.setVisible(true);
 	}
 	
 	public void addCancelButtonListener(ActionListener cancelButtonListener) {
@@ -98,13 +77,11 @@ public class InvitePerson {
 	}
 	
 	public void setUserList(ArrayList<User> users) {
-		DefaultListModel<String> listModel = new DefaultListModel<>();
+		userListModel.clear();
 		for (User user : users) {
-			listModel.addElement(user.toString());
+			System.out.println(user);
+			userListModel.addElement(user.toString());
 		}
-		list = new JList<>(listModel);
-		frame.add(list);
 	}
-
 	
 }
