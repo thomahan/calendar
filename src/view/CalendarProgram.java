@@ -1,22 +1,23 @@
 package view;
 
-import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -36,9 +37,12 @@ public class CalendarProgram extends JFrame {
 	private JScrollPane stblCalendar;
 	private JButton logoutButton;
 	private JButton newAppointmentButton;
+	private JButton editAppointmentButton;
+	private JButton deleteAppointmentButton;
 	private static JComboBox comboBox;
 	private static JLabel lblNewLabel;
-	private TextArea dailyAppointmentListArea;
+	private JList dailyAppointmentListBox;
+	private DefaultListModel<Appointment> dailyAppointmentListModel;
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
 	private static MouseListener mouseListener;
@@ -60,27 +64,27 @@ public class CalendarProgram extends JFrame {
 	public CalendarProgram() {
 		this.setTitle(FRAME_TITLE);
 		this.setResizable(false);
-		this.setBounds(100, 100, 600, 375);
+		this.setBounds(100, 100, 600, 425);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
 		//create controls
 		mtblCalendar = new DefaultTableModel(){public boolean isCellEditable(int rowIndex, int mColIndex){return false;}};
 			
-		JPanel panel = new JPanel();
-		panel.setBounds(6, 6, 296, 341);
-		this.getContentPane().add(panel);
-		panel.setLayout(null);
+		JPanel leftPanel = new JPanel();
+		leftPanel.setBounds(6, 6, 296, 341);
+		this.getContentPane().add(leftPanel);
+		leftPanel.setLayout(null);
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(6, 6, 284, 37);
-		panel.add(panel_4);
-		panel_4.setLayout(null);
+		JPanel calendarControlPanel = new JPanel();
+		calendarControlPanel.setBounds(6, 6, 284, 37);
+		leftPanel.add(calendarControlPanel);
+		calendarControlPanel.setLayout(null);
 		
 		JButton button = new JButton("<<");
 		button.setAction(action_1);
 		button.setBounds(112, 7, 45, 29);
-		panel_4.add(button);
+		calendarControlPanel.add(button);
 		
 		JButton button_1 = new JButton(">>");
 		button_1.setAction(action);
@@ -89,24 +93,24 @@ public class CalendarProgram extends JFrame {
 			}
 		});
 		button_1.setBounds(150, 7, 45, 29);
-		panel_4.add(button_1);
+		calendarControlPanel.add(button_1);
 		
 		comboBox = new JComboBox();
 		comboBox.setBounds(195, 8, 83, 27);
-		panel_4.add(comboBox);
+		calendarControlPanel.add(comboBox);
 		
 		lblNewLabel = new JLabel("Month");
 		lblNewLabel.setBounds(6, 12, 106, 16);
-		panel_4.add(lblNewLabel);
+		calendarControlPanel.add(lblNewLabel);
 		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBounds(6, 55, 284, 280);
-		panel.add(panel_5);
-		panel_5.setLayout(null);
+		JPanel calendarDisplayPanel = new JPanel();
+		calendarDisplayPanel.setBounds(6, 55, 284, 280);
+		leftPanel.add(calendarDisplayPanel);
+		calendarDisplayPanel.setLayout(null);
 		
 		table = new JTable(mtblCalendar);
 		stblCalendar = new JScrollPane(table);
-		panel_5.add(stblCalendar);
+		calendarDisplayPanel.add(stblCalendar);
 		stblCalendar.setBounds(6,6,272,268);
 		
 		//No resize/reorder
@@ -148,33 +152,43 @@ public class CalendarProgram extends JFrame {
 		for (int i=realYear-10; i<=realYear+10; i++)
 			comboBox.addItem(String.valueOf(i));
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(314, 6, 280, 341);
-		this.getContentPane().add(panel_1);
-		panel_1.setLayout(null);
+		JPanel rightPanel = new JPanel();
+		rightPanel.setBounds(314, 6, 280, 400);
+		this.getContentPane().add(rightPanel);
+		rightPanel.setLayout(null);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(6, 6, 268, 37);
-		panel_1.add(panel_2);
-		panel_2.setLayout(null);
+		JPanel topButtonPanel = new JPanel();
+		topButtonPanel.setBounds(6, 6, 268, 37);
+		rightPanel.add(topButtonPanel);
+		topButtonPanel.setLayout(null);
 		
-		newAppointmentButton = new JButton("Add New Event");
+		newAppointmentButton = new JButton("Add appointment");
 		newAppointmentButton.setBounds(6, 6, 124, 29);
-		panel_2.add(newAppointmentButton);
+		topButtonPanel.add(newAppointmentButton);
 		
 		logoutButton = new JButton("Log out");
 		logoutButton.setBounds(138, 6, 124, 29);
-		panel_2.add(logoutButton);
+		topButtonPanel.add(logoutButton);
 		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(6, 55, 268, 280);
-		panel_1.add(panel_3);
-		panel_3.setLayout(null);
+		JPanel appointmentPanel = new JPanel();
+		appointmentPanel.setBounds(6, 55, 268, 400);
+		rightPanel.add(appointmentPanel);
+		appointmentPanel.setLayout(null);
 		
-		dailyAppointmentListArea = new TextArea();
-		dailyAppointmentListArea.setEditable(false);
-		dailyAppointmentListArea.setBounds(10, 10, 248, 260);
-		panel_3.add(dailyAppointmentListArea);
+		dailyAppointmentListModel = new DefaultListModel();
+		dailyAppointmentListBox = new JList(dailyAppointmentListModel);
+		dailyAppointmentListBox.setBounds(10, 10, 248, 260);
+		dailyAppointmentListBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		dailyAppointmentListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		appointmentPanel.add(dailyAppointmentListBox);
+		
+		editAppointmentButton = new JButton("Edit");
+		editAppointmentButton.setBounds(6, 275, 124, 29);
+		appointmentPanel.add(editAppointmentButton);
+		
+		deleteAppointmentButton = new JButton("Delete");
+		deleteAppointmentButton.setBounds(138, 275, 124, 29);
+		appointmentPanel.add(deleteAppointmentButton);
 
 		//Add mouse listener
 		table.addMouseListener(new MouseHandler());
@@ -336,15 +350,11 @@ public class CalendarProgram extends JFrame {
 	public void setDailyAppointmentList(ArrayList<Appointment> dailyAppointmentList) {
 		this.dailyAppointmentList = dailyAppointmentList;
 
-		String makeThisListInteractive = "";
-		if (dailyAppointmentList.isEmpty()) {
-			makeThisListInteractive = "No appointments";
-		} else {
+		dailyAppointmentListModel.clear();
+		if (!dailyAppointmentList.isEmpty()) {
 			for (Appointment a : dailyAppointmentList) {
-				makeThisListInteractive = makeThisListInteractive+a+"\n";
+				dailyAppointmentListModel.addElement(a);
 			}
 		}
-		
-		dailyAppointmentListArea.setText(makeThisListInteractive);
 	}
 }
