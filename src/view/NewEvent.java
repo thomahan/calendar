@@ -33,6 +33,7 @@ public class NewEvent extends JFrame {
 	private JButton invitePersonButton;
 	private JButton inviteGroupButton;
 	private ArrayList<User> invitedUsers;
+	private JButton btnChooseRoom;
 	
 	/**
 	 * Launch the application.
@@ -125,6 +126,10 @@ public class NewEvent extends JFrame {
 		inviteGroupButton= new JButton("Invite groups");
 		inviteGroupButton.setBounds(162, 47, 117, 29);
 		inputPanel.add(inviteGroupButton);
+		
+		btnChooseRoom = new JButton("Choose room");
+		btnChooseRoom.setBounds(162, 127, 117, 29);
+		inputPanel.add(btnChooseRoom);
 
 		this.setVisible(true);
 	}
@@ -144,6 +149,10 @@ public class NewEvent extends JFrame {
 	
 	public void addInviteGroupButtonListener(ActionListener inviteGroupButtonListener) {
 		inviteGroupButton.addActionListener(inviteGroupButtonListener);
+	}
+	
+	public void addChooseRoomButtonListener(ActionListener chooseRoomButtonListener) {
+		btnChooseRoom.addActionListener(chooseRoomButtonListener);
 	}
 
 	public String getStartTime() {
@@ -201,6 +210,4 @@ public class NewEvent extends JFrame {
 	public void setDescriptionArea(String description) {
 		descriptionArea.setText(description);
 	}
-
-		
 }
