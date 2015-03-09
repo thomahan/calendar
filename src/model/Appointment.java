@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,9 +15,10 @@ public class Appointment {
 	private String description;
 	private String location;
 	private Room room;
-	private boolean canEdit;
+	private boolean editable;
 	private String status;
 	private boolean isVisible;
+	private ArrayList<Room> roomList = new ArrayList<Room>();
 
 	private User creator;
 	private ArrayList<User> participants = new ArrayList<User>();
@@ -31,6 +33,7 @@ public class Appointment {
 		this.canEdit = canEdit;
 		this.status = status;
 		this.isVisible = isVisible;
+		this.roomList = main.Controller.getRoomlist();
 	}
 		
 	public void setDescription(String description) {
@@ -162,6 +165,10 @@ public class Appointment {
 		return description;
 	}
 	
+	public boolean isEditable() {
+		return editable;
+	}
+
 	@Override
 	public String toString() {
 		String summary = "";
@@ -180,37 +187,12 @@ public class Appointment {
 		
 		return summary;
 	}
-
-//	public String getAvailableRoomNameIfAvailable(){
-//		Query query = db.DBConnector.makeQuery("SELECT enddate, startdate FROM calendarevent;");
-//		ResultSet result = query.getResult();
-//		
-//		Date start = this.startDate;
-//		Date end = this.endDate;
-//		Interval interval = new Interval(start, end);
-//		
-//		
-//		try{
-//			while (result.next()) {
-//				Interval interval1 = new Interval(result.getDate("startdate"), result.getDate("enddate"));
-//				if (interval.overlap(interval, interval1)){
-//					room = result.getString("room");
-//				}
-//			} 
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		query.close();
-//		
-//		return room;
-//		
-//	}
 	
-//	public Room getAvailableRoom(){
-//		String roomname = getAvailableRoomNameIfAvailable();
-//		
-//		for(Room room : roomlist)
-//		
-//	}
+	public Room getAvailableRoom(Date start, Date end){
+		Interval int1 = new Interval(start, end);
+		for(Room room : roomList) {
+			if (int1.overlap((new Interval(.getStartDate(), event.getEndDate()))));
+		}
+		
+	} return room;
 }
