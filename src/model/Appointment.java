@@ -24,13 +24,13 @@ public class Appointment {
 	private ArrayList<User> participants = new ArrayList<User>();
 	private ArrayList<User> eventListeners = new ArrayList<User>();
 		
-	public Appointment(int id, Date startDate, Date endDate, Date alarmDate, String title, boolean canEdit, String status, boolean isVisible){
+	public Appointment(int id, Date startDate, Date endDate, Date alarmDate, String title, boolean editable, String status, boolean isVisible){
 		this.id = id;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.alarmDate = alarmDate;
 		this.title = title;
-		this.canEdit = canEdit;
+		this.editable = editable;
 		this.status = status;
 		this.isVisible = isVisible;
 		this.roomList = main.Controller.getRoomlist();
@@ -191,8 +191,15 @@ public class Appointment {
 	public Room getAvailableRoom(Date start, Date end){
 		Interval int1 = new Interval(start, end);
 		for(Room room : roomList) {
-			if (int1.overlap((new Interval(.getStartDate(), event.getEndDate()))));
+			for (Appointment event : room.getCalendar().getEvents()){
+				if (int1.overlap((new Interval(event.getStartDate(), event.getEndDate())))) {
+				this.room = room;
+				}
+				else {
+					throw new IllegalArgumentException("No available rooms for this event");
+				}
+			}
 		}
-		
-	} return room;
+		return room;
+	}
 }

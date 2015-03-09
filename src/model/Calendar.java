@@ -10,9 +10,14 @@ public class Calendar {
 	private String calendarName;
 	private User owner;
 	private ArrayList<Appointment> events = new ArrayList<Appointment>();
+	private Room room;
 	
 	public Calendar(User owner){
 		this.owner = owner;
+	}
+	
+	public Calendar(Room room) {
+		this.room = room;
 	}
 	
 	public void addEvent(Appointment event){ // M� ogs� legges til i databasen
@@ -25,13 +30,16 @@ public class Calendar {
 		events.remove(event); 
 	}
 	
+	public ArrayList<Appointment> getEvents() {
+		return events;
+	}
+
 	public boolean isValidEvent(Appointment event){
 		if (events.contains(event)){ 
 			return false;
 		}  else if(eventsOverlap(event)){
 			return false;
 		} return true;
-		
 		
 	}
 	

@@ -5,12 +5,14 @@ public class Room {
 	private final int id;
 	private String name;
 	private int seatCount;
+	private Calendar calendar;
 	
 	public Room(int id, String name, int size){
 		this.id = id;
 		this.name = name;
 		this.seatCount = size;
 		main.Controller.getRoomlist().add(this);
+		this.calendar = new Calendar(this);
 	}
 		
 	public int getId(){
@@ -23,6 +25,10 @@ public class Room {
 	
 	public void setName(String name){
 		this.name = name;
+	}
+	
+	public Calendar getCalendar() {
+		return calendar;
 	}
 	
 	public int getSeatCount(){
