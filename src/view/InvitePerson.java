@@ -80,7 +80,6 @@ public class InvitePerson extends JFrame {
 	public void setUserList(List<User> userList) {
 		userListModel.clear();
 		for (User user : userList) {
-			System.out.println(user);
 			userListModel.addElement(user);
 		}
 	}
