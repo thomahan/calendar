@@ -24,6 +24,8 @@ public class InvitePerson {
 	private JButton btnCancel, btnConfirm;
 	private JList list;
 	private JPanel panel;
+	private DefaultListModel userListModel;
+	private JList userListBox;
 
 	/**
 	 * Launch the application.
@@ -73,6 +75,17 @@ public class InvitePerson {
 		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(151, 221, 117, 29);
 		panel.add(btnCancel);
+	
+		userListModel = new DefaultListModel();
+		userListBox = new JList(userListModel);
+		userListBox.setBounds(10, 25, 248, 180);
+		userListBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		userListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		panel.add(userListBox);
+		userListModel.addElement("a");
+		userListModel.addElement("b");
+		userListModel.addElement("c");
+
 		
 	}
 	
@@ -90,7 +103,8 @@ public class InvitePerson {
 			listModel.addElement(user.toString());
 		}
 		list = new JList<>(listModel);
-		panel.add(list);
+		frame.add(list);
 	}
+
 	
 }
