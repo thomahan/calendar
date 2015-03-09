@@ -77,9 +77,9 @@ public class InvitePerson extends JFrame {
 		btnConfirm.addActionListener(confirmButtonListener);
 	}
 	
-	public void setUserList(ArrayList<User> users) {
+	public void setUserList(List<User> userList) {
 		userListModel.clear();
-		for (User user : users) {
+		for (User user : userList) {
 			System.out.println(user);
 			userListModel.addElement(user);
 		}
