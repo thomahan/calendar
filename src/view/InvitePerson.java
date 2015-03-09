@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.List;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class InvitePerson extends JFrame {
 	private JButton btnCancel, btnConfirm;
 	private JList list;
 	private JPanel panel;
-	private DefaultListModel userListModel;
+	private DefaultListModel<User> userListModel;
 	private JList userListBox;
 
 	/**
@@ -80,8 +81,12 @@ public class InvitePerson extends JFrame {
 		userListModel.clear();
 		for (User user : users) {
 			System.out.println(user);
-			userListModel.addElement(user.toString());
+			userListModel.addElement(user);
 		}
+	}
+	
+	public User[] getInvitedPersons(){
+		return (User[]) userListModel.getListDataListeners();
 	}
 	
 }
