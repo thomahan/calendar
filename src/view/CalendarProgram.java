@@ -44,11 +44,11 @@ public class CalendarProgram extends JFrame {
 	private static JLabel lblNewLabel;
 	private JList<Appointment> dailyAppointmentListBox;
 	private DefaultListModel<Appointment> dailyAppointmentListModel;
+
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
-	private static MouseListener mouseListener;
 
-	private ArrayList<Appointment> dailyAppointmentList;
+	private List<Appointment> dailyAppointmentList;
 	private Date selectedDate;
 
 	/**
@@ -314,18 +314,10 @@ public class CalendarProgram extends JFrame {
 			return clickedDay;
 		}
 
-		@Override
-		public void mousePressed(MouseEvent e) {
-		}
-		@Override
-		public void mouseReleased(MouseEvent e) {
-		}
-		@Override
-		public void mouseEntered(MouseEvent e) {
-		}
-		@Override
-		public void mouseExited(MouseEvent e) {
-		}
+		@Override public void mousePressed(MouseEvent e) {}
+		@Override public void mouseReleased(MouseEvent e) {}
+		@Override public void mouseEntered(MouseEvent e) {}
+		@Override public void mouseExited(MouseEvent e) {}
 	}
 	
 	public void refreshEventWindow(Date date){
