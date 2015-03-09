@@ -108,9 +108,9 @@ public class AppointmentDBC {
 					alarmDate = new Date(alarmTime.getTime());
 				}
 
-				boolean canEdit = (username.equals(creator));
+				boolean editable = (username.equals(creator));
 
-				Appointment appointment = new Appointment(appointmentId, startDate, endDate, alarmDate, title, canEdit, status, isVisible);
+				Appointment appointment = new Appointment(appointmentId, startDate, endDate, alarmDate, title, editable, status, isVisible);
 				appointmentList.add(appointment);
 			}
 		} catch (SQLException e) {
