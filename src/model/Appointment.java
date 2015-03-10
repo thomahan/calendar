@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Appointment {
 	private final int id;
@@ -20,6 +21,7 @@ public class Appointment {
 	private boolean isVisible;
 	private ArrayList<Room> roomList = new ArrayList<Room>();
 	private ArrayList<Room> availableRoom = new ArrayList<Room>();
+	Scanner scanner = new Scanner(System.in);
 
 	private User creator;
 	private ArrayList<User> participants = new ArrayList<User>();
@@ -35,9 +37,9 @@ public class Appointment {
 		this.status = status;
 		this.isVisible = isVisible;
 		//this.roomList = main.Controller.getRoomlist();
-		//this.roomList = TestMain.getRoomList();
-		//this.room = getAvailableRoom(startDate, endDate).get(0);
-		//room.getCalendar().addEvent(this);
+//		this.roomList = TestMain.getRoomList(); DENNE
+//		this.room = selectRoom(); DENNE
+//		room.getCalendar().addEvent(this); DENNE
 	}
 		
 	public void setDescription(String description) {
@@ -216,10 +218,25 @@ public class Appointment {
 				} else {
 					availableRoom.add(room);
 				}
-		} if(roomList == null) {
-			throw new IllegalStateException("No available rooms for this event!");
+//		} if(availableRoom == null) {
+//			throw new IllegalStateException("No available rooms for this event!");
 		}
 		return availableRoom;
+	}
+	
+	public Room selectRoom() {
+		getAvailableRoom(startDate, endDate);
+		if(availableRoom.size() > 0) {
+			for (int i = 0; i < availableRoom.size(); i++) {
+			System.out.println(i+1 + ". " + availableRoom.get(i).getName());
+			}
+		} else{
+			throw new IllegalStateException("No available rooms for this event!");
+		}
+		int answer;
+		System.out.println("Hvilket rom?");
+		answer = scanner.nextInt();
+		return room = availableRoom.get(answer-1);
 	}
 	
 }

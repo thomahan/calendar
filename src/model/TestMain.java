@@ -50,27 +50,22 @@ public class TestMain {
 		Date startdato2 = new Date(2000, 7, 7, 11, 50);
 		Date sluttdato2 = new Date(2000, 7, 7, 11, 54);
 		Interval interval2 = new Interval(startdato2, sluttdato2);
-		Date startdato3 = new Date(2000, 7, 7, 11, 54);
+		Date startdato3 = new Date(2000, 7, 7, 11, 50);
 		Date sluttdato3 = new Date(2000, 7, 7, 11, 57);
 		
 		
 		Appointment tivoli = new Appointment(1, startdato1, sluttdato1, startdato1, "Skolen", true, "Lekser", true);
-		for (int i = 0; i < tivoli.getAvailableRoom().size(); i++) {
-			System.out.println(tivoli.getAvailableRoom().get(i).getName());
-		}
-//		Appointment tivoli1 = new Appointment(1, startdato2, sluttdato2, startdato2, "hjemem", true, "Ler", true);
-//		Appointment tivoli2 = new Appointment(1, startdato3, sluttdato3, startdato3, "hjdf", true, "Lsd", true);
-//		tivoli.setRoom(rom1);
-//		tivoli1.setRoom(rom2);
-//		System.out.println(tivoli1.getRoom().getName());
+		Appointment tivoli1 = new Appointment(1, startdato2, sluttdato2, startdato2, "Hjemme", true, "Ler", true);
+		Appointment tivoli2 = new Appointment(1, startdato3, sluttdato3, startdato3, "Tur", true, "Lsd", true);
 		
 		
 		tivoli.addParticipant(Adrian);
-//		tivoli1.addParticipant(Adrian1);
-//		tivoli2.addParticipant(Adrian2);
+		tivoli.addParticipant(Adrian1);
+		tivoli.addParticipant(Adrian2);
+		tivoli1.addParticipant(Adrian1);
+		tivoli2.addParticipant(Adrian2);
 		Adrian.getCalendar().showEventsOnADay(startdato1);		
 		Adrian1.getCalendar().showEventsOnADay(startdato1);		
-		Adrian2
-		.getCalendar().showEventsOnADay(startdato1);		
+		Adrian2.getCalendar().showEventsOnADay(startdato1);		
 	}
 }
