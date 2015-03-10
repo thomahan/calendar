@@ -23,7 +23,7 @@ public class NewEvent extends JFrame {
 	// TODO: Add field for alarmTime, roomId. Add cancel button?
 
 	private final String FRAME_TITLE = "Create new appointment";
-	private JTextField appointmentTitleField;
+	private JTextField appointmentDescriptionField;
 	private JTextField startTimeField;
 	private JTextField endTimeField;
 	private JTextField locationField;
@@ -60,27 +60,23 @@ public class NewEvent extends JFrame {
 		labelPanel.setBounds(6, 6, 118, 304);
 		panel.add(labelPanel);
 		labelPanel.setLayout(null);
-		
-		JLabel lblTitle = new JLabel("Title");
-		lblTitle.setBounds(6, 6, 61, 16);
-		labelPanel.add(lblTitle);
-		
+			
 		JLabel lblDate = new JLabel("Start");
-		lblDate.setBounds(6, 51, 61, 16);
+		lblDate.setBounds(6, 6, 61, 16);
 		labelPanel.add(lblDate);
 		
 		JLabel lblEnddate = new JLabel("End");
-		lblEnddate.setBounds(6, 90, 61, 16);
+		lblEnddate.setBounds(6, 51, 61, 16);
 		labelPanel.add(lblEnddate);
-		
+			
+		JLabel lblDescription = new JLabel("Description");
+		lblDescription.setBounds(6, 90, 61, 16);
+		labelPanel.add(lblDescription);
+
 		JLabel lblLocation = new JLabel("Location");
 		lblLocation.setBounds(6, 131, 61, 16);
 		labelPanel.add(lblLocation);
-		
-		JLabel lblDescriptions = new JLabel("Description");
-		lblDescriptions.setBounds(6, 175, 93, 16);
-		labelPanel.add(lblDescriptions);
-		
+			
 		createButton = new JButton("Create");
 		createButton.setBounds(6, 219, 110, 29);
 		labelPanel.add(createButton);
@@ -95,30 +91,26 @@ public class NewEvent extends JFrame {
 		panel.add(inputPanel);
 		inputPanel.setLayout(null);
 		
-		appointmentTitleField = new JTextField();
-		appointmentTitleField.setBounds(6, 6, 134, 28);
-		inputPanel.add(appointmentTitleField);
-		appointmentTitleField.setColumns(10);
-		
 		startTimeField = new JTextField();
-		startTimeField.setBounds(6, 46, 134, 28);
+		startTimeField.setBounds(6, 6, 134, 28);
 		inputPanel.add(startTimeField);
 		startTimeField.setColumns(10);
 		
 		endTimeField = new JTextField();
-		endTimeField.setBounds(6, 86, 134, 28);
+		endTimeField.setBounds(6, 46, 134, 28);
 		inputPanel.add(endTimeField);
 		endTimeField.setColumns(10);
-		
+			
+		appointmentDescriptionField = new JTextField();
+		appointmentDescriptionField.setBounds(6, 86, 134, 28);
+		inputPanel.add(appointmentDescriptionField);
+		appointmentDescriptionField.setColumns(10);
+
 		locationField = new JTextField();
 		locationField.setBounds(6, 126, 134, 28);
 		inputPanel.add(locationField);
 		locationField.setColumns(10);
-		
-		descriptionArea = new JTextArea();
-		descriptionArea.setBounds(6, 166, 284, 82);
-		inputPanel.add(descriptionArea);
-		
+
 		invitePersonButton = new JButton("Invite persons");
 		invitePersonButton.setBounds(162, 7, 117, 29);
 		inputPanel.add(invitePersonButton);
@@ -166,13 +158,9 @@ public class NewEvent extends JFrame {
 	public String getAlarmTime() {
 		return "";//alarmTimeField.getText();
 	}
-			
-	public String getAppointmentTitle() {
-		return appointmentTitleField.getText();
-	}
-
+		
 	public String getDescription() {
-		return descriptionArea.getText();
+		return appointmentDescriptionField.getText();
 	}
 
 	public String getAppointmentLocation() {
@@ -200,7 +188,7 @@ public class NewEvent extends JFrame {
 	}
 	
 	public void setAppointmentTitleField(String title) {
-		appointmentTitleField.setText(title);
+		appointmentDescriptionField.setText(title);
 	}
 	
 	public void setLocationField(String location){

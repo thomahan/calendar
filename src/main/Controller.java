@@ -128,11 +128,10 @@ public class Controller {
 				}else if (!user.isPasswordCorrect(password)) {
 					throw new Exception("Password incorrect.");
 				}
-				
-				loginView.displayLoginMessage(user.getName());
 
 				closeLoginView();
 				openCalendarView();
+				calendarView.setTitle(calendarView.getTitle()+" ("+user.getName()+")");
 
 			} catch (Exception e) {
 				user = null;
@@ -164,23 +163,24 @@ public class Controller {
 			try {
 				String startTime = appointmentCreationView.getStartTime();
 				String endTime = appointmentCreationView.getEndTime();
-				String alarmTime = appointmentCreationView.getAlarmTime();
-				String title = appointmentCreationView.getAppointmentTitle();
 				String description = appointmentCreationView.getDescription();
 				String location = appointmentCreationView.getAppointmentLocation();
 				//int roomId = appointmentCreationView.getRoomId();
+				//String alarmTime = appointmentCreationView.getAlarmTime();
 
 				Date startDate = simpleDateFormat.parse(startTime);
 				Date endDate = simpleDateFormat.parse(endTime);
+				/*
 				Date alarmDate;
 				if (alarmTime.length() > 0) {
 					alarmDate = simpleDateFormat.parse(alarmTime);
 				} else {
 					alarmDate = null;
 				}
+				*/
 				
-				if (title.length() <= 0) {
-					throw new Exception("Title must be specified.");
+				if (description.length() <= 0) {
+					throw new Exception("Description must be specified.");
 				} else if (startTime == null) {
 					throw new Exception("Start time must be specified.");
 				} else if (endTime == null) {
@@ -188,9 +188,8 @@ public class Controller {
 				}
 				
 				location = location.length() > 0 ? location : null;
-				description = description.length() > 0 ? description : null;
 
-				int appointmentId = AppointmentDBC.addAppointment(startDate, endDate, alarmDate, title, description, location, user.getUsername(), reservedRoomId);
+				int appointmentId = AppointmentDBC.addAppointment(startDate, endDate, description, location, user.getUsername(), reservedRoomId);
 				AppointmentDBC.addInvitation(appointmentId, user.getUsername(), "Accepted");
 				if (invitedUserList.contains(user)) {
 					invitedUserList.remove(user);
@@ -202,14 +201,13 @@ public class Controller {
 
 				invitedUserList.clear();
 				
-				appointmentCreationView.displayAppointmentCreationMessage(title);
+				appointmentCreationView.displayAppointmentCreationMessage(description);
 
 				closeAppointmentCreationView();
 				
 				dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
 				calendarView.setDailyAppointmentList(dailyAppointmentList);
 			} catch (Exception e) {
-				e.printStackTrace();
 				appointmentCreationView.displayErrorMessage(e.getMessage());
 			}
 		}

@@ -11,14 +11,13 @@ public class Appointment {
 	private final int id;
 	private Date startDate; //Starttid for event
 	private Date endDate; //Sluttid for event
-	private Date alarmDate;
-	private String title, oldName;
 	private String description;
 	private String location;
 	private Room room;
 	private boolean editable;
 	private String status;
-	private boolean isVisible;
+	private Date alarmDate;
+	private String title, oldName;
 	private ArrayList<Room> roomList = new ArrayList<Room>();
 	private ArrayList<Room> availableRoom = new ArrayList<Room>();
 	Scanner scanner = new Scanner(System.in);
@@ -27,25 +26,19 @@ public class Appointment {
 	private ArrayList<User> participants = new ArrayList<User>();
 	private ArrayList<User> eventListeners = new ArrayList<User>();
 		
-	public Appointment(int id, Date startDate, Date endDate, Date alarmDate, String title, boolean editable, String status, boolean isVisible){
+	public Appointment(int id, Date startDate, Date endDate, String description, boolean editable, String status){
 		this.id = id;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.alarmDate = alarmDate;
-		this.title = title;
+		this.description = description;
 		this.editable = editable;
 		this.status = status;
-		this.isVisible = isVisible;
 		//this.roomList = main.Controller.getRoomlist();
 //		this.roomList = TestMain.getRoomList(); DENNE
 //		this.room = selectRoom(); DENNE
 //		room.getCalendar().addEvent(this); DENNE
 	}
-		
-	public void setDescription(String description) {
-		this.description = description;
-	}
-		
+			
 	public void setLocation(String location) {
 		this.location = location;
 	}
@@ -192,9 +185,7 @@ public class Appointment {
 		summary += " ("+statusString+")<br>";
 		summary += (alarmDate != null) ? (date.format(startDate).equals(date.format(alarmDate))) ? "Alarm: "+time.format(alarmDate)+"<br>" : "Alarm:"+full.format(alarmDate)+"<br>" : "";
 
-		summary += title+"<br>";
-
-		summary += (description == null) ? "" : description+"<br>";
+		summary += description+"<br>";
 		summary += (location != null) ? "Location: "+location+"<br>" : "";
 		if (room != null) {
 			String seatCountString = (room.getSeatCount() == 1) ? "seat" : "seats";

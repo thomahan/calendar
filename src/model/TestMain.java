@@ -54,9 +54,9 @@ public class TestMain {
 		Date sluttdato3 = new Date(2000, 7, 7, 11, 57);
 		
 		
-		Appointment tivoli = new Appointment(1, startdato1, sluttdato1, startdato1, "Skolen", true, "Lekser", true);
-		Appointment tivoli1 = new Appointment(1, startdato2, sluttdato2, startdato2, "Hjemme", true, "Ler", true);
-		Appointment tivoli2 = new Appointment(1, startdato3, sluttdato3, startdato3, "Tur", true, "Lsd", true);
+		Appointment tivoli = new Appointment(1, startdato1, sluttdato1, "Skolen", true, null);
+		Appointment tivoli1 = new Appointment(1, startdato2, sluttdato2,"Hjemme", true, null);
+		Appointment tivoli2 = new Appointment(1, startdato3, sluttdato3, "Tur", true, null);
 		
 		
 		tivoli.addParticipant(Adrian);
