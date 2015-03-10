@@ -10,11 +10,11 @@ public class Controller {
 		db = new DB();
 
 		view = new View();
-		view.addGetValueButtonListener(new GetValueListener());
-		view.addSetValueButtonListener(new SetValueListener());
+		view.addLoadButtonListener(new LoadValueListener());
+		view.addStoreButtonListener(new StoreValueListener());
 	}
 
-	class GetValueListener implements ActionListener {
+	class LoadValueListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			int value = db.getValue();
@@ -22,11 +22,15 @@ public class Controller {
 		}
 	}
 
-	class SetValueListener implements ActionListener {
+	class StoreValueListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int value = view.getValue();
-			db.setValue(value);
+			try {
+				int value = view.getValue();
+				db.setValue(value);
+			} catch (Exception ex) {
+				view.displayErrorMessage("Input must be integer.");
+			}
 		}
 	}
 

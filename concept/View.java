@@ -1,54 +1,61 @@
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class View extends JFrame {
-	private JTextField valueField;
-	private JButton getValueButton;
-	private JButton setValueButton;
+	private JLabel outputLabel;
+	private JButton loadButton;
+	private JTextField inputField;
+	private JButton storeButton;
 	
 	public View() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(200, 200);
+		this.setSize(120, 150);
 
 		JPanel panel = new JPanel();
 		this.add(panel);
+		panel.setLayout(new FlowLayout());
 
-		valueField = new JTextField(8);
-		panel.add(valueField);
+		outputLabel = new JLabel();
+		panel.add(outputLabel);
 
-		getValueButton = new JButton("Get value");
-		panel.add(getValueButton);
-	
-		setValueButton = new JButton("Set value");
-		panel.add(setValueButton);
+		loadButton = new JButton("Load value");
+		panel.add(loadButton);
+
+		inputField = new JTextField(8);
+		panel.add(inputField);
+
+		storeButton = new JButton("Store value");
+		panel.add(storeButton);
 
 		this.setVisible(true);
 	}
 	
 	public int getValue() {
-		return Integer.parseInt(valueField.getText());
+		return Integer.parseInt(inputField.getText());
 	}
 	
 	public void setValue(int value) {
-		valueField.setText(Integer.toString(value));
+		outputLabel.setText(Integer.toString(value));
 	}
 	
 	public void displayErrorMessage(String errorMessage) {
 		JOptionPane.showMessageDialog(this, errorMessage);
 	}
 
-	public void addGetValueButtonListener(ActionListener getValueButtonListener) {
-		getValueButton.addActionListener(getValueButtonListener);
+	public void addLoadButtonListener(ActionListener loadButtonListener) {
+		loadButton.addActionListener(loadButtonListener);
 	}
 
-	public void addSetValueButtonListener(ActionListener setValueButtonListener) {
-		setValueButton.addActionListener(setValueButtonListener);
+	public void addStoreButtonListener(ActionListener storeButtonListener) {
+		storeButton.addActionListener(storeButtonListener);
 	}
 }
