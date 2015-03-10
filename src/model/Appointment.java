@@ -35,9 +35,9 @@ public class Appointment {
 		this.status = status;
 		this.isVisible = isVisible;
 		//this.roomList = main.Controller.getRoomlist();
-		this.roomList = TestMain.getRoomList();
-		this.room = getAvailableRoom(startDate, endDate).get(0);
-		room.getCalendar().addEvent(this);
+		//this.roomList = TestMain.getRoomList();
+		//this.room = getAvailableRoom(startDate, endDate).get(0);
+		//room.getCalendar().addEvent(this);
 	}
 		
 	public void setDescription(String description) {
