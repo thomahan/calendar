@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -200,6 +200,7 @@ public class CalendarProgram extends JFrame {
 		comboBox.addActionListener(new cmbYear_Action());
 		
 		this.setVisible(true);
+		selectedDate = new Date();
 	}
 	
 	public static void refreshCalendar(int month, int year) {
@@ -307,10 +308,15 @@ public class CalendarProgram extends JFrame {
 		
 		@SuppressWarnings("deprecation")
 		private Date getDate(int row, int col) {
-			int day = (Integer) table.getModel().getValueAt(row, col);
-			Date clickedDay = new Date(currentYear - 1900, currentMonth, day);
-			selectedDate = clickedDay;
-			return clickedDay;
+			if (table.getModel().getValueAt(row, col) != null) {
+				int day = (Integer) table.getModel().getValueAt(row, col);
+				Date clickedDay = new Date(currentYear - 1900, currentMonth, day);
+				selectedDate = clickedDay;
+				return clickedDay;			
+			} else {
+				return selectedDate;
+			}
+
 		}
 
 		@Override public void mousePressed(MouseEvent e) {}

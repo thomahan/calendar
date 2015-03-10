@@ -8,55 +8,79 @@ CREATE TABLE IF NOT EXISTS user (
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS user_group (
-	id INT NOT NULL AUTO_INCREMENT,
+	user_group_id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(256),
-	PRIMARY KEY (id)
+	PRIMARY KEY (user_group_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS room (
-	id INT NOT NULL AUTO_INCREMENT,
+	room_id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(256),
 	seat_count INT NOT NULL,
-	PRIMARY KEY (id)
+	PRIMARY KEY (room_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS appointment (
-	id INT NOT NULL AUTO_INCREMENT,
+	appointment_id INT NOT NULL AUTO_INCREMENT,
 	start_time DATETIME NOT NULL,
 	end_time DATETIME NOT NULL,
-	alarm_time DATETIME,
-	title VARCHAR(256) NOT NULL,
-	description VARCHAR(256),
+	description VARCHAR(256) NOT NULL,
 	location VARCHAR(256),
-	creator VARCHAR(64) NOT NULL,
 	room_id INT,
-	PRIMARY KEY (id),
+	creator VARCHAR(64) NOT NULL,
+	PRIMARY KEY (appointment_id),
 	CONSTRAINT FOREIGN KEY (creator) REFERENCES user(username) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY (room_id) REFERENCES room(id) ON UPDATE CASCADE ON DELETE CASCADE
+	CONSTRAINT FOREIGN KEY (room_id) REFERENCES room(room_id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS appointment_invitation (
+CREATE TABLE IF NOT EXISTS invitation (
 	appointment_id INT NOT NULL,
 	username VARCHAR(64) NOT NULL,
 	status VARCHAR(32),
-	is_visible BOOL NOT NULL DEFAULT true,
+	alarm_time DATETIME,
 	PRIMARY KEY (appointment_id, username),
-	CONSTRAINT FOREIGN KEY (appointment_id) REFERENCES appointment(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (appointment_id) REFERENCES appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT FOREIGN KEY (username) REFERENCES user(username) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS appointment_change (
+CREATE TABLE IF NOT EXISTS change_notification (
 	appointment_id INT NOT NULL,
-	change_time DATETIME NOT NULL,
-	start_time DATETIME,
-	end_time DATETIME,
-	alarm_time DATETIME,
-	title VARCHAR(256),
-	description VARCHAR(256),
-	location VARCHAR(256),
-	creator VARCHAR(64),
-	room_id INT,
-	PRIMARY KEY (appointment_id, change_time),
-	CONSTRAINT FOREIGN KEY (appointment_id) REFERENCES appointment(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY (room_id) REFERENCES room(id) ON UPDATE CASCADE ON DELETE CASCADE
+	username VARCHAR(64) NOT NULL,
+	PRIMARY KEY (appointment_id, username),
+	CONSTRAINT FOREIGN KEY (appointment_id) REFERENCES appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (username) REFERENCES user(username) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS cancel_notification (
+	appointment_id INT NOT NULL,
+	username VARCHAR(64) NOT NULL,
+	canceller VARCHAR(64) NOT NULL,
+	PRIMARY KEY (appointment_id, username),
+	CONSTRAINT FOREIGN KEY (appointment_id) REFERENCES appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (username) REFERENCES user(username) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (canceller) REFERENCES user(username) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS group_invitation (
+	appointment_id INT NOT NULL,
+	user_group_id INT NOT NULL,
+	PRIMARY KEY (appointment_id, user_group_id),
+	CONSTRAINT FOREIGN KEY (appointment_id) REFERENCES appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (user_group_id) REFERENCES user_group(user_group_id) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS user_in_group (
+	username VARCHAR(64) NOT NULL,
+	user_group_id INT NOT NULL,
+	PRIMARY KEY (username, user_group_id),
+	CONSTRAINT FOREIGN KEY (username) REFERENCES user(username) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (user_group_id) REFERENCES user_group(user_group_id) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS group_in_group (
+	sub_group_id INT NOT NULL,
+	user_group_id INT NOT NULL,
+	PRIMARY KEY (sub_group_id, user_group_id),
+	CONSTRAINT FOREIGN KEY (sub_group_id) REFERENCES user_group(user_group_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (user_group_id) REFERENCES user_group(user_group_id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
