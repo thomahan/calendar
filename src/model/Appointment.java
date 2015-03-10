@@ -18,7 +18,7 @@ public class Appointment {
 	private boolean editable;
 	private String status;
 	private boolean isVisible;
-	//private ArrayList<Room> roomList = new ArrayList<Room>();
+	private ArrayList<Room> roomList = new ArrayList<Room>();
 
 	private User creator;
 	private ArrayList<User> participants = new ArrayList<User>();
@@ -34,6 +34,9 @@ public class Appointment {
 		this.status = status;
 		this.isVisible = isVisible;
 		//this.roomList = main.Controller.getRoomlist();
+		this.roomList = TestMain.getRoomList();
+		this.room = getAvailableRoom(startDate, endDate);
+		room.getCalendar().addEvent(this);
 	}
 		
 	public void setDescription(String description) {
@@ -195,20 +198,30 @@ public class Appointment {
 		summary += "</html>";
 		return summary;
 	}
-/*	
+
 	public Room getAvailableRoom(Date start, Date end){
 		Interval int1 = new Interval(start, end);
+		//room = roomList.get(1);
 		for(Room room : roomList) {
+			System.out.println("for1");
+		 if(room.getCalendar().getEvents().size() > 0){
 			for (Appointment event : room.getCalendar().getEvents()){
-				if (int1.overlap((new Interval(event.getStartDate(), event.getEndDate())))) {
+				System.out.println("for2");
+				
+				if (! int1.overlap((new Interval(event.getStartDate(), event.getEndDate())))) {
 				this.room = room;
 				}
-				else {
-					throw new IllegalArgumentException("No available rooms for this event");
-				}
+				//else {
+					//throw new IllegalArgumentException("No available rooms for this event");
+				//}
+				
 			}
+		} else {
+			this.room = room;
+			System.out.println("else");
 		}
+	}
 		return room;
 	}
-	*/
+	
 }
