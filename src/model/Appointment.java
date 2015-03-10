@@ -201,26 +201,21 @@ public class Appointment {
 
 	public Room getAvailableRoom(Date start, Date end){
 		Interval int1 = new Interval(start, end);
-		//room = roomList.get(1);
 		for(Room room : roomList) {
-			System.out.println("for1");
-		 if(room.getCalendar().getEvents().size() > 0){
-			for (Appointment event : room.getCalendar().getEvents()){
-				System.out.println("for2");
-				
-				if (! int1.overlap((new Interval(event.getStartDate(), event.getEndDate())))) {
-				this.room = room;
+			if(this.room == null) {
+				if(room.getCalendar().getEvents().size() > 0){
+					for (Appointment event : room.getCalendar().getEvents()){
+						if (! int1.overlap((new Interval(event.getStartDate(), event.getEndDate())))) {
+							this.room = room;
+						}
+					}
+				} else {
+					this.room = room;
 				}
-				//else {
-					//throw new IllegalArgumentException("No available rooms for this event");
-				//}
-				
 			}
-		} else {
-			this.room = room;
-			System.out.println("else");
+		} if(this.room == null) {
+			throw new IllegalStateException("No available rooms for this event!");
 		}
-	}
 		return room;
 	}
 	
