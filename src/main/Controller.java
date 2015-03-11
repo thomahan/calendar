@@ -317,6 +317,14 @@ public class Controller {
 		public void mouseClicked(MouseEvent arg0) {
 			selectedDate = calendarView.getSelectDate();
 			dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
+			for (Appointment a : dailyAppointmentList) {
+				if (a != null) {
+					if (a.getStatus().equals("Hidden")) {
+						dailyAppointmentList.remove(a);
+					}
+				}
+				
+			}
 			calendarView.setDailyAppointmentList(dailyAppointmentList);
 		}
 
@@ -349,12 +357,8 @@ public class Controller {
 	class AcceptAppointmentListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			Appointment appointment = calendarView.getSelectedAppointment();
-			
-			//AppointmentDBC.setAppointmentStatus("Accepted");
-
-			dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
-			calendarView.setDailyAppointmentList(dailyAppointmentList);
+			System.out.println("Clicked Accepted");
+			setInvitationStatus("Accepted");
 		}
 	}
 
@@ -413,6 +417,7 @@ public class Controller {
 		calendarView.addLogoutButtonListener(new LogoutListener());
 		calendarView.addSelectDateListener(new SelectDateListener());
 		calendarView.addSelectedAppointmentListener(new SelectAppointmentListener());
+		calendarView.addAcceptButtonListener(new AcceptAppointmentListener());
 
 		calendarView.addEditButtonListener(new OpenAppointmentCreationListener());
 		calendarView.addDeleteButtonListener(new DeleteAppointmentListener());
@@ -456,5 +461,14 @@ public class Controller {
 	
 	public static ArrayList<Room> getRoomlist(){
 		return roomlist;
+	}
+	
+	private void setInvitationStatus(String status) {
+		Appointment appointment = calendarView.getSelectedAppointment();
+			
+		AppointmentDBC.setInvitationStatus(appointment.getId(), user.getUsername(), status);
+
+		dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
+		calendarView.setDailyAppointmentList(dailyAppointmentList);	
 	}
 }
