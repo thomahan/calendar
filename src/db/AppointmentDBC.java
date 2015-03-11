@@ -207,33 +207,13 @@ public class AppointmentDBC {
 	}
 	
 	/**
-	 * Marks an invitation as accepted in the database
+	 * Sets the status of an invitation
 	 * @param appointmentId
 	 * @param username
 	 */
-	public static void acceptInvitation(int appointmentId, String username) {
+	public static void setInvitationStatus(int appointmentId, String username, String status) {
 		DBConnector.makeStatement(""
-			+ "UPDATE invitation SET status = 'Accepted' WHERE appointment_id = '"+appointmentId+"';");
-	}
-	
-	/**
-	 * Marks an invitation as declined in the database
-	 * @param appointmentId
-	 * @param username
-	 */
-	public static void declineInvitation(int appointmentId, String username) {
-		DBConnector.makeStatement(""
-			+ "UPDATE invitation SET status = 'Declined' WHERE appointment_id = '"+appointmentId+"';");
-	}
-	/**
-	 * Removes an invitation from the database
-	 * @param appointmentId
-	 * @param username
-	 */
-	public static void removeInvitation(int appointmentId, String username) {
-		DBConnector.makeStatement(""
-				+ "DELETE FROM invitation "
-				+ "WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"';");
+			+ "UPDATE invitation SET status = '"+status+"' WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"';");
 	}
 	
 	/**
