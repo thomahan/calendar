@@ -66,7 +66,10 @@ public class Controller {
 	class OpenRegistrationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			openRegisterView();
+			registrationView = new RegistrationView();
+			registrationView.addRegisterButtonListener(new RegisterListener());
+			registrationView.addCancelButtonListener(new CancelRegistrationListener());
+
 		}
 	}
 
@@ -413,16 +416,6 @@ public class Controller {
 	
 	private void closeLoginView() {
 		loginView.dispose();
-	}
-	
-	private void openRegisterView() {
-		registrationView = new RegistrationView();
-		registrationView.addRegisterListener(new RegisterListener());
-		registrationView.addCancelButtonListener(new CancelRegistrationListener());
-	}
-
-	private void closeRegisterView() {
-		registrationView.dispose();
 	}
 	
 	private void openCalendarView() {

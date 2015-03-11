@@ -15,7 +15,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class RegistrationView extends JFrame {
-	private final String FRAME_TITLE = "Calendar Program Registration";
+	private final String FRAME_TITLE = "User Registration";
 	private JPanel panel_1;
 	private JTextField usernameField;
 	private JTextField firstNameField;
@@ -119,7 +119,15 @@ public class RegistrationView extends JFrame {
 
 		this.setVisible(true);
 	}
-			
+	
+	public void addRegisterButtonListener(ActionListener listenerForRegisterButton) {
+		registerButton.addActionListener(listenerForRegisterButton);
+	}
+	
+	public void addCancelButtonListener(ActionListener listenerForCancelButton) {
+		cancelButton.addActionListener(listenerForCancelButton);
+	}		
+
 	public String getUsername() {
 		return usernameField.getText();
 	}
@@ -148,20 +156,12 @@ public class RegistrationView extends JFrame {
 		return password;
 	}
 
-	public void addRegisterListener(ActionListener listenerForRegisterButton) {
-		registerButton.addActionListener(listenerForRegisterButton);
-	}
-	
-	public void addCancelButtonListener(ActionListener listenerForCancelButton) {
-		cancelButton.addActionListener(listenerForCancelButton);
+	public void displayErrorMessage(String errorMessage) {
+		JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	public void displayRegisterMessage(String username) {
 		JOptionPane.showMessageDialog(this, "'"+username+"' successfully created.", "Registration successful!", JOptionPane.INFORMATION_MESSAGE);
-	}
-
-	public void displayErrorMessage(String errorMessage) {
-		JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 }
