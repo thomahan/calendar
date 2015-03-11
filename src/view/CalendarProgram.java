@@ -63,7 +63,7 @@ public class CalendarProgram extends JFrame {
 	 */
 	public CalendarProgram() {
 		this.setTitle(FRAME_TITLE);
-		this.setBounds(100, 100, 734, 424);
+		this.setBounds(100, 100, 747, 424);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
@@ -382,8 +382,8 @@ public class CalendarProgram extends JFrame {
 	}
 	
 	public void setAppointmentStatus(String appointment) {
-		appointment.toLowerCase();
-		if (appointment.equals(null)){
+		
+		if (appointment == null){
 			editButton.setEnabled(false);
 			deleteButton.setEnabled(false);
 			btnAccept.setEnabled(true);
