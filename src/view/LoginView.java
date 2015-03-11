@@ -12,7 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class LogIn extends JFrame {
+public class LoginView extends JFrame {
 	private final String FRAME_TITLE = "Calendar Program Login";
 	private JTextField usernameField;
 	private JPasswordField passwordField;
@@ -24,13 +24,13 @@ public class LogIn extends JFrame {
 	 */
 	public static void main(String[] args) {
 		@SuppressWarnings("unused")
-		LogIn login = new LogIn();
+		LoginView login = new LoginView();
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public LogIn() {
+	public LoginView() {
 		this.setTitle(FRAME_TITLE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 450, 300);

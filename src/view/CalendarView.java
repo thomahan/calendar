@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import model.Appointment;
 
 @SuppressWarnings("serial")
-public class CalendarProgram extends JFrame {
+public class CalendarView extends JFrame {
 	// TODO: Add show hidden option
 	
 	private final String FRAME_TITLE = "Calendar Program";
@@ -55,13 +55,13 @@ public class CalendarProgram extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		new CalendarProgram();
+		new CalendarView();
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public CalendarProgram() {
+	public CalendarView() {
 		this.setTitle(FRAME_TITLE);
 		this.setBounds(100, 100, 747, 424);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -14,23 +14,20 @@ import model.Appointment;
 import model.Group;
 import model.Room;
 import model.User;
-import view.CalendarProgram;
+import view.CalendarView;
 import view.ChooseRoom;
 import view.InviteGroup;
 import view.InvitePerson;
-import view.LogIn;
+import view.LoginView;
 import view.NewEvent;
-import view.NewUser;
+import view.RegistrationView;
 import db.AppointmentDBC;
 import db.UserDBC;
 
 public class Controller {
-	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
-	private DateFormat simpleDateFormat;
-
-	private LogIn loginView;
-	private NewUser registrationView;
-	private CalendarProgram calendarView;
+	private LoginView loginView;
+	private RegistrationView registrationView;
+	private CalendarView calendarView;
 	private NewEvent appointmentCreationView;
 	private InvitePerson invitePersonView;
 	private InviteGroup groupInvitationView;
@@ -48,6 +45,10 @@ public class Controller {
 	private ArrayList<Appointment> dailyAppointmentList;
 
 	private static ArrayList<Room> roomlist = new ArrayList<Room>();
+
+	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
+	private DateFormat simpleDateFormat;
+
 
 	public Controller() {
 		openLoginView();
@@ -407,7 +408,7 @@ public class Controller {
 	}
 
 	private void openLoginView() {
-		loginView = new LogIn();
+		loginView = new LoginView();
 		loginView.addLoginButtonListener(new LoginListener());
 		loginView.addRegisterButtonListener(new OpenRegistrationListener());
 	}
@@ -418,7 +419,7 @@ public class Controller {
 	}
 	
 	private void openRegisterView() {
-		registrationView = new NewUser();
+		registrationView = new RegistrationView();
 		registrationView.addRegisterListener(new RegisterListener());
 		registrationView.addCancelButtonListener(new CancelRegistrationListener());
 	}
@@ -429,7 +430,7 @@ public class Controller {
 	}
 	
 	private void openCalendarView() {
-		calendarView = new CalendarProgram();
+		calendarView = new CalendarView();
 		calendarView.addNewAppointmentButtonListener(new OpenAppointmentCreationListener());
 		calendarView.addLogoutButtonListener(new LogoutListener());
 		calendarView.addSelectDateListener(new SelectDateListener());

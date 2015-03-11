@@ -14,7 +14,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class NewUser extends JFrame {
+public class RegistrationView extends JFrame {
 	private final String FRAME_TITLE = "Calendar Program Registration";
 	private JPanel panel_1;
 	private JTextField usernameField;
@@ -29,14 +29,14 @@ public class NewUser extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		NewUser window = new NewUser();
+		RegistrationView window = new RegistrationView();
 		window.setVisible(true);
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public NewUser() {
+	public RegistrationView() {
 		this.setTitle(FRAME_TITLE);
 		this.setBounds(100, 100, 450, 300);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
