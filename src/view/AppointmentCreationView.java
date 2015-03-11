@@ -114,7 +114,7 @@ public class AppointmentCreationView extends JFrame {
 		btnChooseRoom.setBounds(162, 127, 117, 29);
 		inputPanel.add(btnChooseRoom);
 			
-		createButton = new JButton("Save");
+		createButton = new JButton("Create");
 		createButton.setBounds(15, 190, 110, 29);
 		inputPanel.add(createButton);
 			

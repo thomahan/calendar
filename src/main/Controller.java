@@ -247,14 +247,14 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			invitedUserList = userInvitationView.getInvitedPersons();
-			closeInvitePersonView();
+			closeUserInvitationView();
 		}
 	}
 	
 	class CancelUserInvitationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			closeInvitePersonView();
+			closeUserInvitationView();
 		}
 	}
 	
@@ -312,7 +312,8 @@ public class Controller {
 	class SelectDateListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			selectedDate = calendarView.getSelectDate();
+			selectedDate = calendarView.getSelectedDate();
+
 			dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
 
 			ArrayList<Appointment> removeList = new ArrayList<Appointment>();
@@ -347,6 +348,17 @@ public class Controller {
 		@Override public void mouseExited(MouseEvent arg0) {}
 		@Override public void mousePressed(MouseEvent arg0) {}
 		@Override public void mouseReleased(MouseEvent arg0) {}
+	}
+
+	class OpenAppointmentEditingListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			openAppointmentCreationView();
+			Appointment appointment = AppointmentDBC.getAppointment(selectedAppointmentId, user.getUsername());
+
+			appointmentCreationView.setStartTime(simpleDateFormat.format(appointment.getStartDate()));
+			appointmentCreationView.setEndTime(simpleDateFormat.format(appointment.getEndDate()));
+		}	
 	}
 
 	class AcceptAppointmentListener implements ActionListener {
@@ -392,17 +404,6 @@ public class Controller {
 		}
 	}
 
-	class OpenAppointmentEditingListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent actionEvent) {
-			openAppointmentCreationView();
-			Appointment appointment = AppointmentDBC.getAppointment(selectedAppointmentId, user.getUsername());
-
-			appointmentCreationView.setStartTime(simpleDateFormat.format(appointment.getStartDate()));
-			appointmentCreationView.setEndTime(simpleDateFormat.format(appointment.getEndDate()));
-		}	
-	}
-
 	private void openLoginView() {
 		loginView = new LoginView();
 		loginView.addLoginButtonListener(new LoginListener());
@@ -438,7 +439,7 @@ public class Controller {
 		appointmentCreationView.dispose();
 	}
 
-	private void closeInvitePersonView() {
+	private void closeUserInvitationView() {
 		userInvitationView.dispose();
 	}
 

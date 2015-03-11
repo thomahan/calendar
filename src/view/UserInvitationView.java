@@ -38,7 +38,7 @@ public class UserInvitationView extends JFrame {
 	 * Create the application.
 	 */
 	public UserInvitationView() {
-		this.setBounds(300, 300, 450, 300);
+		this.setBounds(300, 300, 300, 300);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		

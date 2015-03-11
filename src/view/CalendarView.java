@@ -28,43 +28,41 @@ import model.Appointment;
 
 @SuppressWarnings("serial")
 public class CalendarView extends JFrame {
-	// TODO: Add show hidden option
-	
-	private final String FRAME_TITLE = "Calendar Program";
-	static int realYear, realMonth, realDay, currentYear, currentMonth;
-
+	private static JLabel monthLabel;
+	private static JComboBox<String> yearComboBox;
 	private static JTable table;
 	private static DefaultTableModel mtblCalendar;
 	private JScrollPane stblCalendar;
-	private JButton logoutButton;
+
 	private JButton newAppointmentButton;
-	private JButton editButton;
-	private JButton deleteButton, btnAccept, btnDecline, btnHide;
-	private static JComboBox<String> comboBox;
-	private static JLabel lblNewLabel;
-	private JList<Appointment> dailyAppointmentListBox;
+	private JButton logoutButton;
+
 	private DefaultListModel<Appointment> dailyAppointmentListModel;
+	private JList<Appointment> dailyAppointmentListBox;
+
+	private JButton editButton;
+	private JButton acceptButton;
+	private JButton declineButton;
+	private JButton hideButton;
+	private JButton deleteButton;
 
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
 
-	private List<Appointment> dailyAppointmentList;
-	private Date selectedDate;
+	private final String FRAME_TITLE = "Calendar Program";
+	static int realYear, realMonth, realDay, currentYear, currentMonth;
 
-	/**
-	 * Launch the application.
-	 */
+	private Date selectedDate;
+	private List<Appointment> dailyAppointmentList;
+
 	public static void main(String[] args) {
 		new CalendarView();
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public CalendarView() {
-		this.setTitle(FRAME_TITLE);
-		this.setBounds(100, 100, 747, 424);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle(FRAME_TITLE);
+		this.setBounds(100, 100, 747, 380);
 		this.getContentPane().setLayout(null);
 		
 		//create controls
@@ -80,27 +78,27 @@ public class CalendarView extends JFrame {
 		leftPanel.add(calendarControlPanel);
 		calendarControlPanel.setLayout(null);
 		
-		JButton button = new JButton("<<");
-		button.setAction(action_1);
-		button.setBounds(112, 7, 45, 29);
-		calendarControlPanel.add(button);
+		JButton previousMonthButton = new JButton("<<");
+		previousMonthButton.setAction(action_1);
+		previousMonthButton.setBounds(112, 7, 45, 29);
+		calendarControlPanel.add(previousMonthButton);
 		
-		JButton button_1 = new JButton(">>");
-		button_1.setAction(action);
-		button_1.addActionListener(new ActionListener() {
+		JButton nextMonthButton = new JButton(">>");
+		nextMonthButton.setAction(action);
+		nextMonthButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		button_1.setBounds(150, 7, 45, 29);
-		calendarControlPanel.add(button_1);
+		nextMonthButton.setBounds(150, 7, 45, 29);
+		calendarControlPanel.add(nextMonthButton);
 		
-		comboBox = new JComboBox();
-		comboBox.setBounds(195, 8, 83, 27);
-		calendarControlPanel.add(comboBox);
+		yearComboBox = new JComboBox();
+		yearComboBox.setBounds(195, 8, 83, 27);
+		calendarControlPanel.add(yearComboBox);
 		
-		lblNewLabel = new JLabel("Month");
-		lblNewLabel.setBounds(6, 12, 106, 16);
-		calendarControlPanel.add(lblNewLabel);
+		monthLabel = new JLabel();
+		monthLabel.setBounds(6, 12, 106, 16);
+		calendarControlPanel.add(monthLabel);
 		
 		JPanel calendarDisplayPanel = new JPanel();
 		calendarDisplayPanel.setBounds(6, 55, 284, 280);
@@ -109,8 +107,8 @@ public class CalendarView extends JFrame {
 		
 		table = new JTable(mtblCalendar);
 		stblCalendar = new JScrollPane(table);
-		calendarDisplayPanel.add(stblCalendar);
 		stblCalendar.setBounds(6,6,272,268);
+		calendarDisplayPanel.add(stblCalendar);
 		
 		//No resize/reorder
 		table.getTableHeader().setResizingAllowed(false);
@@ -149,7 +147,7 @@ public class CalendarView extends JFrame {
 		
 		//Populate JComboBox with a selection of years
 		for (int i=realYear-10; i<=realYear+10; i++)
-			comboBox.addItem(String.valueOf(i));
+			yearComboBox.addItem(String.valueOf(i));
 
 		JPanel rightPanel = new JPanel();
 		rightPanel.setBounds(314, 6, 280, 400);
@@ -174,8 +172,8 @@ public class CalendarView extends JFrame {
 		rightPanel.add(appointmentPanel);
 		appointmentPanel.setLayout(null);
 		
-		dailyAppointmentListModel = new DefaultListModel();
-		dailyAppointmentListBox = new JList(dailyAppointmentListModel);
+		dailyAppointmentListModel = new DefaultListModel<Appointment>();
+		dailyAppointmentListBox = new JList<Appointment>(dailyAppointmentListModel);
 		dailyAppointmentListBox.setBounds(10, 10, 248, 260);
 		dailyAppointmentListBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		dailyAppointmentListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -185,37 +183,32 @@ public class CalendarView extends JFrame {
 		editButton.setBounds(606, 67, 124, 29);
 		editButton.setEnabled(false);
 		getContentPane().add(editButton);
+
+		acceptButton = new JButton("Accept");
+		acceptButton.setBounds(606, 108, 124, 29);
+		acceptButton.setEnabled(false);
+		getContentPane().add(acceptButton);
+		
+		declineButton = new JButton("Decline");
+		declineButton.setBounds(606, 149, 124, 29);
+		declineButton.setEnabled(false);
+		getContentPane().add(declineButton);
+		
+		hideButton = new JButton("Hide");
+		hideButton.setBounds(606, 190, 124, 29);
+		hideButton.setEnabled(false);
+		getContentPane().add(hideButton);
 		
 		deleteButton = new JButton("Delete");
-		deleteButton.setBounds(606, 108, 124, 29);
+		deleteButton.setBounds(606, 231, 124, 29);
 		deleteButton.setEnabled(false);
 		getContentPane().add(deleteButton);
-		
-		btnAccept = new JButton("Accept");
-		btnAccept.setBounds(606, 149, 124, 29);
-		btnAccept.setEnabled(false);
-		getContentPane().add(btnAccept);
-		
-		btnDecline = new JButton("Decline");
-		btnDecline.setBounds(606, 190, 124, 29);
-		btnDecline.setEnabled(false);
-		getContentPane().add(btnDecline);
-		
-		btnHide = new JButton("Hide");
-		btnHide.setBounds(606, 231, 124, 29);
-		btnHide.setEnabled(false);
-		getContentPane().add(btnHide);
-
-		//Add mouse listener
+	
+		yearComboBox.addActionListener(new cmbYear_Action());
 		table.addMouseListener(new MouseHandler());
 		
-		
-		//Refresh calendar
-		refreshCalendar(realMonth, realYear); //Refresh calendar
-		
-		
-		comboBox.addActionListener(new cmbYear_Action());
-		
+		refreshCalendar(realMonth, realYear);
+
 		this.setVisible(true);
 		selectedDate = new Date();
 	}
@@ -226,8 +219,8 @@ public class CalendarView extends JFrame {
 		int nod, som; //Number Of Days, Start Of Month
 	
 		//Allow/disallow buttons
-		comboBox.setSelectedItem(String.valueOf(year)); //Select the correct year in the combo box
-		lblNewLabel.setText(months[month]); //Refresh the month label at the top
+		yearComboBox.setSelectedItem(String.valueOf(year)); //Select the correct year in the combo box
+		monthLabel.setText(months[month]); //Refresh the month label at the top
 		
 		//Clear table
 		for (int i = 0; i < 6; i++) {
@@ -306,14 +299,13 @@ public class CalendarView extends JFrame {
 	
 	private class cmbYear_Action implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (comboBox.getSelectedItem() != null){
-				String b = comboBox.getSelectedItem().toString();
+			if (yearComboBox.getSelectedItem() != null){
+				String b = yearComboBox.getSelectedItem().toString();
 				currentYear = Integer.parseInt(b);
 				refreshCalendar(currentMonth, currentYear);
 			}
 		}	
 	}
-	
 	
 	private class MouseHandler implements MouseListener {
 		@Override
@@ -364,58 +356,52 @@ public class CalendarView extends JFrame {
 	public void addEditButtonListener(ActionListener editButtonListener) {
 		editButton.addActionListener(editButtonListener);
 	}
-		
-	public void addDeleteButtonListener(ActionListener deleteButtonListener) {
-		deleteButton.addActionListener(deleteButtonListener);
-	}
-	
+
 	public void addAcceptButtonListener(ActionListener acceptButtonListener) {
-		btnAccept.addActionListener(acceptButtonListener);
+		acceptButton.addActionListener(acceptButtonListener);
 	}
 	
 	public void addDeclineButtonListener(ActionListener declineButtonListener) {
-		btnDecline.addActionListener(declineButtonListener);
+		declineButton.addActionListener(declineButtonListener);
 	}
 	
 	public void addHideButtonListener(ActionListener hideButtonListener) {
-		btnHide.addActionListener(hideButtonListener);
+		hideButton.addActionListener(hideButtonListener);
 	}
-	
-	public void setAppointmentStatus(String appointment) {
-		if (appointment.equals("Not replied")){
-			editButton.setEnabled(false);
-			deleteButton.setEnabled(false);
-			btnAccept.setEnabled(true);
-			btnDecline.setEnabled(true);
-			btnHide.setEnabled(false);
-		}else if(appointment.equals("Accepted")){
-			editButton.setEnabled(false);
-			deleteButton.setEnabled(true);
-			btnAccept.setEnabled(false);
-			btnDecline.setEnabled(false);
-			btnHide.setEnabled(false);
-		}else if (appointment.equals("Declined")){
-			editButton.setEnabled(false);
-			deleteButton.setEnabled(false);
-			btnAccept.setEnabled(true);
-			btnDecline.setEnabled(false);
-			btnHide.setEnabled(true);			
-		}else if (appointment.equals("Owned")){
-			editButton.setEnabled(true);
-			deleteButton.setEnabled(true);
-			btnAccept.setEnabled(false);
-			btnDecline.setEnabled(false);
-			btnHide.setEnabled(false);
-		}
+			
+	public void addDeleteButtonListener(ActionListener deleteButtonListener) {
+		deleteButton.addActionListener(deleteButtonListener);
 	}
-	
-	public Date getSelectDate() {
+		
+	public Date getSelectedDate() {
 		return selectedDate;
 	}
+
 	public Appointment getSelectedAppointment() {
 		return dailyAppointmentListBox.getSelectedValue();
 	}
 	
+	public void setAppointmentStatus(String appointment) {
+		editButton.setEnabled(false);
+		acceptButton.setEnabled(false);
+		declineButton.setEnabled(false);
+		hideButton.setEnabled(false);
+		deleteButton.setEnabled(false);
+
+		if (appointment.equals("Not replied")) {
+			acceptButton.setEnabled(true);
+			declineButton.setEnabled(true);
+		} else if (appointment.equals("Accepted")) {
+			deleteButton.setEnabled(true);
+		} else if (appointment.equals("Declined")) {
+			acceptButton.setEnabled(true);
+			hideButton.setEnabled(true);			
+		} else if (appointment.equals("Owned")) {
+			editButton.setEnabled(true);
+			deleteButton.setEnabled(true);
+		}
+	}
+
 	public void setDailyAppointmentList(ArrayList<Appointment> dailyAppointmentList) {
 		this.dailyAppointmentList = dailyAppointmentList;
 

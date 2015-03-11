@@ -2,7 +2,6 @@ package view;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -11,111 +10,90 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class RegistrationView extends JFrame {
-	private final String FRAME_TITLE = "User Registration";
-	private JPanel panel_1;
+	private JPanel headerPanel;
 	private JTextField usernameField;
 	private JTextField firstNameField;
 	private JTextField lastNameField;
 	private JPasswordField passwordField;
-	private JPasswordField passwordConfirmField;
+	private JPasswordField confirmPasswordField;
 	private JButton registerButton;
 	private JButton cancelButton;
 
-	/**
-	 * Launch the application.
-	 */
+	private final String FRAME_TITLE = "User Registration";
+
 	public static void main(String[] args) {
 		RegistrationView window = new RegistrationView();
 		window.setVisible(true);
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public RegistrationView() {
-		this.setTitle(FRAME_TITLE);
 		this.setBounds(200, 200, 450, 300);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setTitle(FRAME_TITLE);
 		this.getContentPane().setLayout(null);
+			
+		headerPanel = new JPanel();
+		headerPanel.setBounds(96, 6, 244, 38);
+		headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		this.getContentPane().add(headerPanel);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(186, 54, 154, 173);
-		this.getContentPane().add(panel);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JLabel txtrPleaseFillIn = new JLabel("Please fill in required information");
+		headerPanel.add(txtrPleaseFillIn);
+	
+		JPanel labelPanel = new JPanel();
+		labelPanel.setBounds(69, 54, 123, 173);
+		labelPanel.setLayout(new GridLayout(0, 1, 0, 0));
+		this.getContentPane().add(labelPanel);
 		
-		usernameField = new JTextField();
-		panel.add(usernameField);
-		usernameField.setColumns(10);
+		JLabel usernameLabel = new JLabel("Username");
+		labelPanel.add(usernameLabel);
 		
-		firstNameField = new JTextField();
-		panel.add(firstNameField);
-		firstNameField.setColumns(10);
+		JLabel firstNameLabel = new JLabel("First name");
+		labelPanel.add(firstNameLabel);
 		
-		lastNameField = new JTextField();
-		panel.add(lastNameField);
-		lastNameField.setColumns(10);
+		JLabel lastNameLabel = new JLabel("Last name");
+		labelPanel.add(lastNameLabel);
 		
-		passwordField = new JPasswordField();
-		panel.add(passwordField);
-		passwordField.setColumns(10);
+		JLabel passwordLabel = new JLabel("Password");
+		labelPanel.add(passwordLabel);
 		
-		passwordConfirmField = new JPasswordField();
-		panel.add(passwordConfirmField);
-		passwordConfirmField.setColumns(10);
+		JLabel confirmPasswordLabel = new JLabel("Confirm password");
+		labelPanel.add(confirmPasswordLabel);
 		
-		panel_1 = new JPanel();
-		panel_1.setBounds(96, 6, 244, 38);
-		this.getContentPane().add(panel_1);
-		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JPanel inputPanel = new JPanel();
+		inputPanel.setBounds(186, 54, 154, 173);
+		inputPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		this.getContentPane().add(inputPanel);
 		
-		JLabel txtrPleaseFillIn = new JLabel();
-		txtrPleaseFillIn.setText("Please fill in required information");
-		panel_1.add(txtrPleaseFillIn);
+		usernameField = new JTextField(10);
+		inputPanel.add(usernameField);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(69, 54, 123, 173);
-		this.getContentPane().add(panel_2);
-		panel_2.setLayout(new GridLayout(0, 1, 0, 0));
+		firstNameField = new JTextField(10);
+		inputPanel.add(firstNameField);
 		
-		JLabel txtrUsername = new JLabel();
-		txtrUsername.setBackground(SystemColor.window);
-		txtrUsername.setText("Username");
-		panel_2.add(txtrUsername);
+		lastNameField = new JTextField(10);
+		inputPanel.add(lastNameField);
 		
-		JLabel txtrGivenName = new JLabel();
-		txtrGivenName.setBackground(SystemColor.window);
-		txtrGivenName.setText("Given name");
-		panel_2.add(txtrGivenName);
+		passwordField = new JPasswordField(10);
+		inputPanel.add(passwordField);
 		
-		JLabel txtrLastName = new JLabel();
-		txtrLastName.setBackground(SystemColor.window);
-		txtrLastName.setText("Last name");
-		panel_2.add(txtrLastName);
+		confirmPasswordField = new JPasswordField(10);
+		inputPanel.add(confirmPasswordField);
 		
-		JLabel txtrPassword = new JLabel();
-		txtrPassword.setBackground(SystemColor.window);
-		txtrPassword.setText("Password");
-		panel_2.add(txtrPassword);
-		
-		JLabel txtrConfirmPassword = new JLabel();
-		txtrConfirmPassword.setBackground(SystemColor.window);
-		txtrConfirmPassword.setText("Confirm password");
-		panel_2.add(txtrConfirmPassword);
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(124, 236, 273, 36);
-		this.getContentPane().add(panel_3);
-		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBounds(124, 236, 273, 36);
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		this.getContentPane().add(buttonPanel);
 		
 		registerButton = new JButton("Register");
-		panel_3.add(registerButton);
+		buttonPanel.add(registerButton);
 		
 		cancelButton = new JButton("Cancel");
-		panel_3.add(cancelButton);
+		buttonPanel.add(cancelButton);
 
 		this.setVisible(true);
 	}
@@ -150,7 +128,7 @@ public class RegistrationView extends JFrame {
 		
 	public String getPasswordConfirm() {
 		String password = "";
-		for (char c : this.passwordConfirmField.getPassword()) {
+		for (char c : this.confirmPasswordField.getPassword()) {
 			password = password + c;
 		}
 		return password;
