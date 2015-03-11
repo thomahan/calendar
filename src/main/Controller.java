@@ -49,7 +49,6 @@ public class Controller {
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 	private DateFormat simpleDateFormat;
 
-
 	public Controller() {
 		simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
 		selectedDate = new Date();
@@ -69,7 +68,6 @@ public class Controller {
 			registrationView = new RegistrationView();
 			registrationView.addRegisterButtonListener(new RegisterListener());
 			registrationView.addCancelButtonListener(new CancelRegistrationListener());
-
 		}
 	}
 
@@ -86,21 +84,19 @@ public class Controller {
 				if (username.length() <= 0) {
 					throw new Exception("Username must be specified.");
 				} else if (UserDBC.getUser(username) != null) {
-						throw new Exception("Username is already taken.");
+					throw new Exception("Username is already taken.");
 				} else if (password.length() <= 0) {
 					throw new Exception("Password must be specified.");
 				} else if (!password.equals(passwordConfirm)){					
 					throw new Exception("Passwords do not match.");
 				}
 				
-				user = new User(firstName, lastName, username, password);
-				UserDBC.addUser(user);
+				User newUser = new User(firstName, lastName, username, password);
+				UserDBC.addUser(newUser);
 
 				registrationView.displayRegisterMessage(username);
-
 				registrationView.dispose();
 			} catch (Exception e){
-				user = null;
 				registrationView.displayErrorMessage(e.getMessage());
 			}
 		}
@@ -128,14 +124,12 @@ public class Controller {
 				
 				if (user == null) {
 					throw new Exception("Username does not exist.");
-				}else if (!user.isPasswordCorrect(password)) {
+				} else if (!user.isPasswordCorrect(password)) {
 					throw new Exception("Password incorrect.");
 				}
 
-				closeLoginView();
+				loginView.dispose();
 				openCalendarView();
-				calendarView.setTitle(calendarView.getTitle()+" ("+user.getName()+")");
-
 			} catch (Exception e) {
 				user = null;
 				loginView.displayErrorMessage(e.getMessage());
@@ -146,7 +140,8 @@ public class Controller {
 	class LogoutListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			closeCalendarView();
+			calendarView.dispose();
+			user = null;
 			openLoginView();
 		}
 	}
@@ -414,10 +409,6 @@ public class Controller {
 		loginView.addRegisterButtonListener(new OpenRegistrationListener());
 	}
 	
-	private void closeLoginView() {
-		loginView.dispose();
-	}
-	
 	private void openCalendarView() {
 		calendarView = new CalendarView();
 		calendarView.addNewAppointmentButtonListener(new OpenAppointmentCreationListener());
@@ -430,14 +421,8 @@ public class Controller {
 		calendarView.addDeclineButtonListener(new DeclineAppointmentListener());
 		calendarView.addHideButtonListener(new HideAppointmentListener());
 		calendarView.addDeleteButtonListener(new DeleteAppointmentListener());
-	}
-	
-	private void closeCalendarView() {
-		calendarView.dispose();
-		if (appointmentCreationView != null) {
-			closeAppointmentCreationView();
-		}
-		user = null;
+
+		calendarView.setTitle(calendarView.getTitle()+" ("+user.getName()+")");
 	}
 	
 	private void openAppointmentCreationView() {

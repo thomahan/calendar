@@ -161,7 +161,7 @@ public class RegistrationView extends JFrame {
 	}
 	
 	public void displayRegisterMessage(String username) {
-		JOptionPane.showMessageDialog(this, "'"+username+"' successfully created.", "Registration successful!", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, "'"+username+"' successfully registered.", "Registration complete!", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 }

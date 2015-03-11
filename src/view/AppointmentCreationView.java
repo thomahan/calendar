@@ -77,7 +77,7 @@ public class AppointmentCreationView extends JFrame {
 		lblLocation.setBounds(6, 131, 61, 16);
 		labelPanel.add(lblLocation);
 			
-		createButton = new JButton("Create");
+		createButton = new JButton("Save");
 		createButton.setBounds(6, 219, 110, 29);
 		labelPanel.add(createButton);
 			
