@@ -184,9 +184,8 @@ public class Appointment {
 
 		String summary = "<html>";
 
-		String statusString = (status != null) ? status : "Not replied";
 		summary += (date.format(startDate).equals(date.format(endDate))) ? time.format(startDate)+"-"+time.format(endDate) : full.format(startDate)+" - "+full.format(endDate);
-		summary += " ("+statusString+")<br>";
+		summary += " ("+status+")<br>";
 		summary += (alarmDate != null) ? (date.format(startDate).equals(date.format(alarmDate))) ? "Alarm: "+time.format(alarmDate)+"<br>" : "Alarm:"+full.format(alarmDate)+"<br>" : "";
 
 		summary += description+"<br>";
