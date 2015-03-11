@@ -47,6 +47,10 @@ public class Appointment {
 		this.room = room;
 		fireCalendarEventHasChanged();
 	}
+	
+	public String getStatus() {
+		return status;
+	}
 
 	public String getEventName(){
 		return title;
