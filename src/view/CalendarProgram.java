@@ -382,31 +382,30 @@ public class CalendarProgram extends JFrame {
 	}
 	
 	public void setAppointmentStatus(String appointment) {
-		
-		if (appointment == null){
+		if (appointment.equals("Not replied")){
 			editButton.setEnabled(false);
 			deleteButton.setEnabled(false);
 			btnAccept.setEnabled(true);
 			btnDecline.setEnabled(true);
 			btnHide.setEnabled(false);
-		}else if(appointment.equals("accepted")){
-			editButton.setEnabled(true);
-			deleteButton.setEnabled(true);
-			btnAccept.setEnabled(false);
-			btnDecline.setEnabled(true);
-			btnHide.setEnabled(true);
-		}else if (appointment.equals("declined")){
+		}else if(appointment.equals("Accepted")){
 			editButton.setEnabled(false);
 			deleteButton.setEnabled(true);
+			btnAccept.setEnabled(false);
+			btnDecline.setEnabled(false);
+			btnHide.setEnabled(false);
+		}else if (appointment.equals("Declined")){
+			editButton.setEnabled(false);
+			deleteButton.setEnabled(false);
 			btnAccept.setEnabled(true);
 			btnDecline.setEnabled(false);
 			btnHide.setEnabled(true);			
-		}else if (appointment.equals("my appointment")){
+		}else if (appointment.equals("Owned")){
 			editButton.setEnabled(true);
 			deleteButton.setEnabled(true);
 			btnAccept.setEnabled(false);
 			btnDecline.setEnabled(false);
-			btnHide.setEnabled(true);
+			btnHide.setEnabled(false);
 		}
 	}
 	
