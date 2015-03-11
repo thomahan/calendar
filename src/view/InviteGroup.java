@@ -47,9 +47,9 @@ public class InviteGroup extends JFrame {
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblInviteOtherPersons = new JLabel("Invite other groups using the menu");
-		lblInviteOtherPersons.setBounds(6, 6, 261, 16);
-		panel.add(lblInviteOtherPersons);
+		JLabel lblInviteOtherGroups = new JLabel("Invite other groups using the menu");
+		lblInviteOtherGroups.setBounds(6, 6, 261, 16);
+		panel.add(lblInviteOtherGroups);
 		
 		btnConfirm = new JButton("Confirm");
 		btnConfirm.setBounds(6, 221, 117, 29);
