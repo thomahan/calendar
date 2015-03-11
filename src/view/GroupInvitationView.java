@@ -18,7 +18,7 @@ import javax.swing.JButton;
 
 import model.User;
 
-public class InviteGroup extends JFrame {
+public class GroupInvitationView extends JFrame {
 
 	private static final ListModel String = null;
 	private JButton btnCancel, btnConfirm;
@@ -31,13 +31,13 @@ public class InviteGroup extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		InvitePerson window = new InvitePerson();
+		UserInvitationView window = new UserInvitationView();
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public InviteGroup() {
+	public GroupInvitationView() {
 		this.setBounds(100, 100, 450, 300);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);

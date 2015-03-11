@@ -15,11 +15,11 @@ import model.Group;
 import model.Room;
 import model.User;
 import view.CalendarView;
-import view.ChooseRoom;
-import view.InviteGroup;
-import view.InvitePerson;
+import view.RoomReservationView;
+import view.GroupInvitationView;
+import view.UserInvitationView;
 import view.LoginView;
-import view.NewEvent;
+import view.AppointmentCreationView;
 import view.RegistrationView;
 import db.AppointmentDBC;
 import db.UserDBC;
@@ -28,10 +28,10 @@ public class Controller {
 	private LoginView loginView;
 	private RegistrationView registrationView;
 	private CalendarView calendarView;
-	private NewEvent appointmentCreationView;
-	private InvitePerson invitePersonView;
-	private InviteGroup groupInvitationView;
-	private ChooseRoom roomReservationView;
+	private AppointmentCreationView appointmentCreationView;
+	private UserInvitationView userInvitationView;
+	private GroupInvitationView groupInvitationView;
+	private RoomReservationView roomReservationView;
 
 	private User user;
 	private Date selectedDate;
@@ -225,9 +225,9 @@ public class Controller {
 	class OpenUserInvitationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			invitePersonView = new InvitePerson();
-			invitePersonView.addConfirmButtonListener(new InviteUserListener());
-			invitePersonView.addCancelButtonListener(new CancelUserInvitationListener());
+			userInvitationView = new UserInvitationView();
+			userInvitationView.addConfirmButtonListener(new InviteUserListener());
+			userInvitationView.addCancelButtonListener(new CancelUserInvitationListener());
 			
 			userList = UserDBC.getUserList();
 			// This should be done differently
@@ -242,7 +242,7 @@ public class Controller {
 				userList.remove(r);
 				
 			}
-			invitePersonView.setUserList(userList);
+			userInvitationView.setUserList(userList);
 		}
 
 	}
@@ -250,7 +250,7 @@ public class Controller {
 	class InviteUserListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			invitedUserList = invitePersonView.getInvitedPersons();
+			invitedUserList = userInvitationView.getInvitedPersons();
 			closeInvitePersonView();
 		}
 	}
@@ -265,7 +265,7 @@ public class Controller {
 	class OpenGroupInvitationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			groupInvitationView = new InviteGroup();
+			groupInvitationView = new GroupInvitationView();
 			groupInvitationView.addCancelButtonListener(new CancelGroupInvitationListener());
 			
 			/*
@@ -286,7 +286,7 @@ public class Controller {
 	class OpenRoomReservationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			roomReservationView = new ChooseRoom();
+			roomReservationView = new RoomReservationView();
 			roomReservationView.addConfirmButtonListener(new ReserveRoomListener());
 			roomReservationView.addCancelButtonListener(new CancelRoomReservationListener());
 			
@@ -453,7 +453,7 @@ public class Controller {
 	}
 	
 	private void openAppointmentCreationView() {
-		appointmentCreationView = new NewEvent();
+		appointmentCreationView = new AppointmentCreationView();
 		appointmentCreationView.addCreateButtonListener(new CreateAppointmentListener());
 		appointmentCreationView.addCancelButtonListener(new CancelAppointmentCreationListener());
 		appointmentCreationView.addInvitePersonButtonListener(new OpenUserInvitationListener());
@@ -467,8 +467,8 @@ public class Controller {
 	}
 
 	private void closeInvitePersonView() {
-		invitePersonView.dispose();
-		invitePersonView = null;
+		userInvitationView.dispose();
+		userInvitationView = null;
 	}
 
 	public void addToRoomlist(Room room){

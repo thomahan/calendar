@@ -2,7 +2,7 @@ package main;
 
 import db.DBInitializer;
 
-public class MainDBInitializer {
+public class DBSetup {
 	public static void main(String[] args) {
 		System.out.println("Creating tables...");
 		DBInitializer.createTables();

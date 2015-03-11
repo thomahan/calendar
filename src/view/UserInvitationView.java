@@ -1,41 +1,43 @@
 package view;
 
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
+import java.awt.EventQueue;
 import java.util.List;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.JButton;
 
-import model.Room;
 import model.User;
 
-public class ChooseRoom extends JFrame {
+public class UserInvitationView extends JFrame {
 
 	private static final ListModel String = null;
 	private JButton btnCancel, btnConfirm;
 	private JList list;
 	private JPanel panel;
-	private DefaultListModel<Room> roomListModel;
-	private JList roomListBox;
+	private DefaultListModel<User> userListModel;
+	private JList userListBox;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		ChooseRoom chooseRoom = new ChooseRoom();
+		UserInvitationView window = new UserInvitationView();
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public ChooseRoom() {
+	public UserInvitationView() {
 		this.setBounds(100, 100, 450, 300);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
@@ -45,7 +47,7 @@ public class ChooseRoom extends JFrame {
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblInviteOtherPersons = new JLabel("Choose one room");
+		JLabel lblInviteOtherPersons = new JLabel("Invite other persons using the menu");
 		lblInviteOtherPersons.setBounds(6, 6, 261, 16);
 		panel.add(lblInviteOtherPersons);
 		
@@ -57,12 +59,12 @@ public class ChooseRoom extends JFrame {
 		btnCancel.setBounds(151, 221, 117, 29);
 		panel.add(btnCancel);
 	
-		roomListModel = new DefaultListModel();
-		roomListBox = new JList(roomListModel);
-		roomListBox.setBounds(10, 25, 248, 180);
-		roomListBox.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		roomListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		panel.add(roomListBox);
+		userListModel = new DefaultListModel();
+		userListBox = new JList(userListModel);
+		userListBox.setBounds(10, 25, 248, 180);
+		userListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		userListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		panel.add(userListBox);
 
 		this.setVisible(true);
 	}
@@ -75,14 +77,14 @@ public class ChooseRoom extends JFrame {
 		btnConfirm.addActionListener(confirmButtonListener);
 	}
 	
-	public void setRoomList(List<Room> roomList) {
-		roomListModel.clear();
-		for (Room room : roomList) {
-			roomListModel.addElement(room);
+	public void setUserList(List<User> userList) {
+		userListModel.clear();
+		for (User user : userList) {
+			userListModel.addElement(user);
 		}
 	}
 	
-	public Room getSelectedRoom(){
-		return (Room) roomListBox.getSelectedValue();
+	public List<User> getInvitedPersons(){
+		return userListBox.getSelectedValuesList();
 	}
 }

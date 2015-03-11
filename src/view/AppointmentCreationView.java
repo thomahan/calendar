@@ -19,7 +19,7 @@ import javax.swing.Action;
 
 import model.User;
 
-public class NewEvent extends JFrame {
+public class AppointmentCreationView extends JFrame {
 	// TODO: Add field for alarmTime, roomId. Add cancel button?
 
 	private final String FRAME_TITLE = "Create new appointment";
@@ -39,13 +39,13 @@ public class NewEvent extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		NewEvent window = new NewEvent();
+		AppointmentCreationView window = new AppointmentCreationView();
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public NewEvent() {
+	public AppointmentCreationView() {
 		this.setTitle(FRAME_TITLE);
 		this.setBounds(100, 100, 450, 350);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
