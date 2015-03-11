@@ -193,6 +193,7 @@ public class CalendarProgram extends JFrame {
 		//Add mouse listener
 		table.addMouseListener(new MouseHandler());
 		
+		
 		//Refresh calendar
 		refreshCalendar(realMonth, realYear); //Refresh calendar
 		
@@ -316,7 +317,6 @@ public class CalendarProgram extends JFrame {
 			} else {
 				return selectedDate;
 			}
-
 		}
 
 		@Override public void mousePressed(MouseEvent e) {}
@@ -339,6 +339,10 @@ public class CalendarProgram extends JFrame {
 		
 	public void addSelectDateListener(MouseListener selectDateListener) {
 		table.addMouseListener(selectDateListener);
+	}
+	
+	public void addSelectedAppointmentListener(MouseListener selectAppointmentListener) {
+		dailyAppointmentListBox.addMouseListener(selectAppointmentListener);
 	}
 		
 	public void addEditButtonListener(ActionListener editButtonListener) {
