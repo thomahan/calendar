@@ -7,8 +7,10 @@ public class Controller {
 	private DB db;
 	
 	public Controller() {
+		// Instantiates dummy DB class, in reality this class would be static
 		db = new DB();
 
+		// The controller instantiates the window and adds listeners to its buttons
 		view = new View();
 		view.addLoadButtonListener(new LoadValueListener());
 		view.addStoreButtonListener(new StoreValueListener());
