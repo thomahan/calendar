@@ -92,7 +92,7 @@ public class CalendarView extends JFrame {
 		nextMonthButton.setBounds(150, 7, 45, 29);
 		calendarControlPanel.add(nextMonthButton);
 		
-		yearComboBox = new JComboBox();
+		yearComboBox = new JComboBox<String>();
 		yearComboBox.setBounds(195, 8, 83, 27);
 		calendarControlPanel.add(yearComboBox);
 		
@@ -263,7 +263,6 @@ public class CalendarView extends JFrame {
 //		}
 	}
 
-	@SuppressWarnings("serial")
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, ">>");
@@ -280,7 +279,7 @@ public class CalendarView extends JFrame {
 		}
 
 	}
-	@SuppressWarnings("serial")
+
 	private class SwingAction_1 extends AbstractAction {
 		public SwingAction_1() {
 			putValue(NAME, "<<");

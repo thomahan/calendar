@@ -1,40 +1,30 @@
 package view;
 
-import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.ListModel;
+import javax.swing.DefaultListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.JButton;
 
 import model.Room;
-import model.User;
 
+@SuppressWarnings("serial")
 public class RoomReservationView extends JFrame {
-
-	private static final ListModel String = null;
-	private JButton btnCancel, btnConfirm;
-	private JList list;
 	private JPanel panel;
+	private JList<Room> roomListBox;
 	private DefaultListModel<Room> roomListModel;
-	private JList roomListBox;
+	private JButton reserveButton;
+	private JButton cancelButton;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
-		RoomReservationView chooseRoom = new RoomReservationView();
+		new RoomReservationView();
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public RoomReservationView() {
 		this.setBounds(300, 300, 300, 300);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -42,47 +32,48 @@ public class RoomReservationView extends JFrame {
 		
 		panel = new JPanel();
 		panel.setBounds(6, 6, 438, 266);
-		this.getContentPane().add(panel);
 		panel.setLayout(null);
+		this.getContentPane().add(panel);
 		
 		JLabel lblInviteOtherPersons = new JLabel("Choose one room");
 		lblInviteOtherPersons.setBounds(6, 6, 261, 16);
 		panel.add(lblInviteOtherPersons);
-		
-		btnConfirm = new JButton("Reserve");
-		btnConfirm.setBounds(6, 221, 117, 29);
-		panel.add(btnConfirm);
-		
-		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(151, 221, 117, 29);
-		panel.add(btnCancel);
-	
-		roomListModel = new DefaultListModel();
-		roomListBox = new JList(roomListModel);
+
+		roomListModel = new DefaultListModel<Room>();
+		roomListBox = new JList<Room>(roomListModel);
 		roomListBox.setBounds(10, 25, 248, 180);
 		roomListBox.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		roomListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		panel.add(roomListBox);
-
+		
+		reserveButton = new JButton("Reserve");
+		reserveButton.setBounds(6, 221, 117, 29);
+		panel.add(reserveButton);
+		
+		cancelButton = new JButton("Cancel");
+		cancelButton.setBounds(151, 221, 117, 29);
+		panel.add(cancelButton);
+	
 		this.setVisible(true);
 	}
-	
+		
+	public void addReserveButtonListener(ActionListener reserveButtonListener) {
+		reserveButton.addActionListener(reserveButtonListener);
+	}
+
 	public void addCancelButtonListener(ActionListener cancelButtonListener) {
-		btnCancel.addActionListener(cancelButtonListener);
+		cancelButton.addActionListener(cancelButtonListener);
 	}
-	
-	public void addConfirmButtonListener(ActionListener confirmButtonListener) {
-		btnConfirm.addActionListener(confirmButtonListener);
+		
+	public Room getSelectedRoom(){
+		return (Room) roomListBox.getSelectedValue();
 	}
-	
+
 	public void setRoomList(List<Room> roomList) {
 		roomListModel.clear();
 		for (Room room : roomList) {
 			roomListModel.addElement(room);
 		}
 	}
-	
-	public Room getSelectedRoom(){
-		return (Room) roomListBox.getSelectedValue();
-	}
+
 }

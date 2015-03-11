@@ -1,42 +1,30 @@
 package view;
 
-import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.util.List;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.ListModel;
+import javax.swing.DefaultListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 
 import model.User;
 
+@SuppressWarnings("serial")
 public class UserInvitationView extends JFrame {
-
-	private static final ListModel String = null;
-	private JButton btnCancel, btnConfirm;
-	private JList list;
 	private JPanel panel;
+	private JList<User> userListBox;
 	private DefaultListModel<User> userListModel;
-	private JList userListBox;
+	private JButton inviteButton;
+	private JButton cancelButton;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
-		UserInvitationView window = new UserInvitationView();
+		new UserInvitationView();
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public UserInvitationView() {
 		this.setBounds(300, 300, 300, 300);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -44,47 +32,48 @@ public class UserInvitationView extends JFrame {
 		
 		panel = new JPanel();
 		panel.setBounds(6, 6, 438, 266);
-		this.getContentPane().add(panel);
 		panel.setLayout(null);
+		this.getContentPane().add(panel);
 		
 		JLabel lblInviteOtherPersons = new JLabel("Invite other persons using the menu");
 		lblInviteOtherPersons.setBounds(6, 6, 261, 16);
 		panel.add(lblInviteOtherPersons);
-		
-		btnConfirm = new JButton("Invite");
-		btnConfirm.setBounds(6, 221, 117, 29);
-		panel.add(btnConfirm);
-		
-		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(151, 221, 117, 29);
-		panel.add(btnCancel);
-	
-		userListModel = new DefaultListModel();
-		userListBox = new JList(userListModel);
+
+		userListModel = new DefaultListModel<User>();
+		userListBox = new JList<User>(userListModel);
 		userListBox.setBounds(10, 25, 248, 180);
 		userListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		userListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		panel.add(userListBox);
-
+		
+		inviteButton = new JButton("Invite");
+		inviteButton.setBounds(6, 221, 117, 29);
+		panel.add(inviteButton);
+		
+		cancelButton = new JButton("Cancel");
+		cancelButton.setBounds(151, 221, 117, 29);
+		panel.add(cancelButton);
+	
 		this.setVisible(true);
 	}
-	
-	public void addCancelButtonListener(ActionListener cancelButtonListener) {
-		btnCancel.addActionListener(cancelButtonListener);
-	}
-	
+		
 	public void addConfirmButtonListener(ActionListener confirmButtonListener) {
-		btnConfirm.addActionListener(confirmButtonListener);
+		inviteButton.addActionListener(confirmButtonListener);
 	}
-	
+
+	public void addCancelButtonListener(ActionListener cancelButtonListener) {
+		cancelButton.addActionListener(cancelButtonListener);
+	}
+		
+	public List<User> getInvitedPersons(){
+		return userListBox.getSelectedValuesList();
+	}
+
 	public void setUserList(List<User> userList) {
 		userListModel.clear();
 		for (User user : userList) {
 			userListModel.addElement(user);
 		}
 	}
-	
-	public List<User> getInvitedPersons(){
-		return userListBox.getSelectedValuesList();
-	}
+
 }

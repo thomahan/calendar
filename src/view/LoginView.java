@@ -2,14 +2,13 @@ package view;
 
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 @SuppressWarnings("serial")
 public class LoginView extends JFrame {
@@ -19,17 +18,10 @@ public class LoginView extends JFrame {
 	private JButton loginButton;
 	private JButton registerButton;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
-		@SuppressWarnings("unused")
-		LoginView login = new LoginView();
+		new LoginView();
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public LoginView() {
 		this.setTitle(FRAME_TITLE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,25 +33,21 @@ public class LoginView extends JFrame {
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel txtrUsername = new JLabel();
-		txtrUsername.setBounds(5, 11, 62, 16);
-		txtrUsername.setText("Username");
-		panel.add(txtrUsername);
+		JLabel usernameLabel = new JLabel();
+		usernameLabel.setBounds(5, 11, 62, 16);
+		usernameLabel.setText("Username");
+		panel.add(usernameLabel);
 		
-		JDesktopPane desktopPane = new JDesktopPane();
-		desktopPane.setBounds(72, 18, 1, 1);
-		panel.add(desktopPane);
-		
+		JLabel passwordLabel = new JLabel();
+		passwordLabel.setBounds(10, 44, 59, 16);
+		passwordLabel.setText("Password");
+		panel.add(passwordLabel);
+			
 		usernameField = new JTextField();
 		usernameField.setBounds(72, 5, 134, 28);
 		usernameField.setColumns(10);
 		panel.add(usernameField);
-		
-		JLabel txtrPassword = new JLabel();
-		txtrPassword.setBounds(10, 44, 59, 16);
-		txtrPassword.setText("Password");
-		panel.add(txtrPassword);
-		
+	
 		passwordField = new JPasswordField();
 		passwordField.setBounds(72, 38, 134, 28);
 		passwordField.setColumns(10);

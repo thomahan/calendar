@@ -49,6 +49,7 @@ public class Controller {
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 	private DateFormat simpleDateFormat;
 
+	@SuppressWarnings("deprecation")
 	public Controller() {
 		simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
 		selectedDate = new Date();
@@ -283,7 +284,7 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			roomReservationView = new RoomReservationView();
-			roomReservationView.addConfirmButtonListener(new ReserveRoomListener());
+			roomReservationView.addReserveButtonListener(new ReserveRoomListener());
 			roomReservationView.addCancelButtonListener(new CancelRoomReservationListener());
 			
 			//availableRoomList = AppointmentDBC.getRoomList();

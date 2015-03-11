@@ -1,42 +1,30 @@
 package view;
 
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.util.List;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.ListModel;
+import javax.swing.DefaultListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 
-import model.User;
+import model.Group;
 
+@SuppressWarnings("serial")
 public class GroupInvitationView extends JFrame {
-
-	private static final ListModel String = null;
-	private JButton btnCancel, btnConfirm;
-	private JList list;
 	private JPanel panel;
-	private DefaultListModel<User> groupListModel;
-	private JList groupListBox;
+	private JList<Group> groupListBox;
+	private DefaultListModel<Group> groupListModel;
+	private JButton cancelButton, inviteButton;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
-		UserInvitationView window = new UserInvitationView();
+		new UserInvitationView();
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public GroupInvitationView() {
 		this.setBounds(300, 300, 300, 300);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -44,48 +32,49 @@ public class GroupInvitationView extends JFrame {
 		
 		panel = new JPanel();
 		panel.setBounds(6, 6, 438, 266);
-		this.getContentPane().add(panel);
 		panel.setLayout(null);
+		this.getContentPane().add(panel);
 		
 		JLabel lblInviteOtherGroups = new JLabel("Invite other groups using the menu");
 		lblInviteOtherGroups.setBounds(6, 6, 261, 16);
 		panel.add(lblInviteOtherGroups);
-		
-		btnConfirm = new JButton("Invite");
-		btnConfirm.setBounds(6, 221, 117, 29);
-		panel.add(btnConfirm);
-		
-		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(151, 221, 117, 29);
-		panel.add(btnCancel);
 	
-		groupListModel = new DefaultListModel();
-		groupListBox = new JList(groupListModel);
+		groupListModel = new DefaultListModel<Group>();
+		groupListBox = new JList<Group>(groupListModel);
 		groupListBox.setBounds(10, 25, 248, 180);
 		groupListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		groupListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		panel.add(groupListBox);
-
+	
+		inviteButton = new JButton("Invite");
+		inviteButton.setBounds(6, 221, 117, 29);
+		panel.add(inviteButton);
+		
+		cancelButton = new JButton("Cancel");
+		cancelButton.setBounds(151, 221, 117, 29);
+		panel.add(cancelButton);
+	
 		this.setVisible(true);
+	}
+		
+	public void addInviteButtonListener(ActionListener inviteButtonListener) {
+		inviteButton.addActionListener(inviteButtonListener);
 	}
 	
 	public void addCancelButtonListener(ActionListener cancelButtonListener) {
-		btnCancel.addActionListener(cancelButtonListener);
+		cancelButton.addActionListener(cancelButtonListener);
 	}
-	
-	public void addConfirmButtonListener(ActionListener confirmButtonListener) {
-		btnConfirm.addActionListener(confirmButtonListener);
-	}
-	
-	public void setUserList(ArrayList<User> users) {
+
+	public List<Group> getInvitedGroups(){
+		return groupListBox.getSelectedValuesList();
+	}	
+
+	public void setUserList(ArrayList<Group> groupList) {
 		groupListModel.clear();
-		for (User user : users) {
-			System.out.println(user);
-			groupListModel.addElement(user);
+		for (Group group : groupList) {
+			System.out.println(group);
+			groupListModel.addElement(group);
 		}
 	}
 	
-	public List<User> getInvitedPersons(){
-		return groupListBox.getSelectedValuesList();
-	}	
 }
