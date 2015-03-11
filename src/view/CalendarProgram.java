@@ -183,22 +183,27 @@ public class CalendarProgram extends JFrame {
 		
 		editButton = new JButton("Edit");
 		editButton.setBounds(606, 67, 124, 29);
+		editButton.setEnabled(false);
 		getContentPane().add(editButton);
 		
 		deleteButton = new JButton("Delete");
 		deleteButton.setBounds(606, 108, 124, 29);
+		deleteButton.setEnabled(false);
 		getContentPane().add(deleteButton);
 		
 		btnAccept = new JButton("Accept");
 		btnAccept.setBounds(606, 149, 124, 29);
+		btnAccept.setEnabled(false);
 		getContentPane().add(btnAccept);
 		
 		btnDecline = new JButton("Decline");
 		btnDecline.setBounds(606, 190, 124, 29);
+		btnDecline.setEnabled(false);
 		getContentPane().add(btnDecline);
 		
 		btnHide = new JButton("Hide");
 		btnHide.setBounds(606, 231, 124, 29);
+		btnHide.setEnabled(false);
 		getContentPane().add(btnHide);
 
 		//Add mouse listener
@@ -376,10 +381,35 @@ public class CalendarProgram extends JFrame {
 		btnHide.addActionListener(hideButtonListener);
 	}
 	
+	public void setAppointmentStatus(String appointment) {
+		appointment.toLowerCase();
+		if (appointment.equals(null)){
+			editButton.setEnabled(false);
+			deleteButton.setEnabled(false);
+			btnAccept.setEnabled(true);
+			btnDecline.setEnabled(true);
+			btnHide.setEnabled(false);
+		}else if(appointment.equals("accepted")){
+			editButton.setEnabled(true);
+			deleteButton.setEnabled(true);
+			btnAccept.setEnabled(false);
+			btnDecline.setEnabled(true);
+			btnHide.setEnabled(true);
+		}else if (appointment.equals("declined")){
+			editButton.setEnabled(false);
+			deleteButton.setEnabled(true);
+			btnAccept.setEnabled(true);
+			btnDecline.setEnabled(false);
+			btnHide.setEnabled(true);			
+		}else if (appointment.equals("my appointment")){
+			editButton.setEnabled(true);
+			deleteButton.setEnabled(true);
+			btnAccept.setEnabled(false);
+			btnDecline.setEnabled(false);
+			btnHide.setEnabled(true);
+		}
+	}
 	
-	
-	
-
 	public Date getSelectDate() {
 		return selectedDate;
 	}
