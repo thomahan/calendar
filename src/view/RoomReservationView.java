@@ -49,7 +49,7 @@ public class RoomReservationView extends JFrame {
 		lblInviteOtherPersons.setBounds(6, 6, 261, 16);
 		panel.add(lblInviteOtherPersons);
 		
-		btnConfirm = new JButton("Confirm");
+		btnConfirm = new JButton("Reserve");
 		btnConfirm.setBounds(6, 221, 117, 29);
 		panel.add(btnConfirm);
 		

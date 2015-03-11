@@ -51,7 +51,7 @@ public class GroupInvitationView extends JFrame {
 		lblInviteOtherGroups.setBounds(6, 6, 261, 16);
 		panel.add(lblInviteOtherGroups);
 		
-		btnConfirm = new JButton("Confirm");
+		btnConfirm = new JButton("Invite");
 		btnConfirm.setBounds(6, 221, 117, 29);
 		panel.add(btnConfirm);
 		
