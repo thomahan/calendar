@@ -39,7 +39,7 @@ public class CalendarProgram extends JFrame {
 	private JButton logoutButton;
 	private JButton newAppointmentButton;
 	private JButton editButton;
-	private JButton deleteButton;
+	private JButton deleteButton, btnAccept, btnDecline, btnHide;
 	private static JComboBox<String> comboBox;
 	private static JLabel lblNewLabel;
 	private JList<Appointment> dailyAppointmentListBox;
@@ -63,8 +63,7 @@ public class CalendarProgram extends JFrame {
 	 */
 	public CalendarProgram() {
 		this.setTitle(FRAME_TITLE);
-		this.setResizable(false);
-		this.setBounds(100, 100, 600, 425);
+		this.setBounds(100, 100, 734, 424);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
@@ -183,12 +182,24 @@ public class CalendarProgram extends JFrame {
 		appointmentPanel.add(dailyAppointmentListBox);
 		
 		editButton = new JButton("Edit");
-		editButton.setBounds(6, 275, 124, 29);
-		appointmentPanel.add(editButton);
+		editButton.setBounds(606, 67, 124, 29);
+		getContentPane().add(editButton);
 		
 		deleteButton = new JButton("Delete");
-		deleteButton.setBounds(138, 275, 124, 29);
-		appointmentPanel.add(deleteButton);
+		deleteButton.setBounds(606, 108, 124, 29);
+		getContentPane().add(deleteButton);
+		
+		btnAccept = new JButton("Accept");
+		btnAccept.setBounds(606, 149, 124, 29);
+		getContentPane().add(btnAccept);
+		
+		btnDecline = new JButton("Decline");
+		btnDecline.setBounds(606, 190, 124, 29);
+		getContentPane().add(btnDecline);
+		
+		btnHide = new JButton("Hide");
+		btnHide.setBounds(606, 231, 124, 29);
+		getContentPane().add(btnHide);
 
 		//Add mouse listener
 		table.addMouseListener(new MouseHandler());
@@ -352,6 +363,22 @@ public class CalendarProgram extends JFrame {
 	public void addDeleteButtonListener(ActionListener deleteButtonListener) {
 		deleteButton.addActionListener(deleteButtonListener);
 	}
+	
+	public void addAcceptButtonListener(ActionListener acceptButtonListener) {
+		btnAccept.addActionListener(acceptButtonListener);
+	}
+	
+	public void addDeclineButtonListener(ActionListener declineButtonListener) {
+		btnDecline.addActionListener(declineButtonListener);
+	}
+	
+	public void addHideButtonListener(ActionListener hideButtonListener) {
+		btnHide.addActionListener(hideButtonListener);
+	}
+	
+	
+	
+	
 
 	public Date getSelectDate() {
 		return selectedDate;
