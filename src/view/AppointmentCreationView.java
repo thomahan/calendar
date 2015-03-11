@@ -47,7 +47,7 @@ public class AppointmentCreationView extends JFrame {
 	 */
 	public AppointmentCreationView() {
 		this.setTitle(FRAME_TITLE);
-		this.setBounds(200, 200, 450, 350);
+		this.setBounds(200, 200, 450, 280);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
@@ -76,15 +76,6 @@ public class AppointmentCreationView extends JFrame {
 		JLabel lblLocation = new JLabel("Location");
 		lblLocation.setBounds(6, 131, 61, 16);
 		labelPanel.add(lblLocation);
-			
-		createButton = new JButton("Save");
-		createButton.setBounds(6, 219, 110, 29);
-		labelPanel.add(createButton);
-			
-		cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(6, 260, 110, 29);
-		labelPanel.add(cancelButton);
-
 
 		JPanel inputPanel = new JPanel();
 		inputPanel.setBounds(136, 6, 296, 254);
@@ -122,6 +113,14 @@ public class AppointmentCreationView extends JFrame {
 		btnChooseRoom = new JButton("Choose room");
 		btnChooseRoom.setBounds(162, 127, 117, 29);
 		inputPanel.add(btnChooseRoom);
+			
+		createButton = new JButton("Save");
+		createButton.setBounds(15, 190, 110, 29);
+		inputPanel.add(createButton);
+			
+		cancelButton = new JButton("Cancel");
+		cancelButton.setBounds(162, 190, 110, 29);
+		inputPanel.add(cancelButton);
 
 		this.setVisible(true);
 	}
