@@ -36,7 +36,7 @@ public class RoomReservationView extends JFrame {
 	 * Create the application.
 	 */
 	public RoomReservationView() {
-		this.setBounds(100, 100, 450, 300);
+		this.setBounds(300, 300, 450, 300);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		

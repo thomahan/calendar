@@ -51,21 +51,21 @@ public class Controller {
 
 
 	public Controller() {
-		openLoginView();
 		simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
-
 		selectedDate = new Date();
 		selectedDate.setHours(0);
 		selectedDate.setMinutes(0);
+
 		userList = new ArrayList<User>();
 		invitedUserList = new ArrayList<User>();
 		availableRoomList = new ArrayList<Room>();
+
+		openLoginView();
 	}
 	
 	class OpenRegistrationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			closeLoginView();
 			openRegisterView();
 		}
 	}
@@ -95,8 +95,7 @@ public class Controller {
 
 				registrationView.displayRegisterMessage(username);
 
-				closeRegisterView();
-				openLoginView();
+				registrationView.dispose();
 			} catch (Exception e){
 				user = null;
 				registrationView.displayErrorMessage(e.getMessage());
@@ -107,8 +106,7 @@ public class Controller {
 	class CancelRegistrationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			closeRegisterView();
-			openLoginView();
+			registrationView.dispose();
 		}
 	}
 
@@ -415,7 +413,6 @@ public class Controller {
 	
 	private void closeLoginView() {
 		loginView.dispose();
-		loginView = null;
 	}
 	
 	private void openRegisterView() {
@@ -426,7 +423,6 @@ public class Controller {
 
 	private void closeRegisterView() {
 		registrationView.dispose();
-		registrationView = null;
 	}
 	
 	private void openCalendarView() {
@@ -445,7 +441,6 @@ public class Controller {
 	
 	private void closeCalendarView() {
 		calendarView.dispose();
-		calendarView = null;
 		if (appointmentCreationView != null) {
 			closeAppointmentCreationView();
 		}
@@ -463,12 +458,10 @@ public class Controller {
 		
 	private void closeAppointmentCreationView() {
 		appointmentCreationView.dispose();
-		appointmentCreationView = null;
 	}
 
 	private void closeInvitePersonView() {
 		userInvitationView.dispose();
-		userInvitationView = null;
 	}
 
 	public void addToRoomlist(Room room){

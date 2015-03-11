@@ -38,8 +38,8 @@ public class RegistrationView extends JFrame {
 	 */
 	public RegistrationView() {
 		this.setTitle(FRAME_TITLE);
-		this.setBounds(100, 100, 450, 300);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setBounds(200, 200, 450, 300);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();

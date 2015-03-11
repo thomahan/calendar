@@ -47,7 +47,7 @@ public class AppointmentCreationView extends JFrame {
 	 */
 	public AppointmentCreationView() {
 		this.setTitle(FRAME_TITLE);
-		this.setBounds(100, 100, 450, 350);
+		this.setBounds(200, 200, 450, 350);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
