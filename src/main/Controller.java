@@ -39,6 +39,7 @@ public class Controller {
 	private User user;
 	private Date selectedDate;
 	private int selectedAppointmentId;
+	private Appointment selectedAppointment;
 	private List<User> userList;
 	private List<User> invitedUserList;
 	private List<Group> groupList;
@@ -324,14 +325,45 @@ public class Controller {
 		@Override public void mousePressed(MouseEvent arg0) {}
 		@Override public void mouseReleased(MouseEvent arg0) {}
 	}
-	
+		
+	class SelectAppointmentListener implements MouseListener {
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			System.out.println("Listened!");
+			selectedAppointment = calendarView.getSelectedAppointment();
+			System.out.println("AppointmentId: "+selectedAppointment.getId());
+			if (selectedAppointment.isEditable()) {
+				calendarView.setAppointmentStatus("my appointment");
+				
+			} else {
+				calendarView.setAppointmentStatus(selectedAppointment.getStatus());
+			}
+		}
+
+		@Override public void mouseEntered(MouseEvent arg0) {}
+		@Override public void mouseExited(MouseEvent arg0) {}
+		@Override public void mousePressed(MouseEvent arg0) {}
+		@Override public void mouseReleased(MouseEvent arg0) {}
+	}
+
+	class AcceptAppointmentListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			Appointment appointment = calendarView.getSelectedAppointment();
+			
+			//AppointmentDBC.setAppointmentStatus("Accepted");
+
+			dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
+			calendarView.setDailyAppointmentList(dailyAppointmentList);
+		}
+	}
+
 	class DeleteAppointmentListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			Appointment appointment = calendarView.getSelectedAppointment();
 
 			if (appointment != null) {
-				AppointmentDBC.removeInvitation(appointment.getId(), user.getUsername());
 				if (appointment.isEditable()) {
 					AppointmentDBC.removeAppointment(appointment.getId());
 				}
@@ -352,7 +384,6 @@ public class Controller {
 			appointmentCreationView.setEndTime(simpleDateFormat.format(appointment.getEndDate()));
 		}	
 	}
-	
 
 	private void openLoginView() {
 		loginView = new LogIn();
@@ -381,6 +412,7 @@ public class Controller {
 		calendarView.addNewAppointmentButtonListener(new OpenAppointmentCreationListener());
 		calendarView.addLogoutButtonListener(new LogoutListener());
 		calendarView.addSelectDateListener(new SelectDateListener());
+		calendarView.addSelectedAppointmentListener(new SelectAppointmentListener());
 
 		calendarView.addEditButtonListener(new OpenAppointmentCreationListener());
 		calendarView.addDeleteButtonListener(new DeleteAppointmentListener());
