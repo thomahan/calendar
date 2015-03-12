@@ -274,17 +274,20 @@ public class Controller {
 	class OpenRoomReservationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			int minSeatCount = 0;
 			try {
 				String startTime = appointmentCreationView.getStartTime();
 				String endTime = appointmentCreationView.getEndTime();
 				Date startDate = simpleDateFormat.parse(startTime);
 				Date endDate = simpleDateFormat.parse(endTime);
+				String minSeatCountString = appointmentCreationView.getMinSeatCount();
+				minSeatCount = Integer.parseInt(minSeatCountString);
 
 				roomReservationView = new RoomReservationView();
 				roomReservationView.addReserveButtonListener(new ReserveRoomListener());
 				roomReservationView.addCancelButtonListener(new CancelRoomReservationListener());
 
-				availableRoomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, 0);
+				availableRoomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, minSeatCount);
 				roomReservationView.setRoomList(availableRoomList);
 
 			} catch (Exception ex) {
