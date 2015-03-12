@@ -63,7 +63,7 @@ public class User implements CalendarEventListener, GroupListener {
 	}
 	
 	private void createGroup(String name) { //Legg til gruppe i db
-		Group group = new Group(name);
+		Group group = new Group(0, name);
 		group.addUserToGroup(this);
 		groups.add(group);
 	}
