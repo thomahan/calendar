@@ -411,4 +411,8 @@ public class CalendarView extends JFrame {
 			}
 		}
 	}
+	
+	public void changeCellColor(Date date) {
+		
+	}
 }
