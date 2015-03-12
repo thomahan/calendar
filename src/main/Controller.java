@@ -165,19 +165,10 @@ public class Controller {
 				String description = appointmentCreationView.getDescription();
 				String location = appointmentCreationView.getAppointmentLocation();
 				//int roomId = appointmentCreationView.getRoomId();
-				//String alarmTime = appointmentCreationView.getAlarmTime();
 
 				Date startDate = simpleDateFormat.parse(startTime);
 				Date endDate = simpleDateFormat.parse(endTime);
-				/*
-				Date alarmDate;
-				if (alarmTime.length() > 0) {
-					alarmDate = simpleDateFormat.parse(alarmTime);
-				} else {
-					alarmDate = null;
-				}
-				*/
-				
+			
 				if (description.length() <= 0) {
 					throw new Exception("Description must be specified.");
 				} else if (startTime == null) {
@@ -283,14 +274,23 @@ public class Controller {
 	class OpenRoomReservationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			roomReservationView = new RoomReservationView();
-			roomReservationView.addReserveButtonListener(new ReserveRoomListener());
-			roomReservationView.addCancelButtonListener(new CancelRoomReservationListener());
-			
-			//availableRoomList = AppointmentDBC.getRoomList();
-			roomReservationView.setRoomList(availableRoomList);
-		}
+			try {
+				String startTime = appointmentCreationView.getStartTime();
+				String endTime = appointmentCreationView.getEndTime();
+				Date startDate = simpleDateFormat.parse(startTime);
+				Date endDate = simpleDateFormat.parse(endTime);
 
+				roomReservationView = new RoomReservationView();
+				roomReservationView.addReserveButtonListener(new ReserveRoomListener());
+				roomReservationView.addCancelButtonListener(new CancelRoomReservationListener());
+
+				availableRoomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, 0);
+				roomReservationView.setRoomList(availableRoomList);
+
+			} catch (Exception ex) {
+				appointmentCreationView.displayErrorMessage("Start and end time must be specified.");
+			}
+		}
 	}
 	
 	class ReserveRoomListener implements ActionListener {
