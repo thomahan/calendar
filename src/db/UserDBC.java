@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Group;
 import model.User;
 
 public class UserDBC {
@@ -80,7 +81,29 @@ public class UserDBC {
 						 +"'"+user.getHashResult()+"', "
 						 +"'"+user.getFirstName()+"', "
 						 +"'"+user.getLastName()+"');");
-		
 	}
 
+	public static List<Group> getGroupList() {
+		List<Group> groupList = new ArrayList<Group>();
+
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT user_group_id, name "
+				+ "FROM user_group;");
+		ResultSet result = query.getResult();
+
+		try {
+			while (result.next()) {
+				int groupId = result.getInt("user_group_id");
+				String name = result.getString("name");
+				Group group = new Group(groupId, name);
+				groupList.add(group);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+
+		return groupList;
+	}
 }

@@ -2,6 +2,7 @@ package db;
 
 import java.util.List;
 
+import model.Group;
 import model.User;
 
 import org.junit.Test;
@@ -42,4 +43,13 @@ public class UserDBCTest {
 			System.out.println(u);
 		}
 	}
+		
+	@Test
+	public void groupListShouldBeRetrievable() {
+		List<Group> groupList = UserDBC.getGroupList();
+		for (Group g : groupList) {
+			System.out.println(g);
+		}
+	}
+
 }
