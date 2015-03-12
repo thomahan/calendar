@@ -281,7 +281,9 @@ public class Controller {
 				Date startDate = simpleDateFormat.parse(startTime);
 				Date endDate = simpleDateFormat.parse(endTime);
 				String minSeatCountString = appointmentCreationView.getMinSeatCount();
-				minSeatCount = Integer.parseInt(minSeatCountString);
+				if (minSeatCountString.length() > 0) {
+					minSeatCount = Integer.parseInt(minSeatCountString);
+				}
 
 				roomReservationView = new RoomReservationView();
 				roomReservationView.addReserveButtonListener(new ReserveRoomListener());
@@ -453,17 +455,19 @@ public class Controller {
 	}
 
 	private void setAppointmentStatus() {
-		if (selectedAppointment.isEditable()) {
-			calendarView.setAppointmentStatus("Owned");
-		} else {
-			calendarView.setAppointmentStatus(selectedAppointment.getStatus());
+		if (selectedAppointment != null) {
+			if (selectedAppointment.isEditable()) {
+				calendarView.setAppointmentStatus("Owned");
+			} else {
+				calendarView.setAppointmentStatus(selectedAppointment.getStatus());
+			}
 		}
 	}	
 	private void renderDailyAppointments() {
 		selectedDate = calendarView.getSelectedDate();
 
 		dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
-
+		
 		ArrayList<Appointment> removeList = new ArrayList<Appointment>();
 		for (Appointment a : dailyAppointmentList) {
 			if (a != null) {
