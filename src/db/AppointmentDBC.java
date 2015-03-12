@@ -80,7 +80,8 @@ public class AppointmentDBC {
 		Query query = DBConnector.makeQuery(""
 				+ "SELECT appointment.appointment_id, start_time, end_time, description, location, room_id, creator, status, alarm_time "
 				+ "FROM appointment JOIN invitation ON appointment.appointment_id = invitation.appointment_id "
-				+ "WHERE username = '"+username+"' AND start_time >= '"+lowerTime+"' AND start_time <= '"+upperTime+"';");
+				+ "WHERE username = '"+username+"' AND start_time >= '"+lowerTime+"' AND start_time <= '"+upperTime+"' "
+				+ "ORDER BY start_time ASC;");
 		ResultSet result = query.getResult();
 
 		try {
