@@ -40,6 +40,7 @@ public class Controller {
 	private List<User> userList;
 	private List<User> invitedUserList;
 	private List<Group> groupList;
+	private List<Group> invitedGroupList;
 	private int reservedRoomId;
 	private List<Room> availableRoomList;
 	private ArrayList<Appointment> dailyAppointmentList;
@@ -188,12 +189,13 @@ public class Controller {
 				for (User u : invitedUserList) {
 					AppointmentDBC.addInvitation(appointmentId, u.getUsername(), null);
 				}
-
 				invitedUserList.clear();
 				
+				GroupInviter.inviteGroupList(appointmentId, invitedGroupList);
+				invitedGroupList.clear();
+				
 				appointmentCreationView.displayAppointmentCreationMessage(description);
-
-				closeAppointmentCreationView();
+				appointmentCreationView.dispose();
 				
 				dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
 				calendarView.setDailyAppointmentList(dailyAppointmentList);
@@ -206,7 +208,7 @@ public class Controller {
 	class CancelAppointmentCreationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			closeAppointmentCreationView();
+			appointmentCreationView.dispose();
 		}
 	}
 	
@@ -239,14 +241,14 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			invitedUserList = userInvitationView.getInvitedPersons();
-			closeUserInvitationView();
+			userInvitationView.dispose();
 		}
 	}
 	
 	class CancelUserInvitationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			closeUserInvitationView();
+			userInvitationView.dispose();
 		}
 	}
 	
@@ -254,12 +256,20 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			groupInvitationView = new GroupInvitationView();
+			groupInvitationView.addInviteButtonListener(new InviteGroupListener());
 			groupInvitationView.addCancelButtonListener(new CancelGroupInvitationListener());
 			
-			/*
 			groupList = UserDBC.getGroupList();
-			inviteGroupView.setGroupist(groupList);
-			*/
+			groupInvitationView.setGroupList(groupList);
+			
+		}
+	}
+	
+	class InviteGroupListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			invitedGroupList = groupInvitationView.getInvitedGroupList();
+			groupInvitationView.dispose();
 		}
 	}
 
@@ -267,7 +277,6 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			groupInvitationView.dispose();
-			groupInvitationView = null;
 		}
 	}
 
@@ -402,6 +411,7 @@ public class Controller {
 	
 	private void openCalendarView() {
 		calendarView = new CalendarView();
+
 		calendarView.addNewAppointmentButtonListener(new OpenAppointmentCreationListener());
 		calendarView.addLogoutButtonListener(new LogoutListener());
 		calendarView.addSelectDateListener(new SelectDateListener());
@@ -423,14 +433,6 @@ public class Controller {
 		appointmentCreationView.addInvitePersonButtonListener(new OpenUserInvitationListener());
 		appointmentCreationView.addInviteGroupButtonListener(new OpenGroupInvitationListener());
 		appointmentCreationView.addChooseRoomButtonListener(new OpenRoomReservationListener());
-	}
-		
-	private void closeAppointmentCreationView() {
-		appointmentCreationView.dispose();
-	}
-
-	private void closeUserInvitationView() {
-		userInvitationView.dispose();
 	}
 
 	public void addToRoomlist(Room room){
