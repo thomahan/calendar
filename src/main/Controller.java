@@ -297,7 +297,7 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			reservedRoomId = roomReservationView.getSelectedRoom().getId();
-			
+			roomReservationView.dispose();
 		}
 	}
 	
@@ -305,31 +305,13 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			roomReservationView.dispose();
-			roomReservationView = null;
-			
 		}
 	}
 	
 	class SelectDateListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			selectedDate = calendarView.getSelectedDate();
-
-			dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
-
-			ArrayList<Appointment> removeList = new ArrayList<Appointment>();
-			for (Appointment a : dailyAppointmentList) {
-				if (a != null) {
-					if (a.getStatus().equals("Hidden") || a.getStatus().equals("Cancelled")) {
-						removeList.add(a);
-					}
-				}
-			}
-			for (Appointment a : removeList) {
-				dailyAppointmentList.remove(a);
-			}
-
-			calendarView.setDailyAppointmentList(dailyAppointmentList);
+			renderDailyAppointments();
 		}
 
 		@Override public void mouseEntered(MouseEvent arg0) {}
@@ -366,7 +348,7 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			setInvitationStatus("Accepted");
-			setAppointmentStatus();
+			calendarView.setAppointmentStatus("");
 		}
 	}
 
@@ -374,7 +356,7 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			setInvitationStatus("Declined");
-			setAppointmentStatus();
+			calendarView.setAppointmentStatus("");
 		}
 	}
 
@@ -382,7 +364,8 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			setInvitationStatus("Hidden");
-			setAppointmentStatus();
+			calendarView.setAppointmentStatus("");
+			renderDailyAppointments();
 		}
 	}
 
@@ -396,7 +379,8 @@ public class Controller {
 					AppointmentDBC.removeAppointment(appointment.getId());
 				} else {
 					setInvitationStatus("Cancelled");
-					setAppointmentStatus();
+					calendarView.setAppointmentStatus("");
+					renderDailyAppointments();
 				}
 			}
 
@@ -464,12 +448,33 @@ public class Controller {
 		dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
 		calendarView.setDailyAppointmentList(dailyAppointmentList);	
 	}
-	
+
 	private void setAppointmentStatus() {
 		if (selectedAppointment.isEditable()) {
 			calendarView.setAppointmentStatus("Owned");
 		} else {
 			calendarView.setAppointmentStatus(selectedAppointment.getStatus());
-		}			
+		}
+	}	
+	private void renderDailyAppointments() {
+		selectedDate = calendarView.getSelectedDate();
+
+		dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
+
+		ArrayList<Appointment> removeList = new ArrayList<Appointment>();
+		for (Appointment a : dailyAppointmentList) {
+			if (a != null) {
+				if (a.getStatus().equals("Hidden") || a.getStatus().equals("Cancelled")) {
+					removeList.add(a);
+				}
+			}
+		}
+		for (Appointment a : removeList) {
+			dailyAppointmentList.remove(a);
+		}
+
+		calendarView.setDailyAppointmentList(dailyAppointmentList);
+		calendarView.setAppointmentStatus("");
 	}
+	
 }
