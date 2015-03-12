@@ -169,7 +169,7 @@ public class AppointmentDBC {
 		if (roomId != 0) {
 			DBConnector.makeStatement(""
 					+ "UPDATE appointment SET room_id = '"+roomId+"' "
-							+ "WHERE id = '"+appointmentId+"';");
+							+ "WHERE appointment_id = '"+appointmentId+"';");
 		}
 		
 		return appointmentId;
