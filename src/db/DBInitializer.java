@@ -34,7 +34,8 @@ public class DBInitializer {
 		ArrayList<String> statementList = new ArrayList<String>();
 		String statement = "";
 
-		try (Scanner scanner = new Scanner(new BufferedReader(new FileReader(fileName)))) {
+		try {
+            Scanner scanner = new Scanner(new BufferedReader(new FileReader(fileName)));
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
 				statement = statement.concat(line);
