@@ -194,7 +194,7 @@ public class Appointment {
 			summary += "Room: "+room+"<br>";
 		}
 
-		summary += "</html>";
+		summary += "<br> </html>";
 		return summary;
 	}
 
