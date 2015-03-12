@@ -35,4 +35,9 @@ public class Room {
 		return seatCount;
 	}
 
+	@Override
+	public String toString() {
+		String nounForm = (seatCount == 1) ? "seat" : "seats";
+		return name+" ("+seatCount+" "+nounForm+")";
+	}
 }
