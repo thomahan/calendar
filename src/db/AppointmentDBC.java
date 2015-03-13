@@ -207,6 +207,12 @@ public class AppointmentDBC {
 					 		+"'"+username+"');");
 		}
 	}
+
+	public static void addGroupInvitation(int appointmentId, int groupId) {
+		DBConnector.makeStatement(""
+				+ "INSERT INTO group_invitation (appointment_id, user_group_id) "
+				+ "VALUES ('"+appointmentId+"', '"+groupId+"');");
+	}
 	
 	/**
 	 * Sets the status of an invitation
