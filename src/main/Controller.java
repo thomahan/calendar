@@ -40,6 +40,7 @@ public class Controller {
 	private List<User> userList;
 	private List<User> invitedUserList;
 	private List<Group> groupList;
+	private List<Group> invitedGroupList;
 	private int reservedRoomId;
 	private List<Room> availableRoomList;
 	private ArrayList<Appointment> dailyAppointmentList;
@@ -165,19 +166,10 @@ public class Controller {
 				String description = appointmentCreationView.getDescription();
 				String location = appointmentCreationView.getAppointmentLocation();
 				//int roomId = appointmentCreationView.getRoomId();
-				//String alarmTime = appointmentCreationView.getAlarmTime();
 
 				Date startDate = simpleDateFormat.parse(startTime);
 				Date endDate = simpleDateFormat.parse(endTime);
-				/*
-				Date alarmDate;
-				if (alarmTime.length() > 0) {
-					alarmDate = simpleDateFormat.parse(alarmTime);
-				} else {
-					alarmDate = null;
-				}
-				*/
-				
+			
 				if (description.length() <= 0) {
 					throw new Exception("Description must be specified.");
 				} else if (startTime == null) {
@@ -197,12 +189,13 @@ public class Controller {
 				for (User u : invitedUserList) {
 					AppointmentDBC.addInvitation(appointmentId, u.getUsername(), null);
 				}
-
 				invitedUserList.clear();
 				
+				GroupInviter.inviteGroupList(appointmentId, invitedGroupList);
+				invitedGroupList.clear();
+				
 				appointmentCreationView.displayAppointmentCreationMessage(description);
-
-				closeAppointmentCreationView();
+				appointmentCreationView.dispose();
 				
 				dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
 				calendarView.setDailyAppointmentList(dailyAppointmentList);
@@ -215,7 +208,7 @@ public class Controller {
 	class CancelAppointmentCreationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			closeAppointmentCreationView();
+			appointmentCreationView.dispose();
 		}
 	}
 	
@@ -248,14 +241,14 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			invitedUserList = userInvitationView.getInvitedPersons();
-			closeUserInvitationView();
+			userInvitationView.dispose();
 		}
 	}
 	
 	class CancelUserInvitationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			closeUserInvitationView();
+			userInvitationView.dispose();
 		}
 	}
 	
@@ -263,12 +256,20 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			groupInvitationView = new GroupInvitationView();
+			groupInvitationView.addInviteButtonListener(new InviteGroupListener());
 			groupInvitationView.addCancelButtonListener(new CancelGroupInvitationListener());
 			
-			/*
 			groupList = UserDBC.getGroupList();
-			inviteGroupView.setGroupist(groupList);
-			*/
+			groupInvitationView.setGroupList(groupList);
+			
+		}
+	}
+	
+	class InviteGroupListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			invitedGroupList = groupInvitationView.getInvitedGroupList();
+			groupInvitationView.dispose();
 		}
 	}
 
@@ -276,21 +277,34 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			groupInvitationView.dispose();
-			groupInvitationView = null;
 		}
 	}
 
 	class OpenRoomReservationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			roomReservationView = new RoomReservationView();
-			roomReservationView.addReserveButtonListener(new ReserveRoomListener());
-			roomReservationView.addCancelButtonListener(new CancelRoomReservationListener());
-			
-			//availableRoomList = AppointmentDBC.getRoomList();
-			roomReservationView.setRoomList(availableRoomList);
-		}
+			int minSeatCount = 0;
+			try {
+				String startTime = appointmentCreationView.getStartTime();
+				String endTime = appointmentCreationView.getEndTime();
+				Date startDate = simpleDateFormat.parse(startTime);
+				Date endDate = simpleDateFormat.parse(endTime);
+				String minSeatCountString = appointmentCreationView.getMinSeatCount();
+				if (minSeatCountString.length() > 0) {
+					minSeatCount = Integer.parseInt(minSeatCountString);
+				}
 
+				roomReservationView = new RoomReservationView();
+				roomReservationView.addReserveButtonListener(new ReserveRoomListener());
+				roomReservationView.addCancelButtonListener(new CancelRoomReservationListener());
+
+				availableRoomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, minSeatCount);
+				roomReservationView.setRoomList(availableRoomList);
+
+			} catch (Exception ex) {
+				appointmentCreationView.displayErrorMessage("Start and end time must be specified.");
+			}
+		}
 	}
 	
 	class ReserveRoomListener implements ActionListener {
@@ -397,6 +411,7 @@ public class Controller {
 	
 	private void openCalendarView() {
 		calendarView = new CalendarView();
+
 		calendarView.addNewAppointmentButtonListener(new OpenAppointmentCreationListener());
 		calendarView.addLogoutButtonListener(new LogoutListener());
 		calendarView.addSelectDateListener(new SelectDateListener());
@@ -418,14 +433,6 @@ public class Controller {
 		appointmentCreationView.addInvitePersonButtonListener(new OpenUserInvitationListener());
 		appointmentCreationView.addInviteGroupButtonListener(new OpenGroupInvitationListener());
 		appointmentCreationView.addChooseRoomButtonListener(new OpenRoomReservationListener());
-	}
-		
-	private void closeAppointmentCreationView() {
-		appointmentCreationView.dispose();
-	}
-
-	private void closeUserInvitationView() {
-		userInvitationView.dispose();
 	}
 
 	public void addToRoomlist(Room room){
@@ -450,17 +457,19 @@ public class Controller {
 	}
 
 	private void setAppointmentStatus() {
-		if (selectedAppointment.isEditable()) {
-			calendarView.setAppointmentStatus("Owned");
-		} else {
-			calendarView.setAppointmentStatus(selectedAppointment.getStatus());
+		if (selectedAppointment != null) {
+			if (selectedAppointment.isEditable()) {
+				calendarView.setAppointmentStatus("Owned");
+			} else {
+				calendarView.setAppointmentStatus(selectedAppointment.getStatus());
+			}
 		}
 	}	
 	private void renderDailyAppointments() {
 		selectedDate = calendarView.getSelectedDate();
 
 		dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
-
+		
 		ArrayList<Appointment> removeList = new ArrayList<Appointment>();
 		for (Appointment a : dailyAppointmentList) {
 			if (a != null) {

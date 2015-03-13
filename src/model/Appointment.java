@@ -191,12 +191,10 @@ public class Appointment {
 		summary += description+"<br>";
 		summary += (location != null) ? "Location: "+location+"<br>" : "";
 		if (room != null) {
-			String seatCountString = (room.getSeatCount() == 1) ? "seat" : "seats";
-			summary += "Room: "+room.getId()+" "+room.getName()+" ("+room.getSeatCount()+" "+seatCountString+")<br>";
+			summary += "Room: "+room+"<br>";
 		}
-		
 
-		summary += "</html>";
+		summary += "<br> </html>";
 		return summary;
 	}
 

@@ -27,6 +27,7 @@ public class AppointmentCreationView extends JFrame {
 	private JTextField startTimeField;
 	private JTextField endTimeField;
 	private JTextField locationField;
+	private JTextField minSeatCountField;
 	private JTextArea descriptionArea;
 	private JButton createButton;
 	private JButton cancelButton;
@@ -82,25 +83,21 @@ public class AppointmentCreationView extends JFrame {
 		panel.add(inputPanel);
 		inputPanel.setLayout(null);
 		
-		startTimeField = new JTextField();
+		startTimeField = new JTextField(10);
 		startTimeField.setBounds(6, 6, 134, 28);
 		inputPanel.add(startTimeField);
-		startTimeField.setColumns(10);
 		
-		endTimeField = new JTextField();
+		endTimeField = new JTextField(10);
 		endTimeField.setBounds(6, 46, 134, 28);
 		inputPanel.add(endTimeField);
-		endTimeField.setColumns(10);
 			
-		appointmentDescriptionField = new JTextField();
+		appointmentDescriptionField = new JTextField(10);
 		appointmentDescriptionField.setBounds(6, 86, 134, 28);
 		inputPanel.add(appointmentDescriptionField);
-		appointmentDescriptionField.setColumns(10);
 
-		locationField = new JTextField();
+		locationField = new JTextField(10);
 		locationField.setBounds(6, 126, 134, 28);
 		inputPanel.add(locationField);
-		locationField.setColumns(10);
 
 		invitePersonButton = new JButton("Invite persons");
 		invitePersonButton.setBounds(162, 7, 117, 29);
@@ -110,6 +107,14 @@ public class AppointmentCreationView extends JFrame {
 		inviteGroupButton.setBounds(162, 47, 117, 29);
 		inputPanel.add(inviteGroupButton);
 		
+		JLabel minSeatCountLabel = new JLabel("Seats:");
+		minSeatCountLabel.setBounds(180, 100, 117, 29);
+		inputPanel.add(minSeatCountLabel);
+	
+		minSeatCountField = new JTextField();
+		minSeatCountField.setBounds(230, 100, 50, 25);
+		inputPanel.add(minSeatCountField);
+	
 		btnChooseRoom = new JButton("Choose room");
 		btnChooseRoom.setBounds(162, 127, 117, 29);
 		inputPanel.add(btnChooseRoom);
@@ -166,8 +171,8 @@ public class AppointmentCreationView extends JFrame {
 		return locationField.getText();
 	}
 	
-	public int getRoomId() {
-		return 0;
+	public String getMinSeatCount() {
+		return minSeatCountField.getText();
 	}
 	
 	public void setStartTime(String startTime) {

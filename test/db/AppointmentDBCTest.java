@@ -1,10 +1,12 @@
 package db;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import model.Appointment;
+import java.util.Date;
+import java.util.List;
+
+import model.Room;
 
 import org.junit.Test;
+import static org.junit.Assert.assertFalse;
 
 public class AppointmentDBCTest {
 	@SuppressWarnings("deprecation")
@@ -39,13 +41,11 @@ public class AppointmentDBCTest {
 			System.out.println(a);
 		}
 	}
-*/	
 	@Test
 	public void appointmentShouldBeRetrieved() {
 		Appointment appointment = AppointmentDBC.getAppointment(79, "user");
 		System.out.println(appointment);
 	}
-/*
 	@Test
 	public void appointmentShouldBeRemoved() {
 		Appointment appointment = AppointmentDBC.getAppointment(63, "user");
@@ -71,4 +71,19 @@ public class AppointmentDBCTest {
 		AppointmentDBC.declineInvitation(66, "user");
 	}
 	*/
+	
+	@Test
+	public void roomListShouldBeRetrieved() {
+		Date startDate = new Date(2015 - 1900, 2, 12, 11, 0, 0);
+		Date endDate = new Date(2015 - 1900, 2, 12, 13, 0, 0);
+		System.out.println(startDate);
+		System.out.println(endDate);
+
+		List<Room> roomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, 5);
+		for (Room r : roomList) {
+			System.out.println(r);
+		}
+		
+		assertFalse(roomList.isEmpty());
+	}
 }

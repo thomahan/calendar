@@ -81,6 +81,7 @@ public class CalendarView extends JFrame {
 		JButton previousMonthButton = new JButton("<<");
 		previousMonthButton.setAction(action_1);
 		previousMonthButton.setBounds(112, 7, 45, 29);
+		previousMonthButton.setText("Previous month");
 		calendarControlPanel.add(previousMonthButton);
 		
 		JButton nextMonthButton = new JButton(">>");
@@ -177,7 +178,12 @@ public class CalendarView extends JFrame {
 		dailyAppointmentListBox.setBounds(10, 10, 248, 260);
 		dailyAppointmentListBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		dailyAppointmentListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		appointmentPanel.add(dailyAppointmentListBox);
+		dailyAppointmentListBox.setAutoscrolls(true);
+		//appointmentPanel.add(dailyAppointmentListBox);
+
+		JScrollPane scrollPane = new JScrollPane(dailyAppointmentListBox);
+		scrollPane.setBounds(10, 10, 248, 260);
+		appointmentPanel.add(scrollPane);
 		
 		editButton = new JButton("Edit");
 		editButton.setBounds(606, 67, 124, 29);
@@ -266,15 +272,12 @@ public class CalendarView extends JFrame {
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, ">>");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "Go to next month");
 		}
 		public void actionPerformed(ActionEvent e) {
-			if (currentMonth == 11) {
-				currentMonth = 0;
+			currentMonth = currentMonth + 1 % 12;
+			if (currentMonth == 0)
 				currentYear += 1;
-			}else {
-				currentMonth += 1;
-			}
 			refreshCalendar(currentMonth, currentYear);
 		}
 
@@ -283,7 +286,7 @@ public class CalendarView extends JFrame {
 	private class SwingAction_1 extends AbstractAction {
 		public SwingAction_1() {
 			putValue(NAME, "<<");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "Go to previous month");
 		}
 		public void actionPerformed(ActionEvent e) {
 			if (currentMonth == 0){

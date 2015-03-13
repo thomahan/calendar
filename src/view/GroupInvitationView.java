@@ -65,14 +65,13 @@ public class GroupInvitationView extends JFrame {
 		cancelButton.addActionListener(cancelButtonListener);
 	}
 
-	public List<Group> getInvitedGroups(){
+	public List<Group> getInvitedGroupList(){
 		return groupListBox.getSelectedValuesList();
 	}	
 
-	public void setUserList(ArrayList<Group> groupList) {
+	public void setGroupList(List<Group> groupList) {
 		groupListModel.clear();
 		for (Group group : groupList) {
-			System.out.println(group);
 			groupListModel.addElement(group);
 		}
 	}

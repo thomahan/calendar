@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Group {
-	
+	final int groupId;
 	private String groupName;
-	final int groupID;
 	ArrayList<User> members = new ArrayList<User>();
 	private ArrayList<User> listeners = new ArrayList<User>();
 	private static final AtomicInteger count = new AtomicInteger(0);
 	
-	public Group(String name) {
+	public Group(int groupId, String name) {
+		this.groupId = groupId;
 		this.groupName = name;
-		this.groupID = count.incrementAndGet();
 	}
 
 	public String getGroupName() {
@@ -50,7 +49,7 @@ public class Group {
 	}
 	
 	public int getGroupID() {
-		return groupID;
+		return groupId;
 	}
 	
 	public void addUserToGroup(User user) { //Legg til endring i db
@@ -67,7 +66,11 @@ public class Group {
 		for(User listener : listeners){
 			listener.groupHasChanged(this);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return groupName;
 		
 	}
-
 }
