@@ -284,9 +284,12 @@ public class CalendarView extends JFrame {
 			putValue(SHORT_DESCRIPTION, "Go to next month");
 		}
 		public void actionPerformed(ActionEvent e) {
-			currentMonth = currentMonth + 1 % 12;
-			if (currentMonth == 0)
+			if (currentMonth == 11){
+				currentMonth = 0;
 				currentYear += 1;
+			}else{
+				currentMonth++;
+			}
 			refreshCalendar(currentMonth, currentYear);
 		}
 
@@ -434,7 +437,7 @@ public class CalendarView extends JFrame {
 		
 	}
 	
-	public void changeCellColor() {
+	public void changeCellColor(int col, int row) {
 		table.setDefaultRenderer(table.getColumnClass(0), new tblCellRenderer());
 	}
 	
