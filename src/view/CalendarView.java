@@ -45,6 +45,7 @@ public class CalendarView extends JFrame {
 	private JButton declineButton;
 	private JButton hideButton;
 	private JButton deleteButton;
+	private JButton seeParticipantsButton;
 
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
@@ -210,6 +211,11 @@ public class CalendarView extends JFrame {
 		deleteButton.setEnabled(false);
 		getContentPane().add(deleteButton);
 	
+		seeParticipantsButton = new JButton("See Participants");
+		seeParticipantsButton.setBounds(606, 272, 124, 29);
+		seeParticipantsButton.setEnabled(false);
+		getContentPane().add(seeParticipantsButton);
+		
 		yearComboBox.addActionListener(new cmbYear_Action());
 		table.addMouseListener(new MouseHandler());
 		
@@ -374,6 +380,10 @@ public class CalendarView extends JFrame {
 	public void addDeleteButtonListener(ActionListener deleteButtonListener) {
 		deleteButton.addActionListener(deleteButtonListener);
 	}
+
+	public void addSeeParticipantListener(ActionListener seeParticipantListener){
+		seeParticipantsButton.addActionListener(seeParticipantListener);
+	}
 		
 	public Date getSelectedDate() {
 		return selectedDate;
@@ -389,18 +399,23 @@ public class CalendarView extends JFrame {
 		declineButton.setEnabled(false);
 		hideButton.setEnabled(false);
 		deleteButton.setEnabled(false);
+		seeParticipantsButton.setEnabled(false);
 
 		if (appointment.equals("Not replied")) {
 			acceptButton.setEnabled(true);
 			declineButton.setEnabled(true);
+			seeParticipantsButton.setEnabled(true);
 		} else if (appointment.equals("Accepted")) {
 			deleteButton.setEnabled(true);
+			seeParticipantsButton.setEnabled(true);
 		} else if (appointment.equals("Declined")) {
 			acceptButton.setEnabled(true);
-			hideButton.setEnabled(true);			
+			hideButton.setEnabled(true);
+			seeParticipantsButton.setEnabled(true);
 		} else if (appointment.equals("Owned")) {
 			editButton.setEnabled(true);
 			deleteButton.setEnabled(true);
+			seeParticipantsButton.setEnabled(true);
 		}
 	}
 
