@@ -182,6 +182,8 @@ public class Controller {
 				location = location.length() > 0 ? location : null;
 
 				int appointmentId = AppointmentDBC.addAppointment(startDate, endDate, description, location, user.getUsername(), reservedRoomId);
+				reservedRoomId = 0;
+
 				AppointmentDBC.addInvitation(appointmentId, user.getUsername(), "Accepted");
 				if (invitedUserList.contains(user)) {
 					invitedUserList.remove(user);
@@ -455,6 +457,7 @@ public class Controller {
 		Appointment appointment = calendarView.getSelectedAppointment();
 			
 		AppointmentDBC.setInvitationStatus(appointment.getId(), user.getUsername(), status);
+		AppointmentDBC.setCancelNotification(appointment.getId(), user.getUsername());
 
 		dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
 		calendarView.setDailyAppointmentList(dailyAppointmentList);	
