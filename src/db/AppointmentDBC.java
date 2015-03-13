@@ -295,7 +295,7 @@ public class AppointmentDBC {
 		for (User user : invitedUserList) {
 			if (!user.getUsername().equals(username)) {
 				DBConnector.makeStatement(""
-					+ "INSERT INTO cancel_notification VALUES"
+					+ "INSERT IGNORE INTO cancel_notification VALUES"
 					+ "('"+appointmentId+"', '"+user.getUsername()+"', '"+username+"');");
 			}
 		}
