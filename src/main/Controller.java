@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -428,7 +429,7 @@ public class Controller {
 		calendarView.addDeclineButtonListener(new DeclineAppointmentListener());
 		calendarView.addHideButtonListener(new HideAppointmentListener());
 		calendarView.addDeleteButtonListener(new DeleteAppointmentListener());
-
+		
 		calendarView.setTitle(calendarView.getTitle()+" ("+user.getName()+")");
 	}
 	

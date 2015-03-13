@@ -437,44 +437,40 @@ public class CalendarView extends JFrame {
 		
 	}
 	
-	public void changeCellColor(int col, int row) {
-		table.setDefaultRenderer(table.getColumnClass(0), new tblCellRenderer());
+	public void changeCellColor(Date date, String status) {
+		Color color = Color.white;
+		if (status.equals("Accepted")){
+			color = Color.green;
+		}else if (status.equals("Declined")){
+			color = Color.gray;
+		}else if (status.equals("Not replied")){
+			color = Color.red;
+		}
+		table.setDefaultRenderer(table.getColumnClass(0), new tblCellRenderer(date,color));
 	}
 	
 	static class tblCellRenderer extends DefaultTableCellRenderer{
+		
+		private int dayOfMonth, month, year;
+		private Color color;
+		
+		public tblCellRenderer(Date date, Color color) {
+			this.dayOfMonth = date.getDate();
+			this.color = color;
+		}
+		
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column){
 			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
 			if (value != null){
-				if (Integer.parseInt(value.toString()) == realDay && currentMonth == realMonth && currentYear == realYear){ //Today
-					setBackground(new Color(220, 220, 255));
+				if (Integer.parseInt(value.toString()) == dayOfMonth ){ //Today
+					System.out.println("" + value);
+					setBackground(color);
+				}else{
+					setBackground(Color.white);
 				}
 			}
 			return this;
-		}
-		
+		}	
 	}
-	
-		//Apply renderers: If so: create a tblCalendarRenderer-class which extends DefaultTableCellRenderer
-	//	table.setDefaultRenderer(table.getColumnClass(0), new tblCalendarRenderer());
-	//}
-	//
-	//static class tblCalendarRenderer extends DefaultTableCellRenderer{
-	//public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column){
-	//super.getTableCellRendererComponent(table, value, selected, focused, row, column);
-	//if (column == 5 || column == 6){ //Week-end
-	//	setBackground(new Color(255, 220, 220));
-	//}
-	//else{ //Week
-	//	setBackground(new Color(255, 255, 255));
-	//}
-	//if (value != null){
-	//	if (Integer.parseInt(value.toString()) == realDay && currentMonth == realMonth && currentYear == realYear){ //Today
-	//		setBackground(new Color(220, 220, 255));
-	//	}
-	//}
-	//setBorder(null);
-	//setForeground(Color.black);
-	//return this;  
-	//}
 		
 }
