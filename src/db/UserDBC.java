@@ -106,4 +106,53 @@ public class UserDBC {
 
 		return groupList;
 	}
+	
+	public static List<Group> getSubGroupList(int groupId) {
+		List<Group> subGroupList = new ArrayList<Group>();
+
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT sub_group_id "
+				+ "FROM group_in_group "
+				+ "WHERE user_group_id = '"+groupId+"';");
+		ResultSet result = query.getResult();
+
+		try {
+			while (result.next()) {
+				int subGroupId = result.getInt("sub_group_id");
+				Group group = new Group(subGroupId, "");
+				subGroupList.add(group);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+
+		return subGroupList;
+	}
+
+	public static List<User> getMemberList(int groupId) {
+		ArrayList<User> userList = new ArrayList<User>();
+
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT username "
+				+ "FROM user_in_group "
+				+ "WHERE user_group_id = '"+groupId+"';");
+		ResultSet result = query.getResult();
+
+		try {
+			while (result.next()) {
+				String username = result.getString("username");
+				User user = new User(username, "", "", "", "");
+				userList.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+
+		return userList;
+	}
+
 }
