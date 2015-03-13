@@ -37,15 +37,8 @@ CREATE TABLE IF NOT EXISTS invitation (
 	appointment_id INT NOT NULL,
 	username VARCHAR(64) NOT NULL,
 	status VARCHAR(32) DEFAULT "Not replied",
+	unseen_change BOOL DEFAULT 0;
 	alarm_time DATETIME,
-	PRIMARY KEY (appointment_id, username),
-	CONSTRAINT FOREIGN KEY (appointment_id) REFERENCES appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY (username) REFERENCES user(username) ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS change_notification (
-	appointment_id INT NOT NULL,
-	username VARCHAR(64) NOT NULL,
 	PRIMARY KEY (appointment_id, username),
 	CONSTRAINT FOREIGN KEY (appointment_id) REFERENCES appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT FOREIGN KEY (username) REFERENCES user(username) ON UPDATE CASCADE ON DELETE CASCADE
@@ -55,7 +48,7 @@ CREATE TABLE IF NOT EXISTS cancel_notification (
 	appointment_id INT NOT NULL,
 	username VARCHAR(64) NOT NULL,
 	canceller VARCHAR(64) NOT NULL,
-	PRIMARY KEY (appointment_id, username),
+	PRIMARY KEY (appointment_id, username, canceller),
 	CONSTRAINT FOREIGN KEY (appointment_id) REFERENCES appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT FOREIGN KEY (username) REFERENCES user(username) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT FOREIGN KEY (canceller) REFERENCES user(username) ON UPDATE CASCADE ON DELETE CASCADE
