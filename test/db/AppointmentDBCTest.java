@@ -1,12 +1,14 @@
 package db;
 
+import static org.junit.Assert.assertFalse;
+
 import java.util.Date;
 import java.util.List;
 
 import model.Room;
+import model.User;
 
 import org.junit.Test;
-import static org.junit.Assert.assertFalse;
 
 public class AppointmentDBCTest {
 	@SuppressWarnings("deprecation")
@@ -86,4 +88,16 @@ public class AppointmentDBCTest {
 		
 		assertFalse(roomList.isEmpty());
 	}
+	
+	@Test
+	public void invitedUserListShouldBeRetrieved() {
+		List<User> invitedUserList = AppointmentDBC.getInvitedUserList(29);
+
+		for (User u : invitedUserList) {
+			System.out.println(u.getUsername());
+		}
+		
+		assertFalse(invitedUserList.isEmpty());
+	}
+
 }
