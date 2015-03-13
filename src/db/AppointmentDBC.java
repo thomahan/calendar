@@ -236,8 +236,8 @@ public class AppointmentDBC {
 						+ "AND room_id NOT IN (SELECT room_id "
 									  + "FROM appointment "
 									  + "WHERE room_id IS NOT NULL "
-									  + "AND ((start_time < '"+startTime+"' AND end_time > '"+startTime+"') "
-									  + "OR (start_time < '"+endTime+"' AND end_time > '"+endTime+"')));");
+									  + "AND ((start_time <= '"+startTime+"' AND end_time > '"+startTime+"') "
+									  + "OR (start_time < '"+endTime+"' AND end_time >= '"+endTime+"')));");
 		ResultSet result = query.getResult();
 		try {
 			while (result.next()) {
@@ -280,5 +280,4 @@ public class AppointmentDBC {
 
 		return room;	
 	}
-
 }
