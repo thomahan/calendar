@@ -236,8 +236,10 @@ public class AppointmentDBC {
 						+ "AND room_id NOT IN (SELECT room_id "
 									  + "FROM appointment "
 									  + "WHERE room_id IS NOT NULL "
-									  + "AND ((start_time <= '"+startTime+"' AND end_time > '"+startTime+"') "
-									  + "OR (start_time < '"+endTime+"' AND end_time >= '"+endTime+"')));");
+									  + "AND ((start_time < '"+startTime+"' AND end_time > '"+startTime+"') "
+									  + "OR (start_time < '"+endTime+"' AND end_time > '"+endTime+"')"
+									  + "OR (start_time <= '"+startTime+"' AND end_time >= '"+endTime+"')"
+									  + "OR (start_time >= '"+startTime+"' AND end_time <= '"+endTime+"')));");
 		ResultSet result = query.getResult();
 		try {
 			while (result.next()) {
@@ -279,5 +281,26 @@ public class AppointmentDBC {
 		}
 
 		return room;	
+	}
+
+	public static void setCancelNotification(int appointmentId, String username) {
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT username "
+				+ "FROM invitation "
+				+ "WHERE appointment_id = '"+appointmentId+"';");
+		ResultSet result = query.getResult();
+		try {
+			if (result.next()) {
+				String name = result.getString("name");
+				int seatCount = result.getInt("seat_count");
+
+				//room = new Room(roomId, name, seatCount);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+	
 	}
 }
