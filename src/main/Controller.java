@@ -59,6 +59,7 @@ public class Controller {
 
 		userList = new ArrayList<User>();
 		invitedUserList = new ArrayList<User>();
+		invitedGroupList = new ArrayList<Group>();
 		availableRoomList = new ArrayList<Room>();
 
 		openLoginView();
@@ -191,8 +192,10 @@ public class Controller {
 				}
 				invitedUserList.clear();
 				
-				GroupInviter.inviteGroupList(appointmentId, invitedGroupList);
-				invitedGroupList.clear();
+				if (!invitedGroupList.isEmpty()) {
+					GroupInviter.inviteGroupList(appointmentId, invitedGroupList);
+					invitedGroupList.clear();
+				}
 				
 				appointmentCreationView.displayAppointmentCreationMessage(description);
 				appointmentCreationView.dispose();
@@ -200,6 +203,7 @@ public class Controller {
 				dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
 				calendarView.setDailyAppointmentList(dailyAppointmentList);
 			} catch (Exception e) {
+				e.printStackTrace();
 				appointmentCreationView.displayErrorMessage(e.getMessage());
 			}
 		}
