@@ -9,6 +9,7 @@ import java.util.List;
 
 import model.Appointment;
 import model.Room;
+import model.User;
 
 public class AppointmentDBC {
 	/**
@@ -284,23 +285,37 @@ public class AppointmentDBC {
 	}
 
 	public static void setCancelNotification(int appointmentId, String username) {
+		List<User> invitedUserList = getInvitedUserList(appointmentId);
+		for (User user : invitedUserList) {
+			if (!user.getUsername().equals(username)) {
+				DBConnector.makeStatement(""
+					+ "INSERT INTO cancel_notification VALUES"
+					+ "('"+appointmentId+"', '"+user.getUsername()+"', '"+username+"');");
+			}
+		}
+	}
+	
+	public static List<User> getInvitedUserList(int appointmentId) {
+		ArrayList<User> invitedUserList = new ArrayList<User>();
+
 		Query query = DBConnector.makeQuery(""
 				+ "SELECT username "
 				+ "FROM invitation "
-				+ "WHERE appointment_id = '"+appointmentId+"';");
+				+ "WHERE appointment_id = "+appointmentId+";");
 		ResultSet result = query.getResult();
-		try {
-			if (result.next()) {
-				String name = result.getString("name");
-				int seatCount = result.getInt("seat_count");
 
-				//room = new Room(roomId, name, seatCount);
+		try {
+			while (result.next()) {
+				String username = result.getString("username");
+				User user = new User(username, "", "", "", "");
+				invitedUserList.add(user);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			query.close();
 		}
-	
+
+		return invitedUserList;
 	}
 }
