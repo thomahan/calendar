@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -22,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import model.Appointment;
@@ -82,7 +85,7 @@ public class CalendarView extends JFrame {
 		JButton previousMonthButton = new JButton("<<");
 		previousMonthButton.setAction(action_1);
 		previousMonthButton.setBounds(112, 7, 45, 29);
-		previousMonthButton.setText("Previous month");
+		previousMonthButton.setText("<<");
 		calendarControlPanel.add(previousMonthButton);
 		
 		JButton nextMonthButton = new JButton(">>");
@@ -132,8 +135,8 @@ public class CalendarView extends JFrame {
 			mtblCalendar.addColumn(headers[i]);
 		
 		//Set background
-		table.getParent().setBackground(table.getBackground()); 
-		
+		table.getParent().setBackground(table.getBackground());
+				
 		//No resize/reorder
 		table.getTableHeader().setResizingAllowed(false);
 		table.getTableHeader().setReorderingAllowed(false);
@@ -428,9 +431,47 @@ public class CalendarView extends JFrame {
 				dailyAppointmentListModel.addElement(a);
 			}
 		}
+		
 	}
 	
-	public void changeCellColor(Date date, String status) {
-			
+	public void changeCellColor() {
+		table.setDefaultRenderer(table.getColumnClass(0), new tblCellRenderer());
 	}
+	
+	static class tblCellRenderer extends DefaultTableCellRenderer{
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column){
+			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+			if (value != null){
+				if (Integer.parseInt(value.toString()) == realDay && currentMonth == realMonth && currentYear == realYear){ //Today
+					setBackground(new Color(220, 220, 255));
+				}
+			}
+			return this;
+		}
+		
+	}
+	
+		//Apply renderers: If so: create a tblCalendarRenderer-class which extends DefaultTableCellRenderer
+	//	table.setDefaultRenderer(table.getColumnClass(0), new tblCalendarRenderer());
+	//}
+	//
+	//static class tblCalendarRenderer extends DefaultTableCellRenderer{
+	//public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column){
+	//super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+	//if (column == 5 || column == 6){ //Week-end
+	//	setBackground(new Color(255, 220, 220));
+	//}
+	//else{ //Week
+	//	setBackground(new Color(255, 255, 255));
+	//}
+	//if (value != null){
+	//	if (Integer.parseInt(value.toString()) == realDay && currentMonth == realMonth && currentYear == realYear){ //Today
+	//		setBackground(new Color(220, 220, 255));
+	//	}
+	//}
+	//setBorder(null);
+	//setForeground(Color.black);
+	//return this;  
+	//}
+		
 }
