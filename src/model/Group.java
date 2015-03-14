@@ -79,6 +79,7 @@ public class Group {
 		Group group = (Group) obj;
 		return this.getGroupID() == group.getGroupID();
 	}
+
 	@Override
 	public String toString() {
 		return groupName;
