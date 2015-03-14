@@ -37,12 +37,15 @@ public class Controller {
 	private User user;
 	private Date selectedDate;
 	private int selectedAppointmentId;
+	private int editedAppointmentId;
 	private Appointment selectedAppointment;
+	private Appointment originalAppointment;
 	private List<User> userList;
 	private List<User> invitedUserList;
 	private List<Group> groupList;
 	private List<Group> invitedGroupList;
 	private int reservedRoomId;
+	private int originalRoomId;
 	private List<Room> availableRoomList;
 	private ArrayList<Appointment> dailyAppointmentList;
 
@@ -167,28 +170,72 @@ public class Controller {
 				String endTime = appointmentCreationView.getEndTime();
 				String description = appointmentCreationView.getDescription();
 				String location = appointmentCreationView.getAppointmentLocation();
-				//int roomId = appointmentCreationView.getRoomId();
 
 				Date startDate = simpleDateFormat.parse(startTime);
 				Date endDate = simpleDateFormat.parse(endTime);
 			
-				if (description.length() <= 0) {
-					throw new Exception("Description must be specified.");
-				} else if (startTime == null) {
+				if (startTime == null) {
 					throw new Exception("Start time must be specified.");
 				} else if (endTime == null) {
 					throw new Exception("End time must be specified.");
-				}
+				}else if (description.length() <= 0) {
+					throw new Exception("Description must be specified.");
+				} 
 				
 				location = location.length() > 0 ? location : null;
 
-				int appointmentId = AppointmentDBC.addAppointment(startDate, endDate, description, location, user.getUsername(), reservedRoomId);
-				reservedRoomId = 0;
+				Room reservedRoom = new Room(reservedRoomId, "", 0);
 
-				AppointmentDBC.addInvitation(appointmentId, user.getUsername(), "Accepted");
-				if (invitedUserList.contains(user)) {
-					invitedUserList.remove(user);
+				int appointmentId;
+				if (appointmentCreationView.isNewAppointment()) {
+					availableRoomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, 0);
+
+					if (!availableRoomList.contains(reservedRoom) && reservedRoomId != 0) {
+						throw new Exception("The room could not be reserved for the new time period.");
+					}
+
+					appointmentId = AppointmentDBC.addAppointment(startDate, endDate, description, location, user.getUsername(), reservedRoomId);
+
+					AppointmentDBC.addInvitation(appointmentId, user.getUsername(), "Accepted");
+					if (invitedUserList.contains(user)) {
+						invitedUserList.remove(user);
+					}
+				} else {
+					appointmentId = originalAppointment.getId();
+					Appointment editedAppointment = new Appointment(appointmentId, startDate, endDate, description, true, originalAppointment.getStatus());
+					editedAppointment.setLocation(location);
+
+					if (reservedRoomId != 0) {
+						AppointmentDBC.releaseRoom(originalAppointment.getId());
+					    availableRoomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, 0);
+
+					    if (!availableRoomList.contains(reservedRoom) && reservedRoomId != 0) {
+					    	throw new Exception("The room could not be reserved for the new time period.");
+					   	}
+
+						editedAppointment.setRoom(new Room(reservedRoomId, "", 0));
+					} else if (originalAppointment != null && originalAppointment.getRoom() != null) {
+
+						AppointmentDBC.releaseRoom(originalAppointment.getId());
+
+					    availableRoomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, 0);
+
+					    if (!availableRoomList.contains(reservedRoom) && reservedRoomId != 0) {
+					    	reservedRoomId = originalAppointment.getRoom().getId();
+					    	originalAppointment.setRoom(null);
+					    	throw new Exception("The room could not be reserved for the new time period.");
+					   	}
+
+						editedAppointment.setRoom(new Room(reservedRoomId, "", 0));
+					}
+
+					if (!originalAppointment.equals(editedAppointment)) {
+						AppointmentDBC.updateAppointment(appointmentId, startDate, endDate, description, location, reservedRoomId);
+					}
+					originalAppointment = null;
+					
 				}
+				reservedRoomId = 0;
 
 				for (User u : invitedUserList) {
 					AppointmentDBC.addInvitation(appointmentId, u.getUsername(), null);
@@ -200,7 +247,11 @@ public class Controller {
 					invitedGroupList.clear();
 				}
 				
-				appointmentCreationView.displayAppointmentCreationMessage(description);
+				if (appointmentCreationView.isNewAppointment()) {
+					appointmentCreationView.displayAppointmentCreationMessage(description);
+				} else {
+					appointmentCreationView.displayAppointmentSaveMessage(description);
+				}
 				appointmentCreationView.dispose();
 				
 				dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
@@ -215,6 +266,9 @@ public class Controller {
 	class CancelAppointmentCreationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			if (!appointmentCreationView.isNewAppointment() && originalAppointment.getRoom() != null) {
+				AppointmentDBC.setAppointmentRoom(originalAppointment.getId(), originalAppointment.getRoom().getId());
+			}
 			appointmentCreationView.dispose();
 		}
 	}
@@ -365,10 +419,18 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			openAppointmentCreationView();
-			Appointment appointment = AppointmentDBC.getAppointment(selectedAppointmentId, user.getUsername());
+			appointmentCreationView.setNewAppointment(false);
+			appointmentCreationView.setTitle("Edit appointment");
+			appointmentCreationView.setCreateButtonText("Save");
+			originalAppointment = selectedAppointment;//AppointmentDBC.getAppointment(selectedAppointmentId, user.getUsername());
 
-			appointmentCreationView.setStartTime(simpleDateFormat.format(appointment.getStartDate()));
-			appointmentCreationView.setEndTime(simpleDateFormat.format(appointment.getEndDate()));
+			appointmentCreationView.setStartTime(simpleDateFormat.format(originalAppointment.getStartDate()));
+			appointmentCreationView.setEndTime(simpleDateFormat.format(originalAppointment.getEndDate()));
+			appointmentCreationView.setDescription(originalAppointment.getDescription());
+			appointmentCreationView.setLocation(originalAppointment.getLocation());
+			if (originalAppointment.getRoom() != null) {
+				originalRoomId = originalAppointment.getRoom().getId();
+			}
 		}	
 	}
 
@@ -431,7 +493,7 @@ public class Controller {
 		calendarView.addSelectDateListener(new SelectDateListener());
 		calendarView.addSelectedAppointmentListener(new SelectAppointmentListener());
 
-		calendarView.addEditButtonListener(new OpenAppointmentCreationListener());
+		calendarView.addEditButtonListener(new OpenAppointmentEditingListener());
 		calendarView.addAcceptButtonListener(new AcceptAppointmentListener());
 		calendarView.addDeclineButtonListener(new DeclineAppointmentListener());
 		calendarView.addHideButtonListener(new HideAppointmentListener());
