@@ -22,9 +22,9 @@ public class AppointmentDBC {
 		Appointment appointment =  null;
 
 		Query query = DBConnector.makeQuery(""
-				+ "SELECT appointment_id, start_time, end_time, description, location, room_id, creator, status, alarm_time "
+				+ "SELECT appointment.appointment_id, start_time, end_time, description, location, room_id, creator, status, alarm_time "
 				+ "FROM appointment JOIN invitation ON appointment.appointment_id = invitation.appointment_id "
-				+ "WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"';");
+				+ "WHERE appointment.appointment_id = '"+appointmentId+"' AND username = '"+username+"';");
 		ResultSet result = query.getResult();
 		try {
 			if (result.next()) {
@@ -71,7 +71,7 @@ public class AppointmentDBC {
 	 */
 	@SuppressWarnings("deprecation")
 	public static ArrayList<Appointment> getAppointmentList(String username, Date selectedDate) {
-		ArrayList<Appointment> appointmentList =  new ArrayList<Appointment>();
+		ArrayList<Appointment> appointmentList = new ArrayList<Appointment>();
 		
 		Timestamp lowerTime = new Timestamp(selectedDate.getTime());
 		Timestamp upperTime = new Timestamp(selectedDate.getTime());
@@ -142,17 +142,18 @@ public class AppointmentDBC {
 	
 		DBConnector.makeStatement(""
 			+ "INSERT INTO appointment (start_time, end_time, description, creator) "
-			+ "VALUES ('"+startTime+"', "
-					 +"'"+endTime+"', "
-					 +"'"+description+"', "
-					 +"'"+username+"');");
+			+ "VALUES ('"+startTime+"', '"+endTime+"', '"+description+"', '"+username+"');");
 
 		// The following way of referring back to the appointment is unreliable.
 		// Code should be refactored with prepared statements to get the auto incremented value.
 		Query query = null;
 		int appointmentId = 0;
 		try {
-			query = DBConnector.makeQuery("SELECT appointment_id FROM appointment WHERE appointment_id = (SELECT MAX(appointment_id) FROM appointment WHERE creator ='"+username+"');");
+			query = DBConnector.makeQuery("SELECT appointment_id "
+										+ "FROM appointment "
+										+ "WHERE appointment_id = (SELECT MAX(appointment_id) "
+																+ "FROM appointment "
+																+ "WHERE creator ='"+username+"');");
 			ResultSet res = query.getResult();
 			if (res.next()) {
 				appointmentId = res.getInt("appointment_id");
@@ -165,18 +166,45 @@ public class AppointmentDBC {
 
 		if (location != null) {
 			DBConnector.makeStatement(""
-					+ "UPDATE appointment SET location = '"+location+"' "
-							+ "WHERE appointment_id = '"+appointmentId+"';");
+					+ "UPDATE appointment "
+					+ "SET location = '"+location+"' "
+					+ "WHERE appointment_id = '"+appointmentId+"';");
 		}
 		if (roomId != 0) {
 			DBConnector.makeStatement(""
-					+ "UPDATE appointment SET room_id = '"+roomId+"' "
-							+ "WHERE appointment_id = '"+appointmentId+"';");
+					+ "UPDATE appointment "
+					+ "SET room_id = '"+roomId+"' "
+					+ "WHERE appointment_id = '"+appointmentId+"';");
 		}
 		
 		return appointmentId;
 	}
+
+	public static void updateAppointment(int appointmentId, Date startDate, Date endDate, String description, String location, int roomId){
+		System.out.println("Updating appointment... "+description+" "+appointmentId);
+		Timestamp startTime = new Timestamp(startDate.getTime());
+		Timestamp endTime = new Timestamp(endDate.getTime());
 	
+		DBConnector.makeStatement(""
+			+ "UPDATE appointment "
+			+ "SET start_time = '"+startTime+"', end_time = '"+endTime+"', description = '"+description+"' "
+			+ "WHERE appointment_id = '"+appointmentId+"'");
+
+		if (location != null) {
+			DBConnector.makeStatement(""
+					+ "UPDATE appointment "
+					+ "SET location = '"+location+"' "
+					+ "WHERE appointment_id = '"+appointmentId+"';");
+		}
+
+		if (roomId != 0) {
+			DBConnector.makeStatement(""
+					+ "UPDATE appointment "
+					+ "SET room_id = '"+roomId+"' "
+					+ "WHERE appointment_id = '"+appointmentId+"';");
+		}
+	}
+
 	/**
 	 * Deletes an appointment from the database
 	 * @param appointmentId
@@ -197,14 +225,11 @@ public class AppointmentDBC {
 		if (status != null) {
 			DBConnector.makeStatement(""
 					+ "INSERT INTO invitation (appointment_id, username, status) "
-					+ "VALUES ('"+appointmentId+"', "
-					 		+"'"+username+"', "
-					 		+"'"+status+"');");
+					+ "VALUES ('"+appointmentId+"', '"+username+"', '"+status+"');");
 		} else {
 			DBConnector.makeStatement(""
 					+ "INSERT INTO invitation (appointment_id, username) "
-					+ "VALUES ('"+appointmentId+"', "
-					 		+"'"+username+"');");
+					+ "VALUES ('"+appointmentId+"', '"+username+"');");
 		}
 	}
 
@@ -221,7 +246,10 @@ public class AppointmentDBC {
 	 */
 	public static void setInvitationStatus(int appointmentId, String username, String status) {
 		DBConnector.makeStatement(""
-			+ "UPDATE invitation SET status = '"+status+"' WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"';");
+			+ "UPDATE invitation "
+			+ "SET status = '"+status+"' "
+			+ "WHERE appointment_id = '"+appointmentId+"' "
+			  + "AND username = '"+username+"';");
 	}
 	
 	/**
@@ -240,13 +268,13 @@ public class AppointmentDBC {
 				+ "SELECT room_id, name, seat_count "
 				+ "FROM room "
 				+ "WHERE seat_count >= '"+minSeatCount+"' "
-						+ "AND room_id NOT IN (SELECT room_id "
+				  + "AND room_id NOT IN (SELECT room_id "
 									  + "FROM appointment "
 									  + "WHERE room_id IS NOT NULL "
-									  + "AND ((start_time < '"+startTime+"' AND end_time > '"+startTime+"') "
-									  + "OR (start_time < '"+endTime+"' AND end_time > '"+endTime+"')"
-									  + "OR (start_time <= '"+startTime+"' AND end_time >= '"+endTime+"')"
-									  + "OR (start_time >= '"+startTime+"' AND end_time <= '"+endTime+"')));");
+									    + "AND ((start_time < '"+startTime+"' AND end_time > '"+startTime+"') "
+									      + "OR (start_time < '"+endTime+"' AND end_time > '"+endTime+"')"
+									      + "OR (start_time <= '"+startTime+"' AND end_time >= '"+endTime+"')"
+									      + "OR (start_time >= '"+startTime+"' AND end_time <= '"+endTime+"')));");
 		ResultSet result = query.getResult();
 		try {
 			while (result.next()) {
@@ -295,8 +323,8 @@ public class AppointmentDBC {
 		for (User user : invitedUserList) {
 			if (!user.getUsername().equals(username)) {
 				DBConnector.makeStatement(""
-					+ "INSERT IGNORE INTO cancel_notification VALUES"
-					+ "('"+appointmentId+"', '"+user.getUsername()+"', '"+username+"');");
+					+ "INSERT IGNORE INTO cancel_notification "
+					+ "VALUES ('"+appointmentId+"', '"+user.getUsername()+"', '"+username+"');");
 			}
 		}
 	}
@@ -323,5 +351,19 @@ public class AppointmentDBC {
 		}
 
 		return invitedUserList;
+	}
+	
+	public static void releaseRoom(int appointmentId) {
+		DBConnector.makeStatement(""
+			+ "UPDATE appointment "
+			+ "SET room_id = DEFAULT "
+			+ "WHERE appointment_id = '"+appointmentId+"';");
+	}
+	
+	public static void setAppointmentRoom(int appointmentId, int roomId) {
+		DBConnector.makeStatement(""
+			+ "UPDATE appointment "
+			+ "SET room_id = '"+roomId+"' "
+			+ "WHERE appointment_id = '"+appointmentId+"';");
 	}
 }
