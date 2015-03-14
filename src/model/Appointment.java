@@ -197,6 +197,35 @@ public class Appointment {
 		summary += "<br> </html>";
 		return summary;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		Appointment appointment = (Appointment) obj;
+
+		boolean idIsEqual = this.getId() == appointment.getId();
+		boolean startDateIsEqual = this.getStartDate().equals(appointment.getStartDate());
+		boolean endDateIsEqual = this.getEndDate().equals(appointment.getEndDate());
+		boolean descriptionIsEqual = this.getDescription().equals(appointment.getDescription());
+		boolean locationIsEqual = (this.getLocation() != null) ? this.getLocation().equals(appointment.getLocation()) : true;
+
+		boolean roomIdIsEqual;
+		if (this.getRoom() == null && appointment.getRoom() == null) {
+			roomIdIsEqual = true;
+		} else if (this.getRoom() != null && appointment.getRoom() != null) {
+			roomIdIsEqual = this.getRoom().equals(appointment.getRoom());
+		} else {
+			roomIdIsEqual = false;
+		}
+
+		return (idIsEqual && startDateIsEqual && endDateIsEqual && descriptionIsEqual && locationIsEqual && roomIdIsEqual);
+	}
+
 
 	public ArrayList<Room> getAvailableRoom(Date start, Date end){
 		Interval int1 = new Interval(start, end);
