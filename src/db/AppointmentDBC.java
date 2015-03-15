@@ -53,6 +53,10 @@ public class AppointmentDBC {
 					Room room = getRoom(roomId);
 					appointment.setRoom(room);
 				}
+				
+				if (alarmDate != null) {
+					
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -110,10 +114,8 @@ public class AppointmentDBC {
 				appointment.setAlarmDate(alarmDate);
 				appointment.setLocation(location);
 				
-				if (roomId != 0) {
-					Room room = getRoom(roomId);
-					appointment.setRoom(room);
-				}
+				Room room = (roomId != 0) ? getRoom(roomId) : new Room(0, "", 0);
+				appointment.setRoom(room);
 
 				appointmentList.add(appointment);
 			}
@@ -181,7 +183,6 @@ public class AppointmentDBC {
 	}
 
 	public static void updateAppointment(int appointmentId, Date startDate, Date endDate, String description, String location, int roomId){
-		System.out.println("Updating appointment... "+description+" "+appointmentId);
 		Timestamp startTime = new Timestamp(startDate.getTime());
 		Timestamp endTime = new Timestamp(endDate.getTime());
 	
@@ -252,6 +253,54 @@ public class AppointmentDBC {
 			  + "AND username = '"+username+"';");
 	}
 	
+	public static void addChangeNotification(int appointmentId, String username) {
+		List<User> invitedUserList = getInvitedUserList(appointmentId);
+		for (User user : invitedUserList) {
+			if (!user.getUsername().equals(username)) {
+				DBConnector.makeStatement(""
+						+ "UPDATE invitation "
+						+ "SET unseen_change = '"+1+"' "
+						+ "WHERE appointment_id = '"+appointmentId+"' "
+			  			+ "AND username = '"+user.getUsername()+"';");	
+			}
+		}
+	}
+
+	public static List<User> getInvitedUserList(int appointmentId) {
+		ArrayList<User> invitedUserList = new ArrayList<User>();
+
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT username "
+				+ "FROM invitation "
+				+ "WHERE appointment_id = "+appointmentId+";");
+		ResultSet result = query.getResult();
+
+		try {
+			while (result.next()) {
+				String username = result.getString("username");
+				User user = new User(username, "", "", "", "");
+				invitedUserList.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+
+		return invitedUserList;
+	}
+	
+	public static void addCancelNotification(int appointmentId, String username) {
+		List<User> invitedUserList = getInvitedUserList(appointmentId);
+		for (User user : invitedUserList) {
+			if (!user.getUsername().equals(username)) {
+				DBConnector.makeStatement(""
+					+ "INSERT IGNORE INTO cancel_notification "
+					+ "VALUES ('"+appointmentId+"', '"+user.getUsername()+"', '"+username+"');");
+			}
+		}
+	}
+	
 	/**
 	 * Returns a list of rooms available for an interval with the given seat count
 	 * @param startDate
@@ -317,47 +366,12 @@ public class AppointmentDBC {
 
 		return room;	
 	}
-
-	public static void setCancelNotification(int appointmentId, String username) {
-		List<User> invitedUserList = getInvitedUserList(appointmentId);
-		for (User user : invitedUserList) {
-			if (!user.getUsername().equals(username)) {
-				DBConnector.makeStatement(""
-					+ "INSERT IGNORE INTO cancel_notification "
-					+ "VALUES ('"+appointmentId+"', '"+user.getUsername()+"', '"+username+"');");
-			}
-		}
-	}
-	
-	public static List<User> getInvitedUserList(int appointmentId) {
-		ArrayList<User> invitedUserList = new ArrayList<User>();
-
-		Query query = DBConnector.makeQuery(""
-				+ "SELECT username "
-				+ "FROM invitation "
-				+ "WHERE appointment_id = "+appointmentId+";");
-		ResultSet result = query.getResult();
-
-		try {
-			while (result.next()) {
-				String username = result.getString("username");
-				User user = new User(username, "", "", "", "");
-				invitedUserList.add(user);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			query.close();
-		}
-
-		return invitedUserList;
-	}
 	
 	public static void releaseRoom(int appointmentId) {
 		DBConnector.makeStatement(""
 			+ "UPDATE appointment "
 			+ "SET room_id = DEFAULT "
-			+ "WHERE appointment_id = '"+appointmentId+"';");
+			+ "WHERE appointment_id = "+appointmentId+";");
 	}
 	
 	public static void setAppointmentRoom(int appointmentId, int roomId) {
