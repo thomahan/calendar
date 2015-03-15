@@ -50,14 +50,13 @@ public class CalendarView extends JFrame {
 	private JButton deleteButton;
 	private JButton seeParticipantsButton;
 
-	private final Action action = new SwingAction();
-	private final Action action_1 = new SwingAction_1();
+	private final Action nextMonthAction = new NextMonthAction();
+	private final Action previousMonthAction = new PreviousMonthAction();
 
 	private final String FRAME_TITLE = "Calendar Program";
 	static int realYear, realMonth, realDay, currentYear, currentMonth;
 
 	private Date selectedDate;
-	private List<Appointment> dailyAppointmentList;
 
 	public static void main(String[] args) {
 		new CalendarView();
@@ -83,13 +82,13 @@ public class CalendarView extends JFrame {
 		calendarControlPanel.setLayout(null);
 		
 		JButton previousMonthButton = new JButton("<<");
-		previousMonthButton.setAction(action_1);
+		previousMonthButton.setAction(previousMonthAction);
 		previousMonthButton.setBounds(112, 7, 45, 29);
 		previousMonthButton.setText("<<");
 		calendarControlPanel.add(previousMonthButton);
 		
 		JButton nextMonthButton = new JButton(">>");
-		nextMonthButton.setAction(action);
+		nextMonthButton.setAction(nextMonthAction);
 		nextMonthButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -115,7 +114,6 @@ public class CalendarView extends JFrame {
 		stblCalendar.setBounds(6,6,272,268);
 		calendarDisplayPanel.add(stblCalendar);
 		
-		//No resize/reorder
 		table.getTableHeader().setResizingAllowed(false);
 		table.getTableHeader().setReorderingAllowed(false);
 		
@@ -134,7 +132,6 @@ public class CalendarView extends JFrame {
 		for (int i=0; i<7; i++)
 			mtblCalendar.addColumn(headers[i]);
 		
-		//Set background
 		table.getParent().setBackground(table.getBackground());
 				
 		//No resize/reorder
@@ -183,7 +180,6 @@ public class CalendarView extends JFrame {
 		dailyAppointmentListBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		dailyAppointmentListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		dailyAppointmentListBox.setAutoscrolls(true);
-		//appointmentPanel.add(dailyAppointmentListBox);
 
 		JScrollPane scrollPane = new JScrollPane(dailyAppointmentListBox);
 		scrollPane.setBounds(10, 10, 248, 260);
@@ -214,7 +210,7 @@ public class CalendarView extends JFrame {
 		deleteButton.setEnabled(false);
 		getContentPane().add(deleteButton);
 	
-		seeParticipantsButton = new JButton("See Participants");
+		seeParticipantsButton = new JButton("See participants");
 		seeParticipantsButton.setBounds(606, 272, 124, 29);
 		seeParticipantsButton.setEnabled(false);
 		getContentPane().add(seeParticipantsButton);
@@ -254,32 +250,10 @@ public class CalendarView extends JFrame {
 			int column  =  (i+som-2)%7;
 			mtblCalendar.setValueAt(i, row, column);
 		}		
-//		//Apply renderers: If so: create a tblCalendarRenderer-class which extends DefaultTableCellRenderer
-//				table.setDefaultRenderer(table.getColumnClass(0), new tblCalendarRenderer());
-//	}
-//	
-//	static class tblCalendarRenderer extends DefaultTableCellRenderer{
-//		public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column){
-//			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
-//			if (column == 5 || column == 6){ //Week-end
-//				setBackground(new Color(255, 220, 220));
-//			}
-//			else{ //Week
-//				setBackground(new Color(255, 255, 255));
-//			}
-//			if (value != null){
-//				if (Integer.parseInt(value.toString()) == realDay && currentMonth == realMonth && currentYear == realYear){ //Today
-//					setBackground(new Color(220, 220, 255));
-//				}
-//			}
-//			setBorder(null);
-//			setForeground(Color.black);
-//			return this;  
-//		}
 	}
 
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
+	private class NextMonthAction extends AbstractAction {
+		public NextMonthAction() {
 			putValue(NAME, ">>");
 			putValue(SHORT_DESCRIPTION, "Go to next month");
 		}
@@ -292,11 +266,10 @@ public class CalendarView extends JFrame {
 			}
 			refreshCalendar(currentMonth, currentYear);
 		}
-
 	}
 
-	private class SwingAction_1 extends AbstractAction {
-		public SwingAction_1() {
+	private class PreviousMonthAction extends AbstractAction {
+		public PreviousMonthAction() {
 			putValue(NAME, "<<");
 			putValue(SHORT_DESCRIPTION, "Go to previous month");
 		}
@@ -304,7 +277,7 @@ public class CalendarView extends JFrame {
 			if (currentMonth == 0){
 				currentMonth = 11;
 				currentYear -= 1;
-			}else{
+			} else {
 				currentMonth -= 1;
 			}
 			refreshCalendar(currentMonth, currentYear);
@@ -322,33 +295,21 @@ public class CalendarView extends JFrame {
 	}
 	
 	private class MouseHandler implements MouseListener {
+		@SuppressWarnings("deprecation")
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			int row = table.rowAtPoint(e.getPoint());
 		    int col = table.columnAtPoint(e.getPoint());
-			refreshEventWindow(getDate(row,col));
-		}
-		
-		@SuppressWarnings("deprecation")
-		private Date getDate(int row, int col) {
 			if (table.getModel().getValueAt(row, col) != null) {
 				int day = (Integer) table.getModel().getValueAt(row, col);
-				Date clickedDay = new Date(currentYear - 1900, currentMonth, day);
-				selectedDate = clickedDay;
-				return clickedDay;			
-			} else {
-				return selectedDate;
+				selectedDate = new Date(currentYear - 1900, currentMonth, day);
 			}
 		}
-
+	
 		@Override public void mousePressed(MouseEvent e) {}
 		@Override public void mouseReleased(MouseEvent e) {}
 		@Override public void mouseEntered(MouseEvent e) {}
 		@Override public void mouseExited(MouseEvent e) {}
-	}
-	
-	public void refreshEventWindow(Date date){
-		dailyAppointmentList = new ArrayList<Appointment>();
 	}
 	
 	public void addNewAppointmentButtonListener(ActionListener newAppointmentButtonListener) {
@@ -399,7 +360,7 @@ public class CalendarView extends JFrame {
 		return dailyAppointmentListBox.getSelectedValue();
 	}
 	
-	public void setAppointmentStatus(String appointment) {
+	public void setAppointmentAccess(String appointment) {
 		editButton.setEnabled(false);
 		acceptButton.setEnabled(false);
 		declineButton.setEnabled(false);
@@ -426,8 +387,6 @@ public class CalendarView extends JFrame {
 	}
 
 	public void setDailyAppointmentList(ArrayList<Appointment> dailyAppointmentList) {
-		this.dailyAppointmentList = dailyAppointmentList;
-
 		dailyAppointmentListModel.clear();
 		if (!dailyAppointmentList.isEmpty()) {
 			for (Appointment a : dailyAppointmentList) {
@@ -450,8 +409,7 @@ public class CalendarView extends JFrame {
 	}
 	
 	static class tblCellRenderer extends DefaultTableCellRenderer{
-		
-		private int dayOfMonth, month, year;
+		private int dayOfMonth;
 		private Color color;
 		
 		public tblCellRenderer(Date date, Color color) {
