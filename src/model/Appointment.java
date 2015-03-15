@@ -190,7 +190,7 @@ public class Appointment {
 
 		summary += description+"<br>";
 		summary += (location != null) ? "Location: "+location+"<br>" : "";
-		if (room != null) {
+		if (room.getId() != 0) {
 			summary += "Room: "+room+"<br>";
 		}
 
@@ -212,7 +212,15 @@ public class Appointment {
 		boolean startDateIsEqual = this.getStartDate().equals(appointment.getStartDate());
 		boolean endDateIsEqual = this.getEndDate().equals(appointment.getEndDate());
 		boolean descriptionIsEqual = this.getDescription().equals(appointment.getDescription());
-		boolean locationIsEqual = (this.getLocation() != null) ? this.getLocation().equals(appointment.getLocation()) : true;
+
+		boolean locationIsEqual;
+		if (this.getLocation() == null && appointment.getLocation() == null) {
+			locationIsEqual = true;
+		} else if (this.getLocation() != null && appointment.getLocation() != null) {
+			locationIsEqual = this.getLocation().equals(appointment.getLocation());
+		} else {
+			locationIsEqual = false;
+		}
 
 		boolean roomIdIsEqual;
 		if (this.getRoom() == null && appointment.getRoom() == null) {
