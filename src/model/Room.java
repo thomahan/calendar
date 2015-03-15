@@ -11,7 +11,6 @@ public class Room {
 		this.id = id;
 		this.name = name;
 		this.seatCount = size;
-		main.Controller.getRoomlist().add(this);
 		this.calendar = new Calendar(this);
 	}
 		
