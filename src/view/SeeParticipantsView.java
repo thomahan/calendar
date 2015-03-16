@@ -18,6 +18,7 @@ public class SeeParticipantsView extends JFrame {
 	private JList<String> participantListBox;
 	private DefaultListModel<String> participantListModel;
 	private JButton closeButton;
+	private JButton btnRemove;
 
 	public static void main(String[] args) {
 		new SeeParticipantsView();
@@ -47,12 +48,20 @@ public class SeeParticipantsView extends JFrame {
 		closeButton = new JButton("Close");
 		closeButton.setBounds(151, 221, 117, 29);
 		panel.add(closeButton);
+		
+		btnRemove = new JButton("Remove");
+		btnRemove.setBounds(20, 221, 117, 29);
+		panel.add(btnRemove);
 	
 		this.setVisible(true);
 	}
 		
 	public void addCloseButtonListener(ActionListener closeButtonListener) {
 		closeButton.addActionListener(closeButtonListener);
+	}
+	
+	public void addBtnRemoveListener(ActionListener btnRemoveListener) {
+		btnRemove.addActionListener(btnRemoveListener);
 	}
 		
 	
