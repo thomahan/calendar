@@ -415,10 +415,10 @@ public class CalendarView extends JFrame {
 		}
 	}
 	
-	public void setChangeButton(boolean status) {
+	public void setSeeChangesButton(boolean status) {
 		seeChangesButton.setEnabled(status);
 		if (status == true){
-			seeChangesButton.setBackground(Color.red);
+			seeChangesButton.setBackground(new Color(240,144,144));
 			seeChangesButton.setContentAreaFilled(false);
 			seeChangesButton.setOpaque(true);
 		}
