@@ -25,10 +25,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import model.Appointment;
+
+import javax.swing.UIManager;
 
 @SuppressWarnings("serial")
 public class CalendarView extends JFrame {
@@ -230,8 +233,10 @@ public class CalendarView extends JFrame {
 		getContentPane().add(seeParticipantsButton);
 		
 		seeChangesButton = new JButton("See changes");
+		seeChangesButton.setBackground(UIManager.getColor("Button.select"));
 		seeChangesButton.setBounds(606, 313, 124, 29);
-		seeChangesButton.setEnabled(false);
+		seeChangesButton.setEnabled(true);
+//		seeChangesButton.setBorder(new LineBorder(Color.RED,1));
 		getContentPane().add(seeChangesButton);
 		
 		yearComboBox.addActionListener(new cmbYear_Action());
@@ -240,7 +245,7 @@ public class CalendarView extends JFrame {
 		refreshCalendar(realMonth, realYear);
 
 		this.setVisible(true);
-		selectedDate = new Date();
+		selectedDate = new Date();	
 	}
 	
 	public static void refreshCalendar(int month, int year) {
@@ -373,7 +378,7 @@ public class CalendarView extends JFrame {
 	}
 	
 	public void addSeeChangesListener(ActionListener seeChangesListener){
-		
+		seeChangesButton.addActionListener(seeChangesListener);
 	}
 		
 	public Date getSelectedDate() {
