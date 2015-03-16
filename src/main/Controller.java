@@ -513,10 +513,9 @@ public class Controller {
 	class OpenNotificationsListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Open changes!");
 			notificationsView = new SeeChangesView();
 			notificationsView.addHideAppointmentButtonListener(new AcceptAppointmentChangeListener());
-			notificationsView.addHideUserButtonListener(new AcceptCancelNotificationListener());
+			notificationsView.addHideCancelNotificationButtonListener(new AcceptCancelNotificationListener());
 			notificationsView.addCloseButtonListener(new CloseNotificationsListener());
 			
 			notificationsView.setAppointmentList(changedAppointmentList);
@@ -528,20 +527,26 @@ public class Controller {
 	class AcceptAppointmentChangeListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("Accepted appointment change!");
 			List<Appointment> acceptedAppointmentChangeList = notificationsView.getSelectedAppointmentList();
 			for (Appointment a : acceptedAppointmentChangeList) {
 				AppointmentDBC.acceptChangeNotification(a.getId(), user.getUsername());
 			}
+			updateNotifications();
+			notificationsView.setAppointmentList(changedAppointmentList);
 		}
 	}
 	
 	class AcceptCancelNotificationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("Accepted appointment cancellation!");
 			List<CancelNotification> acceptedCancelNotificationList = notificationsView.getSelectedCancelNotificationList();
 			for (CancelNotification c : acceptedCancelNotificationList) {
 				AppointmentDBC.removeCancelNotification(c.getAppointment().getId(), user.getUsername());
 			}
+			updateNotifications();
+			notificationsView.setCancelNotificationList(cancelNotificationList);
 		}
 	}
 
@@ -573,7 +578,7 @@ public class Controller {
 		calendarView.addHideButtonListener(new HideAppointmentListener());
 		calendarView.addDeleteButtonListener(new DeleteAppointmentListener());
 		calendarView.addSeeParticipantListener(new OpenSeeParticipantsListener());
-		calendarView.addSeeParticipantListener(new OpenNotificationsListener());
+		calendarView.addSeeChangesListener(new OpenNotificationsListener());
 		
 		calendarView.setTitle(calendarView.getTitle()+" ("+user.getName()+")");
 		
@@ -623,12 +628,12 @@ public class Controller {
 	}
 	
 	private void updateNotifications() {
-		calendarView.setChangeButton(false);
+		calendarView.setSeeChangesButton(false);
 		cancelNotificationList = AppointmentDBC.getCancelNotificationList(user.getUsername());
 		changedAppointmentList = AppointmentDBC.getChangedAppointmentList(user.getUsername());
 
 		if (!cancelNotificationList.isEmpty() || !changedAppointmentList.isEmpty()) {
-			calendarView.setChangeButton(true);
+			calendarView.setSeeChangesButton(true);
 		}
 	}
 }
