@@ -71,18 +71,17 @@ public class AppointmentDBC {
 	/**
 	 * Returns alist of appointments that starts on a specified date
 	 * @param username
-	 * @param selectedDate
+	 * @param intervalStartDate
+	 * @param intervalEndDate TODO
 	 * @return List of appointments for specified date
 	 */
 	@SuppressWarnings("deprecation")
-	public static ArrayList<Appointment> getAppointmentList(String username, Date selectedDate) {
+	public static ArrayList<Appointment> getAppointmentList(String username, Date intervalStartDate, Date intervalEndDate) {
 		ArrayList<Appointment> appointmentList = new ArrayList<Appointment>();
 		
-		Timestamp lowerTime = new Timestamp(selectedDate.getTime());
-		Timestamp upperTime = new Timestamp(selectedDate.getTime());
-		upperTime.setHours(23);
-		upperTime.setMinutes(59);
-
+		Timestamp lowerTime = new Timestamp(intervalStartDate.getTime());
+		Timestamp upperTime = new Timestamp(intervalEndDate.getTime());
+		
 		Query query = DBConnector.makeQuery(""
 				+ "SELECT appointment.appointment_id, start_time, end_time, description, location, room_id, creator, status, alarm_time "
 				+ "FROM appointment JOIN invitation ON appointment.appointment_id = invitation.appointment_id "
