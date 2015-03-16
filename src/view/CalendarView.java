@@ -60,6 +60,7 @@ public class CalendarView extends JFrame {
 
 	private final String FRAME_TITLE = "Calendar Program";
 	static int realYear, realMonth, realDay, currentYear, currentMonth;
+	private List<Integer> appointmentDays;
 
 	private Date selectedDate;
 
@@ -440,7 +441,7 @@ public class CalendarView extends JFrame {
 	}
 	
 	public void changeCellColor(Date date, String status) {
-		Color color = Color.gray;
+		Color color = Color.LIGHT_GRAY;
 		/*
 		if (status.equals("Accepted")){
 			color = Color.green;
@@ -454,7 +455,11 @@ public class CalendarView extends JFrame {
 		table.setDefaultRenderer(table.getColumnClass(0), tcr);
 	}
 	
-	static class tblCellRenderer extends DefaultTableCellRenderer{
+	public void setAppointmentDays(List<Integer> days) {
+		this.appointmentDays = days;
+	}
+	
+	class tblCellRenderer extends DefaultTableCellRenderer{
 		private int dayOfMonth;
 		private Color color;
 		
@@ -466,9 +471,9 @@ public class CalendarView extends JFrame {
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column){
 			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
 			if (value != null){
-				if (Integer.parseInt(value.toString()) == dayOfMonth ){ //Today
+				if (appointmentDays.contains(Integer.parseInt(value.toString()))){ //Today
 					setBackground(color);
-				}else{
+				} else {
 					setBackground(Color.white);
 				}
 			}

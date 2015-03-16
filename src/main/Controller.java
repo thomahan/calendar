@@ -266,6 +266,7 @@ public class Controller {
 				appointmentCreationView.dispose();
 				
 				updateDailyAppointments();
+				updateMonthlyAppointments();
 			} catch (Exception e) {
 				e.printStackTrace();
 				appointmentCreationView.displayErrorMessage(e.getMessage());
@@ -674,10 +675,13 @@ public class Controller {
 			monthlyAppointmentList.remove(a);
 		}
 		
+		List<Integer> appointmentDays = new ArrayList<Integer>();
 		for (Appointment a : monthlyAppointmentList) {
 			System.out.println(a);
 			calendarView.changeCellColor(a.getStartDate(), "");
+			appointmentDays.add(a.getStartDate().getDate());
 		}
+		calendarView.setAppointmentDays(appointmentDays);
 
 	}
 	
