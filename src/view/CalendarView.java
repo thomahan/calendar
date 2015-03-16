@@ -6,9 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -24,14 +24,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import model.Appointment;
-
-import javax.swing.UIManager;
 
 @SuppressWarnings("serial")
 public class CalendarView extends JFrame {
@@ -40,6 +37,9 @@ public class CalendarView extends JFrame {
 	private static JTable table;
 	private static DefaultTableModel mtblCalendar;
 	private JScrollPane stblCalendar;
+	
+	private JButton previousMonthButton;
+	private JButton nextMonthButton;
 
 	private JButton newAppointmentButton;
 	private JButton logoutButton;
@@ -86,19 +86,14 @@ public class CalendarView extends JFrame {
 		leftPanel.add(calendarControlPanel);
 		calendarControlPanel.setLayout(null);
 		
-		JButton previousMonthButton = new JButton("<<");
-		previousMonthButton.setAction(previousMonthAction);
+		previousMonthButton = new JButton("<<");
 		previousMonthButton.setBounds(112, 7, 45, 29);
-		previousMonthButton.setText("<<");
+		previousMonthButton.setAction(previousMonthAction);
 		calendarControlPanel.add(previousMonthButton);
 		
-		JButton nextMonthButton = new JButton(">>");
-		nextMonthButton.setAction(nextMonthAction);
-		nextMonthButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		nextMonthButton = new JButton(">>");
 		nextMonthButton.setBounds(150, 7, 45, 29);
+		nextMonthButton.setAction(nextMonthAction);
 		calendarControlPanel.add(nextMonthButton);
 		
 		yearComboBox = new JComboBox<String>();
@@ -236,7 +231,6 @@ public class CalendarView extends JFrame {
 		seeChangesButton.setBackground(UIManager.getColor("Button.select"));
 		seeChangesButton.setBounds(606, 313, 124, 29);
 		seeChangesButton.setEnabled(true);
-//		seeChangesButton.setBorder(new LineBorder(Color.RED,1));
 		getContentPane().add(seeChangesButton);
 		
 		yearComboBox.addActionListener(new cmbYear_Action());
@@ -251,7 +245,7 @@ public class CalendarView extends JFrame {
 	public static void refreshCalendar(int month, int year) {
 		//Variables
 		String[] months =  {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-		int nod, som; //Number Of Days, Start Of Month
+		int numberOfDays, startOfMonth;
 	
 		//Allow/disallow buttons
 		yearComboBox.setSelectedItem(String.valueOf(year)); //Select the correct year in the combo box
@@ -265,13 +259,13 @@ public class CalendarView extends JFrame {
 		
 		//Get first day of month and number of days
 		GregorianCalendar cal = new GregorianCalendar(year, month,1);
-		nod = cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days of current month
-		som = (cal.get(GregorianCalendar.DAY_OF_WEEK) + 5) % 7 + 1; 
+		numberOfDays = cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days of current month
+		startOfMonth = (cal.get(GregorianCalendar.DAY_OF_WEEK) + 5) % 7 + 1; 
 		
 		//Draw calendar
-		for (int i=1; i<=nod; i++){
-			int row = new Integer((i+som-2)/7);
-			int column  =  (i+som-2)%7;
+		for (int i=1; i<=numberOfDays; i++){
+			int row = new Integer((i+startOfMonth-2)/7);
+			int column  =  (i+startOfMonth-2)%7;
 			mtblCalendar.setValueAt(i, row, column);
 		}		
 
@@ -380,6 +374,14 @@ public class CalendarView extends JFrame {
 	public void addSeeChangesListener(ActionListener seeChangesListener){
 		seeChangesButton.addActionListener(seeChangesListener);
 	}
+	
+	public void addPreviousMonthButtonListener(ActionListener previousMonthButtonListener) {
+		previousMonthButton.addActionListener(previousMonthButtonListener);
+	}
+
+	public void addNextMonthButtonListener(ActionListener nextMonthButtonListener) {
+		nextMonthButton.addActionListener(nextMonthButtonListener);
+	}
 		
 	public Date getSelectedDate() {
 		return selectedDate;
@@ -438,7 +440,8 @@ public class CalendarView extends JFrame {
 	}
 	
 	public void changeCellColor(Date date, String status) {
-		Color color = Color.white;
+		Color color = Color.gray;
+		/*
 		if (status.equals("Accepted")){
 			color = Color.green;
 		}else if (status.equals("Declined")){
@@ -446,7 +449,9 @@ public class CalendarView extends JFrame {
 		}else if (status.equals("Not replied")){
 			color = Color.red;
 		}
-		table.setDefaultRenderer(table.getColumnClass(0), new tblCellRenderer(date,color));
+		*/
+		tblCellRenderer tcr = new tblCellRenderer(date,color);
+		table.setDefaultRenderer(table.getColumnClass(0), tcr);
 	}
 	
 	static class tblCellRenderer extends DefaultTableCellRenderer{
@@ -462,7 +467,6 @@ public class CalendarView extends JFrame {
 			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
 			if (value != null){
 				if (Integer.parseInt(value.toString()) == dayOfMonth ){ //Today
-					System.out.println("" + value);
 					setBackground(color);
 				}else{
 					setBackground(Color.white);
@@ -470,6 +474,10 @@ public class CalendarView extends JFrame {
 			}
 			return this;
 		}	
+	}
+	
+	public Date getCurrentMonth() {
+		return new Date(currentYear - 1900, currentMonth, 1);
 	}
 		
 }
