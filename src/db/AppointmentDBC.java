@@ -305,7 +305,8 @@ public class AppointmentDBC {
 		Query query = DBConnector.makeQuery(""
 				+ "SELECT user.first_name, user.last_name, status "
 				+ "FROM invitation JOIN user ON invitation.username = user.username "
-				+ "WHERE appointment_id = "+appointmentId+";");
+				+ "WHERE appointment_id = "+appointmentId+" "
+				+ "ORDER BY status ASC;");
 		ResultSet result = query.getResult();
 
 		try {
