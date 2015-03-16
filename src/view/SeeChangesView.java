@@ -24,8 +24,8 @@ public class SeeChangesView extends JFrame {
 	private DefaultListModel<CancelNotification> cancelNotificationListModel;
 	private DefaultListModel<Appointment> appointmentListModel;
 	private JButton closeButton;
-	private JButton btnHideUser;
-	private JButton btnHideAppointment;
+	private JButton hideCancelNotificationButton;
+	private JButton hideAppointmentChangeButton;
 
 	public static void main(String[] args) {
 		new SeeChangesView();
@@ -41,9 +41,9 @@ public class SeeChangesView extends JFrame {
 		panel.setLayout(null);
 		this.getContentPane().add(panel);
 		
-		JLabel lblInviteOtherPersons = new JLabel("Edited appointments");
-		lblInviteOtherPersons.setBounds(10, 6, 257, 16);
-		panel.add(lblInviteOtherPersons);
+		JLabel changeNotificationLabel = new JLabel("Changed appointments");
+		changeNotificationLabel.setBounds(10, 6, 257, 16);
+		panel.add(changeNotificationLabel);
 
 		appointmentListModel = new DefaultListModel<Appointment>();
 		appointmentListBox = new JList<Appointment>(appointmentListModel);
@@ -51,49 +51,45 @@ public class SeeChangesView extends JFrame {
 		appointmentListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		appointmentListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		panel.add(appointmentListBox);
-		
+			
+		hideAppointmentChangeButton = new JButton("Hide");
+		hideAppointmentChangeButton.setBounds(10, 217, 117, 29);
+		panel.add(hideAppointmentChangeButton);
+	
+		closeButton = new JButton("Close");
+		closeButton.setBounds(233, 217, 117, 29);
+		panel.add(closeButton);
+
 		cancelNotificationListModel = new DefaultListModel<CancelNotification>();
 		cancelNotificationListBox = new JList<CancelNotification>(cancelNotificationListModel);
 		cancelNotificationListBox.setBounds(291, 25, 248, 180);
 		cancelNotificationListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		cancelNotificationListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		panel.add(cancelNotificationListBox);
+			
+		JLabel cancelNotificationLabel = new JLabel("Cancellations");
+		cancelNotificationLabel.setBounds(291, 6, 248, 16);
+		panel.add(cancelNotificationLabel);
 		
-		closeButton = new JButton("Close");
-		closeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		closeButton.setBounds(223, 217, 117, 29);
-		panel.add(closeButton);
+		hideCancelNotificationButton = new JButton("Hide");
+		hideCancelNotificationButton.setBounds(422, 217, 117, 29);
+		panel.add(hideCancelNotificationButton);
 		
-		JLabel lblAnswersToYour = new JLabel("Answers to your invitations");
-		lblAnswersToYour.setBounds(291, 6, 248, 16);
-		panel.add(lblAnswersToYour);
-		
-		btnHideUser = new JButton("Hide");
-		btnHideUser.setBounds(10, 217, 117, 29);
-		panel.add(btnHideUser);
-		
-		btnHideAppointment = new JButton("Hide");
-		btnHideAppointment.setBounds(422, 217, 117, 29);
-		panel.add(btnHideAppointment);
-	
 		this.setVisible(true);
 	}
 
 	public void addCloseButtonListener(ActionListener closeButtonListener) {
 		closeButton.addActionListener(closeButtonListener);
 	}
-	
-	public void addHideUserButtonListener(ActionListener hideUserListener) {
-		btnHideUser.addActionListener(hideUserListener);
-	}
-	
+
 	public void addHideAppointmentButtonListener(ActionListener hideAppointmentListener) {
-		btnHideAppointment.addActionListener(hideAppointmentListener);
+		hideAppointmentChangeButton.addActionListener(hideAppointmentListener);
 	}
 		
+	public void addHideCancelNotificationButtonListener(ActionListener hideUserListener) {
+		hideCancelNotificationButton.addActionListener(hideUserListener);
+	}
+	
 	public List<Appointment> getSelectedAppointments(){
 		return appointmentListBox.getSelectedValuesList();
 	}
