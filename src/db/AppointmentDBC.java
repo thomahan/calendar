@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import model.Appointment;
+import model.CancelNotification;
 import model.Room;
 import model.User;
 
@@ -314,7 +315,6 @@ public class AppointmentDBC {
 
 		return participantList;
 	}
-	
 
 	public static void addCancelNotification(int appointmentId, String username) {
 		List<User> invitedUserList = getInvitedUserList(appointmentId);
@@ -325,6 +325,37 @@ public class AppointmentDBC {
 					+ "VALUES ('"+appointmentId+"', '"+user.getUsername()+"', '"+username+"');");
 			}
 		}
+	}
+		
+	public static List<CancelNotification> getCancelNotificationList(String username) {
+		ArrayList<CancelNotification> cancelNotificationList = new ArrayList<CancelNotification>();
+
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT appointment_id, canceller "
+				+ "FROM cancel_notification JOIN user ON cancel_notification.canceller = user.username "
+				+ "WHERE cancel_notification.username = "+username+";");
+		ResultSet result = query.getResult();
+
+		try {
+			while (result.next()) {
+				int appointmentId = result.getInt("appointment_id");
+				String cancellerUsername = result.getString("canceller");
+				String firstName = result.getString("user.first_name");
+				String lastName = result.getString("user.last_name");
+
+				Appointment appointment = getAppointment(appointmentId, username);
+				User canceller = new User(cancellerUsername, "", "", firstName, lastName);
+				CancelNotification cancelNotification = new CancelNotification(appointment, canceller);
+
+				cancelNotificationList.add(cancelNotification);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+
+		return cancelNotificationList;
 	}
 	
 	/**
