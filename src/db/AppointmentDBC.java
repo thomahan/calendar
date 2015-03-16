@@ -290,6 +290,32 @@ public class AppointmentDBC {
 		return invitedUserList;
 	}
 	
+	public static List<String> getParticipantList(int appointmentId) {
+		ArrayList<String> participantList = new ArrayList<String>();
+
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT user.first_name, user.last_name, status "
+				+ "FROM invitation JOIN user ON invitation.username = user.username "
+				+ "WHERE appointment_id = "+appointmentId+";");
+		ResultSet result = query.getResult();
+
+		try {
+			while (result.next()) {
+				String firstName = result.getString("user.first_name");
+				String lastName = result.getString("user.last_name");
+				String status = result.getString("status");
+				participantList.add(firstName + " " + lastName + " (" + status + ")");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+
+		return participantList;
+	}
+	
+
 	public static void addCancelNotification(int appointmentId, String username) {
 		List<User> invitedUserList = getInvitedUserList(appointmentId);
 		for (User user : invitedUserList) {
