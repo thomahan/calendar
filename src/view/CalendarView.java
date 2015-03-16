@@ -31,7 +31,7 @@ import model.Appointment;
 
 @SuppressWarnings("serial")
 public class CalendarView extends JFrame {
-	private static JLabel monthLabel;
+	private static JLabel monthLabel, warningNextMonth, warningPrevMonth;
 	private static JComboBox<String> yearComboBox;
 	private static JTable table;
 	private static DefaultTableModel mtblCalendar;
@@ -49,6 +49,7 @@ public class CalendarView extends JFrame {
 	private JButton hideButton;
 	private JButton deleteButton;
 	private JButton seeParticipantsButton;
+	private JButton seeChangesButton;
 
 	private final Action nextMonthAction = new NextMonthAction();
 	private final Action previousMonthAction = new PreviousMonthAction();
@@ -103,6 +104,18 @@ public class CalendarView extends JFrame {
 		monthLabel = new JLabel();
 		monthLabel.setBounds(6, 12, 106, 16);
 		calendarControlPanel.add(monthLabel);
+		
+		warningNextMonth = new JLabel();
+		warningNextMonth.setBounds(168, 0, 15, 15);
+		calendarControlPanel.add(warningNextMonth);
+		warningNextMonth.setText("*");
+		warningNextMonth.setVisible(false);
+		
+		warningPrevMonth = new JLabel();
+		warningPrevMonth.setBounds(132, 0, 15, 15);
+		calendarControlPanel.add(warningPrevMonth);
+		warningPrevMonth.setText("*");
+		warningPrevMonth.setVisible(false);
 		
 		JPanel calendarDisplayPanel = new JPanel();
 		calendarDisplayPanel.setBounds(6, 55, 284, 280);
@@ -214,6 +227,11 @@ public class CalendarView extends JFrame {
 		seeParticipantsButton.setBounds(606, 272, 124, 29);
 		seeParticipantsButton.setEnabled(false);
 		getContentPane().add(seeParticipantsButton);
+		
+		seeChangesButton = new JButton("See changes");
+		seeChangesButton.setBounds(606, 313, 124, 29);
+		seeChangesButton.setEnabled(false);
+		getContentPane().add(seeChangesButton);
 		
 		yearComboBox.addActionListener(new cmbYear_Action());
 		table.addMouseListener(new MouseHandler());
@@ -352,6 +370,10 @@ public class CalendarView extends JFrame {
 	public void addSeeParticipantListener(ActionListener seeParticipantListener){
 		seeParticipantsButton.addActionListener(seeParticipantListener);
 	}
+	
+	public void addSeeChangesListener(ActionListener seeChangesListener){
+		
+	}
 		
 	public Date getSelectedDate() {
 		return selectedDate;
@@ -386,6 +408,15 @@ public class CalendarView extends JFrame {
 			seeParticipantsButton.setEnabled(true);
 		}
 	}
+	
+	public void setChangeButton(boolean status) {
+		seeChangesButton.setEnabled(status);
+		if (status == true){
+			seeChangesButton.setBackground(Color.red);
+			seeChangesButton.setContentAreaFilled(false);
+			seeChangesButton.setOpaque(true);
+		}
+	}
 
 	public void setDailyAppointmentList(ArrayList<Appointment> dailyAppointmentList) {
 		dailyAppointmentListModel.clear();
@@ -394,7 +425,6 @@ public class CalendarView extends JFrame {
 				dailyAppointmentListModel.addElement(a);
 			}
 		}
-		
 	}
 	
 	public void changeCellColor(Date date, String status) {
