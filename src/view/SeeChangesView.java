@@ -30,7 +30,7 @@ public class SeeChangesView extends JFrame {
 	private JButton btnConfirm;
 
 	public static void main(String[] args) {
-		new RoomReservationView();
+		new SeeChangesView();
 	}
 
 	public SeeChangesView() {
