@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import model.Appointment;
+import model.CancelNotification;
 import model.Group;
 import model.Room;
 import model.User;
@@ -50,6 +51,8 @@ public class Controller {
 	private List<Room> availableRoomList;
 	private Room reservedRoom;
 	private Room releasedRoom;
+	private List<CancelNotification> cancelNotificationList;
+	private List<Appointment> changedAppointmentList;
 
 	@SuppressWarnings("deprecation")
 	public Controller() {
@@ -490,13 +493,11 @@ public class Controller {
 	class OpenSeeParticipantsListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Open participant list");
 			seeParticipantsView = new SeeParticipantsView();
 			seeParticipantsView.addCloseButtonListener(new CloseSeeParticipantsViewListener());
 			
 			participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId());
 			seeParticipantsView.setParticipantList(participantList);
-			
 		}
 	}
 	
@@ -529,6 +530,22 @@ public class Controller {
 		calendarView.addSeeParticipantListener(new OpenSeeParticipantsListener());
 		
 		calendarView.setTitle(calendarView.getTitle()+" ("+user.getName()+")");
+	
+		cancelNotificationList = AppointmentDBC.getCancelNotificationList(user.getUsername());
+		for (CancelNotification cn : cancelNotificationList) {
+			System.out.println(cn);
+		}
+		if (!cancelNotificationList.isEmpty()) {
+			//calendarView.setCancellationButton(true);
+		}
+	
+		changedAppointmentList = AppointmentDBC.getChangedAppointmentList(user.getUsername());
+		for (Appointment a : changedAppointmentList) {
+			System.out.println(a);
+		}
+		if (!changedAppointmentList.isEmpty()) {
+			calendarView.setChangeButton(true);
+		}
 	}
 	
 	private void openAppointmentCreationView() {
