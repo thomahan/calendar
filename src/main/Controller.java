@@ -21,6 +21,7 @@ import view.GroupInvitationView;
 import view.LoginView;
 import view.RegistrationView;
 import view.RoomReservationView;
+import view.SeeChangesView;
 import view.SeeParticipantsView;
 import view.UserInvitationView;
 import db.AppointmentDBC;
@@ -512,12 +513,13 @@ public class Controller {
 	class OpenNotificationsListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("Open changes!");
 			notificationsView = new SeeChangesView();
-			notificationsView.addAcceptAppointmentChangeListener(new AcceptAppointmentChangeListener());
-			notificationsView.addAcceptCancelNotificationListener(new AcceptCancelNotificationListener());
+			notificationsView.addHideAppointmentButtonListener(new AcceptAppointmentChangeListener());
+			notificationsView.addHideUserButtonListener(new AcceptCancelNotificationListener());
 			notificationsView.addCloseButtonListener(new CloseNotificationsListener());
 			
-			notificationsView.setChangedAppointmentList(changedAppointmentList);
+			notificationsView.setAppointmentList(changedAppointmentList);
 			notificationsView.setCancelNotificationList(cancelNotificationList);
 			
 		}
@@ -526,7 +528,7 @@ public class Controller {
 	class AcceptAppointmentChangeListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<Appointment> acceptedAppointmentChangeList = notificationView.getAcceptedAppointmentChangeList();
+			List<Appointment> acceptedAppointmentChangeList = notificationsView.getSelectedAppointmentList();
 			for (Appointment a : acceptedAppointmentChangeList) {
 				AppointmentDBC.acceptChangeNotification(a.getId(), user.getUsername());
 			}
@@ -536,7 +538,7 @@ public class Controller {
 	class AcceptCancelNotificationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<CancelNotification> acceptedCancelNotificationList = notificationView.getAcceptedCancelNotificationList();
+			List<CancelNotification> acceptedCancelNotificationList = notificationsView.getSelectedCancelNotificationList();
 			for (CancelNotification c : acceptedCancelNotificationList) {
 				AppointmentDBC.removeCancelNotification(c.getAppointment().getId(), user.getUsername());
 			}
@@ -571,6 +573,7 @@ public class Controller {
 		calendarView.addHideButtonListener(new HideAppointmentListener());
 		calendarView.addDeleteButtonListener(new DeleteAppointmentListener());
 		calendarView.addSeeParticipantListener(new OpenSeeParticipantsListener());
+		calendarView.addSeeParticipantListener(new OpenNotificationsListener());
 		
 		calendarView.setTitle(calendarView.getTitle()+" ("+user.getName()+")");
 		
