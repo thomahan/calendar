@@ -26,8 +26,9 @@ public class SeeChangesView extends JFrame {
 	private JList<User> userListBox;
 	private DefaultListModel<User> userListModel;
 	private DefaultListModel<Appointment> appointmentListModel;
-	private JButton cancelButton;
-	private JButton btnConfirm;
+	private JButton closeButton;
+	private JButton btnHideUser;
+	private JButton btnHideAppointment;
 
 	public static void main(String[] args) {
 		new SeeChangesView();
@@ -61,31 +62,39 @@ public class SeeChangesView extends JFrame {
 		userListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		panel.add(userListBox);
 		
-		cancelButton = new JButton("Close");
-		cancelButton.addActionListener(new ActionListener() {
+		closeButton = new JButton("Close");
+		closeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		cancelButton.setBounds(139, 217, 117, 29);
-		panel.add(cancelButton);
+		closeButton.setBounds(223, 217, 117, 29);
+		panel.add(closeButton);
 		
 		JLabel lblAnswersToYour = new JLabel("Answers to your invitations");
 		lblAnswersToYour.setBounds(291, 6, 248, 16);
 		panel.add(lblAnswersToYour);
 		
-		btnConfirm = new JButton("Confirm");
-		btnConfirm.setBounds(10, 217, 117, 29);
-		panel.add(btnConfirm);
+		btnHideUser = new JButton("Hide");
+		btnHideUser.setBounds(10, 217, 117, 29);
+		panel.add(btnHideUser);
+		
+		btnHideAppointment = new JButton("Hide");
+		btnHideAppointment.setBounds(422, 217, 117, 29);
+		panel.add(btnHideAppointment);
 	
 		this.setVisible(true);
 	}
 
-	public void addCancelButtonListener(ActionListener cancelButtonListener) {
-		cancelButton.addActionListener(cancelButtonListener);
+	public void addCloseButtonListener(ActionListener closeButtonListener) {
+		closeButton.addActionListener(closeButtonListener);
 	}
 	
-	public void addConfirmButtonListener(ActionListener confirmButtonListener) {
-		btnConfirm.addActionListener(confirmButtonListener);
+	public void addHideUserButtonListener(ActionListener hideUserListener) {
+		btnHideUser.addActionListener(hideUserListener);
+	}
+	
+	public void addHideAppointmentButtonListener(ActionListener hideAppointmentListener) {
+		btnHideAppointment.addActionListener(hideAppointmentListener);
 	}
 		
 	public List<Appointment> getSelectedAppointments(){
