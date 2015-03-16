@@ -190,13 +190,50 @@ public class Appointment {
 
 		summary += description+"<br>";
 		summary += (location != null) ? "Location: "+location+"<br>" : "";
-		if (room != null) {
+		if (room.getId() != 0) {
 			summary += "Room: "+room+"<br>";
 		}
 
 		summary += "<br> </html>";
 		return summary;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		Appointment appointment = (Appointment) obj;
+
+		boolean idIsEqual = this.getId() == appointment.getId();
+		boolean startDateIsEqual = this.getStartDate().equals(appointment.getStartDate());
+		boolean endDateIsEqual = this.getEndDate().equals(appointment.getEndDate());
+		boolean descriptionIsEqual = this.getDescription().equals(appointment.getDescription());
+
+		boolean locationIsEqual;
+		if (this.getLocation() == null && appointment.getLocation() == null) {
+			locationIsEqual = true;
+		} else if (this.getLocation() != null && appointment.getLocation() != null) {
+			locationIsEqual = this.getLocation().equals(appointment.getLocation());
+		} else {
+			locationIsEqual = false;
+		}
+
+		boolean roomIdIsEqual;
+		if (this.getRoom() == null && appointment.getRoom() == null) {
+			roomIdIsEqual = true;
+		} else if (this.getRoom() != null && appointment.getRoom() != null) {
+			roomIdIsEqual = this.getRoom().equals(appointment.getRoom());
+		} else {
+			roomIdIsEqual = false;
+		}
+
+		return (idIsEqual && startDateIsEqual && endDateIsEqual && descriptionIsEqual && locationIsEqual && roomIdIsEqual);
+	}
+
 
 	public ArrayList<Room> getAvailableRoom(Date start, Date end){
 		Interval int1 = new Interval(start, end);

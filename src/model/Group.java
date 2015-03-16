@@ -69,6 +69,18 @@ public class Group {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		Group group = (Group) obj;
+		return this.getGroupID() == group.getGroupID();
+	}
+
+	@Override
 	public String toString() {
 		return groupName;
 		

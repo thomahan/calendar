@@ -136,7 +136,18 @@ public class User implements CalendarEventListener, GroupListener {
 		System.out.println(group.getGroupName() + " has been changed.");
 		
 	}
-	
+		
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		User user = (User) obj;
+		return this.getUsername().equals(user.getUsername());
+	}
 	
 	@Override
 	public String toString() {

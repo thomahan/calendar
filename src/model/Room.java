@@ -11,7 +11,6 @@ public class Room {
 		this.id = id;
 		this.name = name;
 		this.seatCount = size;
-		main.Controller.getRoomlist().add(this);
 		this.calendar = new Calendar(this);
 	}
 		
@@ -40,4 +39,17 @@ public class Room {
 		String nounForm = (seatCount == 1) ? "seat" : "seats";
 		return name+" ("+seatCount+" "+nounForm+")";
 	}
+		
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		Room room = (Room) obj;
+		return this.getId() == room.getId();
+	}
+
 }

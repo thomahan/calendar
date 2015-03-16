@@ -20,15 +20,11 @@ import javax.swing.Action;
 import model.User;
 
 public class AppointmentCreationView extends JFrame {
-	// TODO: Add field for alarmTime, roomId. Add cancel button?
-
-	private final String FRAME_TITLE = "Create new appointment";
-	private JTextField appointmentDescriptionField;
+	private JTextField descriptionField;
 	private JTextField startTimeField;
 	private JTextField endTimeField;
 	private JTextField locationField;
 	private JTextField minSeatCountField;
-	private JTextArea descriptionArea;
 	private JButton createButton;
 	private JButton cancelButton;
 	private JButton invitePersonButton;
@@ -36,16 +32,13 @@ public class AppointmentCreationView extends JFrame {
 	private ArrayList<User> invitedUsers;
 	private JButton btnChooseRoom;
 	
-	/**
-	 * Launch the application.
-	 */
+	private final String FRAME_TITLE = "Create new appointment";
+	private boolean isNewAppointment;
+
 	public static void main(String[] args) {
-		AppointmentCreationView window = new AppointmentCreationView();
+		new AppointmentCreationView();
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public AppointmentCreationView() {
 		this.setTitle(FRAME_TITLE);
 		this.setBounds(200, 200, 450, 280);
@@ -91,9 +84,9 @@ public class AppointmentCreationView extends JFrame {
 		endTimeField.setBounds(6, 46, 134, 28);
 		inputPanel.add(endTimeField);
 			
-		appointmentDescriptionField = new JTextField(10);
-		appointmentDescriptionField.setBounds(6, 86, 134, 28);
-		inputPanel.add(appointmentDescriptionField);
+		descriptionField = new JTextField(10);
+		descriptionField.setBounds(6, 86, 134, 28);
+		inputPanel.add(descriptionField);
 
 		locationField = new JTextField(10);
 		locationField.setBounds(6, 126, 134, 28);
@@ -128,6 +121,8 @@ public class AppointmentCreationView extends JFrame {
 		inputPanel.add(cancelButton);
 
 		this.setVisible(true);
+		
+		setNewAppointment(true);
 	}
 	
 			
@@ -164,7 +159,7 @@ public class AppointmentCreationView extends JFrame {
 	}
 		
 	public String getDescription() {
-		return appointmentDescriptionField.getText();
+		return descriptionField.getText();
 	}
 
 	public String getAppointmentLocation() {
@@ -188,18 +183,34 @@ public class AppointmentCreationView extends JFrame {
 	}
 
 	public void displayAppointmentCreationMessage(String title) {
-		JOptionPane.showMessageDialog(this, "Appointment '"+title+"' created.", "Appointment creation successful!", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Appointment '"+title+"' created.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void displayAppointmentSaveMessage(String title) {
+		JOptionPane.showMessageDialog(this, "Changes to '"+title+"' saved.", "Success!", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void setAppointmentTitleField(String title) {
-		appointmentDescriptionField.setText(title);
+		descriptionField.setText(title);
 	}
 	
-	public void setLocationField(String location){
+	public void setLocation(String location){
 		locationField.setText(location);
 	}
 	
-	public void setDescriptionArea(String description) {
-		descriptionArea.setText(description);
+	public void setDescription(String description) {
+		descriptionField.setText(description);
+	}
+	
+	public void setNewAppointment(boolean isNewAppointment) {
+		this.isNewAppointment = isNewAppointment;
+	}
+	
+	public boolean isNewAppointment() {
+		return isNewAppointment;
+	}
+	
+	public void setCreateButtonText(String text) {
+		createButton.setText(text);
 	}
 }
