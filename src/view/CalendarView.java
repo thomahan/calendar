@@ -254,28 +254,7 @@ public class CalendarView extends JFrame {
 			int column  =  (i+som-2)%7;
 			mtblCalendar.setValueAt(i, row, column);
 		}		
-//		//Apply renderers: If so: create a tblCalendarRenderer-class which extends DefaultTableCellRenderer
-//				table.setDefaultRenderer(table.getColumnClass(0), new tblCalendarRenderer());
-//	}
-//	
-//	static class tblCalendarRenderer extends DefaultTableCellRenderer{
-//		public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column){
-//			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
-//			if (column == 5 || column == 6){ //Week-end
-//				setBackground(new Color(255, 220, 220));
-//			}
-//			else{ //Week
-//				setBackground(new Color(255, 255, 255));
-//			}
-//			if (value != null){
-//				if (Integer.parseInt(value.toString()) == realDay && currentMonth == realMonth && currentYear == realYear){ //Today
-//					setBackground(new Color(220, 220, 255));
-//				}
-//			}
-//			setBorder(null);
-//			setForeground(Color.black);
-//			return this;  
-//		}
+
 	}
 
 	private class SwingAction extends AbstractAction {
