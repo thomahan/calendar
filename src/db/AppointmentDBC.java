@@ -266,6 +266,14 @@ public class AppointmentDBC {
 			}
 		}
 	}
+	
+	public static void acceptChangeNotification(int appointmentId, String username) {
+		DBConnector.makeStatement(""
+			+ "UPDATE invitation "
+			+ "SET unseen_change = '"+0+"' "
+			+ "WHERE appointment_id = '"+appointmentId+"' "
+			  + "AND username = '"+username+"';");	
+	}
 
 	public static List<User> getInvitedUserList(int appointmentId) {
 		ArrayList<User> invitedUserList = new ArrayList<User>();
@@ -326,6 +334,12 @@ public class AppointmentDBC {
 			}
 		}
 	}
+
+	public static void removeCancelNotification(int appointmentId, String username) {
+		DBConnector.makeStatement(""
+			+ "DELETE FROM cancel_notification "
+			+ "WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"';");
+	}
 		
 	public static List<CancelNotification> getCancelNotificationList(String username) {
 		ArrayList<CancelNotification> cancelNotificationList = new ArrayList<CancelNotification>();
@@ -381,7 +395,7 @@ public class AppointmentDBC {
 
 		return changedAppointmentList;
 	}
-
+	
 	/**
 	 * Returns a list of rooms available for an interval with the given seat count
 	 * @param startDate
