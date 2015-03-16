@@ -185,7 +185,10 @@ public class Appointment {
 		String summary = "<html>";
 
 		summary += (date.format(startDate).equals(date.format(endDate))) ? time.format(startDate)+"-"+time.format(endDate) : full.format(startDate)+" - "+full.format(endDate);
-		summary += " ("+status+")<br>";
+		if (!isEditable()) {
+			summary += " ("+status+")";
+		}
+		summary+="<br>";
 		summary += (alarmDate != null) ? (date.format(startDate).equals(date.format(alarmDate))) ? "Alarm: "+time.format(alarmDate)+"<br>" : "Alarm:"+full.format(alarmDate)+"<br>" : "";
 
 		summary += description+"<br>";
