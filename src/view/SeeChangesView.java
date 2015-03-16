@@ -1,30 +1,27 @@
 package view;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
-import javax.swing.JButton;
 
 import model.Appointment;
-import model.Room;
+import model.CancelNotification;
 import model.User;
-
-import javax.swing.ListModel;
-
-import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class SeeChangesView extends JFrame {
 	private JPanel panel;
 	private JList<Appointment> appointmentListBox;
-	private JList<User> userListBox;
-	private DefaultListModel<User> userListModel;
+	private JList<CancelNotification> cancelNotificationListBox;
+	private DefaultListModel<CancelNotification> cancelNotificationListModel;
 	private DefaultListModel<Appointment> appointmentListModel;
 	private JButton closeButton;
 	private JButton btnHideUser;
@@ -55,12 +52,12 @@ public class SeeChangesView extends JFrame {
 		appointmentListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		panel.add(appointmentListBox);
 		
-		userListModel = new DefaultListModel<User>();
-		userListBox = new JList<User>(userListModel);
-		userListBox.setBounds(291, 25, 248, 180);
-		userListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		userListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		panel.add(userListBox);
+		cancelNotificationListModel = new DefaultListModel<CancelNotification>();
+		cancelNotificationListBox = new JList<CancelNotification>(cancelNotificationListModel);
+		cancelNotificationListBox.setBounds(291, 25, 248, 180);
+		cancelNotificationListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		cancelNotificationListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		panel.add(cancelNotificationListBox);
 		
 		closeButton = new JButton("Close");
 		closeButton.addActionListener(new ActionListener() {
@@ -101,8 +98,8 @@ public class SeeChangesView extends JFrame {
 		return appointmentListBox.getSelectedValuesList();
 	}
 	
-	public List<User> getSelectedUsers() {
-		return userListBox.getSelectedValuesList();
+	public List<CancelNotification> getSelectedUsers() {
+		return cancelNotificationListBox.getSelectedValuesList();
 	}
 	
 	public void setAppointmentList(List<Appointment> appointmentList){
@@ -112,10 +109,19 @@ public class SeeChangesView extends JFrame {
 		}
 	}
 	
-	public void setUserList(List<User> userList) {
-		userListModel.clear();
-		for (User user : userList) {
-			userListModel.addElement(user);
+	public void setCancelNotificationList(List<CancelNotification> cancelNotificationList) {
+		cancelNotificationListModel.clear();
+		for (CancelNotification cancelNotification : cancelNotificationList) {
+			cancelNotificationListModel.addElement(cancelNotification);
 		}
 	}
+
+	public List<Appointment> getSelectedAppointmentList() {
+		return appointmentListBox.getSelectedValuesList();
+	}
+
+	public List<CancelNotification> getSelectedCancelNotificationList() {
+		return cancelNotificationListBox.getSelectedValuesList();
+	}
+
 }
