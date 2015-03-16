@@ -20,6 +20,7 @@ import view.GroupInvitationView;
 import view.LoginView;
 import view.RegistrationView;
 import view.RoomReservationView;
+import view.SeeParticipantsView;
 import view.UserInvitationView;
 import db.AppointmentDBC;
 import db.UserDBC;
@@ -32,6 +33,7 @@ public class Controller {
 	private UserInvitationView userInvitationView;
 	private GroupInvitationView groupInvitationView;
 	private RoomReservationView roomReservationView;
+	private SeeParticipantsView seeParticipantsView;
 
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 	private DateFormat simpleDateFormat;
@@ -39,6 +41,7 @@ public class Controller {
 	private User user;
 	private List<User> userList;
 	private List<User> invitedUserList;
+	private List<String> participantList;
 	private List<Group> groupList;
 	private List<Group> invitedGroupList;
 	private Date selectedDate;
@@ -483,6 +486,26 @@ public class Controller {
 			updateDailyAppointments();
 		}
 	}
+	
+	class OpenSeeParticipantsListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			System.out.println("Open participant list");
+			seeParticipantsView = new SeeParticipantsView();
+			seeParticipantsView.addCloseButtonListener(new CloseSeeParticipantsViewListener());
+			
+			participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId());
+			seeParticipantsView.setParticipantList(participantList);
+			
+		}
+	}
+	
+	class CloseSeeParticipantsViewListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			seeParticipantsView.dispose();
+		}
+	}
 
 	private void openLoginView() {
 		loginView = new LoginView();
@@ -503,6 +526,7 @@ public class Controller {
 		calendarView.addDeclineButtonListener(new DeclineAppointmentListener());
 		calendarView.addHideButtonListener(new HideAppointmentListener());
 		calendarView.addDeleteButtonListener(new DeleteAppointmentListener());
+		calendarView.addSeeParticipantListener(new OpenSeeParticipantsListener());
 		
 		calendarView.setTitle(calendarView.getTitle()+" ("+user.getName()+")");
 	}

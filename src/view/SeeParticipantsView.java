@@ -15,12 +15,12 @@ import model.User;
 @SuppressWarnings("serial")
 public class SeeParticipantsView extends JFrame {
 	private JPanel panel;
-	private JList<User> participantListBox;
-	private DefaultListModel<User> participantListModel;
+	private JList<String> participantListBox;
+	private DefaultListModel<String> participantListModel;
 	private JButton closeButton;
 
 	public static void main(String[] args) {
-		new RoomReservationView();
+		new SeeParticipantsView();
 	}
 
 	public SeeParticipantsView() {
@@ -37,8 +37,8 @@ public class SeeParticipantsView extends JFrame {
 		lblParticipants.setBounds(6, 6, 261, 16);
 		panel.add(lblParticipants);
 
-		participantListModel = new DefaultListModel<User>();
-		participantListBox = new JList<User>(participantListModel);
+		participantListModel = new DefaultListModel<String>();
+		participantListBox = new JList<String>(participantListModel);
 		participantListBox.setBounds(10, 25, 248, 180);
 		participantListBox.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		participantListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -56,9 +56,9 @@ public class SeeParticipantsView extends JFrame {
 	}
 		
 	
-	public void setParticipantList(List<User> participantList) {
+	public void setParticipantList(List<String> participantList) {
 		participantListModel.clear();
-		for (User user: participantList) {
+		for (String user : participantList) {
 			participantListModel.addElement(user);
 		}
 	}
