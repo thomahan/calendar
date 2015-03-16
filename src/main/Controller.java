@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,8 +49,10 @@ public class Controller {
 	private List<Group> groupList;
 	private List<Group> invitedGroupList;
 	private Date selectedDate;
+	private Date selectedMonth;
 	private Appointment selectedAppointment;
 	private ArrayList<Appointment> dailyAppointmentList;
+	private ArrayList<Appointment> monthlyAppointmentList;
 	private List<Room> availableRoomList;
 	private Room reservedRoom;
 	private Room releasedRoom;
@@ -208,9 +211,6 @@ public class Controller {
 				} else {
 
 					appointmentId = selectedAppointment.getId();
-					System.out.println(appointmentId);
-					System.out.println("New location "+location);
-					System.out.println("Old location "+selectedAppointment.getLocation());
 					Appointment editedAppointment = new Appointment(appointmentId, startDate, endDate, description, true, selectedAppointment.getStatus());
 					editedAppointment.setLocation(location);
 					
@@ -239,11 +239,7 @@ public class Controller {
 						releasedRoom = null;
 					}
 
-					System.out.println(selectedAppointment);
-					System.out.println(editedAppointment);
-					System.out.println(selectedAppointment.equals(editedAppointment));
 					if (!selectedAppointment.equals(editedAppointment)) {
-						System.out.println("Updating appointment: "+appointmentId);
 						AppointmentDBC.updateAppointment(appointmentId, startDate, endDate, description, location, reservedRoom.getId());
 						AppointmentDBC.addChangeNotification(appointmentId, user.getUsername());
 					}
@@ -527,7 +523,6 @@ public class Controller {
 	class AcceptAppointmentChangeListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Accepted appointment change!");
 			List<Appointment> acceptedAppointmentChangeList = notificationsView.getSelectedAppointmentList();
 			for (Appointment a : acceptedAppointmentChangeList) {
 				AppointmentDBC.acceptChangeNotification(a.getId(), user.getUsername());
@@ -540,7 +535,6 @@ public class Controller {
 	class AcceptCancelNotificationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Accepted appointment cancellation!");
 			List<CancelNotification> acceptedCancelNotificationList = notificationsView.getSelectedCancelNotificationList();
 			for (CancelNotification c : acceptedCancelNotificationList) {
 				AppointmentDBC.removeCancelNotification(c.getAppointment().getId(), user.getUsername());
@@ -557,6 +551,30 @@ public class Controller {
 			updateNotifications();
 		}
 	}
+		
+	class PreviousMonthListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (selectedMonth.getMonth() == 0) {
+				selectedMonth = new Date(selectedMonth.getYear() - 1, 11, 1);
+			} else {
+				selectedMonth = new Date(selectedMonth.getYear(), selectedMonth.getMonth() - 1, 1);
+			}
+			updateMonthlyAppointments();
+		}
+	}
+
+	class NextMonthListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (selectedMonth.getMonth() == 11) {
+				selectedMonth = new Date(selectedMonth.getYear() + 1, 0, 1);
+			} else {
+				selectedMonth = new Date(selectedMonth.getYear(), selectedMonth.getMonth() + 1, 1);
+			}
+			updateMonthlyAppointments();
+		}
+	}
 
 	private void openLoginView() {
 		loginView = new LoginView();
@@ -567,6 +585,8 @@ public class Controller {
 	private void openCalendarView() {
 		calendarView = new CalendarView();
 
+		calendarView.addPreviousMonthButtonListener(new PreviousMonthListener());
+		calendarView.addNextMonthButtonListener(new NextMonthListener());
 		calendarView.addNewAppointmentButtonListener(new OpenAppointmentCreationListener());
 		calendarView.addLogoutButtonListener(new LogoutListener());
 		calendarView.addSelectDateListener(new SelectDateListener());
@@ -583,6 +603,8 @@ public class Controller {
 		calendarView.setTitle(calendarView.getTitle()+" ("+user.getName()+")");
 		
 		updateNotifications();
+		selectedMonth = calendarView.getCurrentMonth();
+		updateMonthlyAppointments();
 	}
 	
 	private void openAppointmentCreationView() {
@@ -608,7 +630,9 @@ public class Controller {
 	private void updateDailyAppointments() {
 		selectedDate = calendarView.getSelectedDate();
 
-		dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate);
+		Date endOfSelectedDate = new Date(selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDate(), 23, 59);
+
+		dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate, endOfSelectedDate);
 		
 		ArrayList<Appointment> removeList = new ArrayList<Appointment>();
 		for (Appointment a : dailyAppointmentList) {
@@ -625,6 +649,36 @@ public class Controller {
 
 		calendarView.setDailyAppointmentList(dailyAppointmentList);
 		calendarView.setAppointmentAccess("");
+	}
+	
+	private void updateMonthlyAppointments() {
+		Date endOfSelectedMonth;
+		if (selectedMonth.getMonth() == 11) {
+			endOfSelectedMonth = new Date(selectedMonth.getYear() + 1, selectedMonth.getMonth() - 11, 1);
+		} else {
+			endOfSelectedMonth = new Date(selectedMonth.getYear(), selectedMonth.getMonth() + 1, 1);
+		}
+
+		monthlyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedMonth, endOfSelectedMonth);
+		
+		ArrayList<Appointment> removeList = new ArrayList<Appointment>();
+		for (Appointment a : monthlyAppointmentList) {
+			if (a != null) {
+				if (a.getStatus().equals("Hidden") || a.getStatus().equals("Cancelled")) {
+					removeList.add(a);
+				}
+			}
+		}
+
+		for (Appointment a : removeList) {
+			monthlyAppointmentList.remove(a);
+		}
+		
+		for (Appointment a : monthlyAppointmentList) {
+			System.out.println(a);
+			calendarView.changeCellColor(a.getStartDate(), "");
+		}
+
 	}
 	
 	private void updateNotifications() {
