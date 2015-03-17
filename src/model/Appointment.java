@@ -193,7 +193,7 @@ public class Appointment {
 
 		summary += description+"<br>";
 		summary += (location != null) ? "Location: "+location+"<br>" : "";
-		if (room.getId() != 0) {
+		if (room != null && room.getId() != 0) {
 			summary += "Room: "+room+"<br>";
 		}
 
