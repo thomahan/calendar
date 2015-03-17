@@ -104,7 +104,7 @@ public class CalendarView extends JFrame {
 		monthLabel = new JLabel();
 		monthLabel.setBounds(6, 12, 106, 16);
 		calendarControlPanel.add(monthLabel);
-		
+/*		
 		warningNextMonth = new JLabel();
 		warningNextMonth.setBounds(168, 0, 15, 15);
 		calendarControlPanel.add(warningNextMonth);
@@ -116,7 +116,7 @@ public class CalendarView extends JFrame {
 		calendarControlPanel.add(warningPrevMonth);
 		warningPrevMonth.setText("*");
 		warningPrevMonth.setVisible(false);
-		
+*/		
 		JPanel calendarDisplayPanel = new JPanel();
 		calendarDisplayPanel.setBounds(6, 55, 284, 280);
 		leftPanel.add(calendarDisplayPanel);
@@ -241,6 +241,8 @@ public class CalendarView extends JFrame {
 
 		this.setVisible(true);
 		selectedDate = new Date();	
+		selectedDate.setHours(0);
+		selectedDate.setMinutes(0);
 	}
 	
 	public static void refreshCalendar(int month, int year) {
@@ -442,15 +444,6 @@ public class CalendarView extends JFrame {
 	
 	public void changeCellColor(Date date, String status) {
 		Color color = Color.LIGHT_GRAY;
-		/*
-		if (status.equals("Accepted")){
-			color = Color.green;
-		}else if (status.equals("Declined")){
-			color = Color.gray;
-		}else if (status.equals("Not replied")){
-			color = Color.red;
-		}
-		*/
 		tblCellRenderer tcr = new tblCellRenderer(date,color);
 		table.setDefaultRenderer(table.getColumnClass(0), tcr);
 	}
@@ -471,7 +464,7 @@ public class CalendarView extends JFrame {
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column){
 			super.getTableCellRendererComponent(table, value, selected, focused, row, column);
 			if (value != null){
-				if (appointmentDays.contains(Integer.parseInt(value.toString()))){ //Today
+				if (appointmentDays.contains(Integer.parseInt(value.toString()))) {
 					setBackground(color);
 				} else {
 					setBackground(Color.white);
