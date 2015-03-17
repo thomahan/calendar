@@ -51,8 +51,8 @@ public class Controller {
 	private Date selectedDate;
 	private Date selectedMonth;
 	private Appointment selectedAppointment;
-	private ArrayList<Appointment> dailyAppointmentList;
-	private ArrayList<Appointment> monthlyAppointmentList;
+	private List<Appointment> dailyAppointmentList;
+	private List<Appointment> monthlyAppointmentList;
 	private List<Room> availableRoomList;
 	private Room reservedRoom;
 	private Room releasedRoom;
@@ -393,14 +393,14 @@ public class Controller {
 			roomReservationView.dispose();
 		}
 	}
-	
+/*	
 	class SelectMonthListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			//calendarView.setMonthlyAppointmentList();
 		}
 	}
-	
+*/
 	class SelectDateListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
@@ -516,6 +516,7 @@ public class Controller {
 			notificationsView.addHideCancelNotificationButtonListener(new AcceptCancelNotificationListener());
 			notificationsView.addCloseButtonListener(new CloseNotificationsListener());
 			
+			updateNotifications();
 			notificationsView.setAppointmentList(changedAppointmentList);
 			notificationsView.setCancelNotificationList(cancelNotificationList);
 			
@@ -635,19 +636,7 @@ public class Controller {
 		Date endOfSelectedDate = new Date(selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDate(), 23, 59);
 
 		dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate, endOfSelectedDate);
-		
-		ArrayList<Appointment> removeList = new ArrayList<Appointment>();
-		for (Appointment a : dailyAppointmentList) {
-			if (a != null) {
-				if (a.getStatus().equals("Hidden") || a.getStatus().equals("Cancelled")) {
-					removeList.add(a);
-				}
-			}
-		}
-
-		for (Appointment a : removeList) {
-			dailyAppointmentList.remove(a);
-		}
+		dailyAppointmentList = removeHiddenAndCancelled(dailyAppointmentList);
 
 		calendarView.setDailyAppointmentList(dailyAppointmentList);
 		calendarView.setAppointmentAccess("");
@@ -662,20 +651,8 @@ public class Controller {
 		}
 
 		monthlyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedMonth, endOfSelectedMonth);
-		
-		ArrayList<Appointment> removeList = new ArrayList<Appointment>();
-		for (Appointment a : monthlyAppointmentList) {
-			if (a != null) {
-				if (a.getStatus().equals("Hidden") || a.getStatus().equals("Cancelled")) {
-					removeList.add(a);
-				}
-			}
-		}
-
-		for (Appointment a : removeList) {
-			monthlyAppointmentList.remove(a);
-		}
-		
+		monthlyAppointmentList = removeHiddenAndCancelled(monthlyAppointmentList);
+			
 		List<Integer> appointmentDays = new ArrayList<Integer>();
 		for (Appointment a : monthlyAppointmentList) {
 			calendarView.changeCellColor(a.getStartDate(), "");
@@ -689,9 +666,24 @@ public class Controller {
 		calendarView.setSeeChangesButton(false);
 		cancelNotificationList = AppointmentDBC.getCancelNotificationList(user.getUsername());
 		changedAppointmentList = AppointmentDBC.getChangedAppointmentList(user.getUsername());
+		changedAppointmentList = removeHiddenAndCancelled(changedAppointmentList);
 
 		if (!cancelNotificationList.isEmpty() || !changedAppointmentList.isEmpty()) {
 			calendarView.setSeeChangesButton(true);
 		}
+	}
+	
+	private List<Appointment> removeHiddenAndCancelled(List<Appointment> appointmentList) {
+		ArrayList<Appointment> newList = new ArrayList<Appointment>();
+
+		for (Appointment a : appointmentList) {
+			if (a != null) {
+				if (a.getStatus().equals("Hidden") || a.getStatus().equals("Cancelled")) {
+					newList.add(a);
+				}
+			}
+		}
+		
+		return newList;
 	}
 }
