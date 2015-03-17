@@ -229,8 +229,8 @@ public class AppointmentDBC {
 					+ "VALUES ('"+appointmentId+"', '"+username+"', '"+status+"');");
 		} else {
 			DBConnector.makeStatement(""
-					+ "INSERT INTO invitation (appointment_id, username) "
-					+ "VALUES ('"+appointmentId+"', '"+username+"');");
+					+ "INSERT INTO invitation (appointment_id, username, unseen_change) "
+					+ "VALUES ('"+appointmentId+"', '"+username+"', 1);");
 		}
 	}
 
