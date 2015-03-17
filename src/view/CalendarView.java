@@ -433,7 +433,7 @@ public class CalendarView extends JFrame {
 		}
 	}
 
-	public void setDailyAppointmentList(ArrayList<Appointment> dailyAppointmentList) {
+	public void setDailyAppointmentList(List<Appointment> dailyAppointmentList) {
 		dailyAppointmentListModel.clear();
 		if (!dailyAppointmentList.isEmpty()) {
 			for (Appointment a : dailyAppointmentList) {
