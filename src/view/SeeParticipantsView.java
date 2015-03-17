@@ -3,14 +3,14 @@ package view;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.JButton;
-import model.User;
 
 @SuppressWarnings("serial")
 public class SeeParticipantsView extends JFrame {
@@ -42,9 +42,13 @@ public class SeeParticipantsView extends JFrame {
 		participantListBox = new JList<String>(participantListModel);
 		participantListBox.setBounds(10, 25, 248, 180);
 		participantListBox.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		participantListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		panel.add(participantListBox);
-		
+		participantListBox.setLayoutOrientation(JList.VERTICAL);
+		participantListBox.setAutoscrolls(true);
+
+		JScrollPane scrollPane = new JScrollPane(participantListBox);
+		scrollPane.setBounds(10, 25, 248, 180);
+		panel.add(scrollPane);
+	
 		closeButton = new JButton("Close");
 		closeButton.setBounds(151, 221, 117, 29);
 		panel.add(closeButton);

@@ -191,7 +191,7 @@ public class CalendarView extends JFrame {
 		dailyAppointmentListBox = new JList<Appointment>(dailyAppointmentListModel);
 		dailyAppointmentListBox.setBounds(10, 10, 248, 260);
 		dailyAppointmentListBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		dailyAppointmentListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		dailyAppointmentListBox.setLayoutOrientation(JList.VERTICAL);
 		dailyAppointmentListBox.setAutoscrolls(true);
 
 		JScrollPane scrollPane = new JScrollPane(dailyAppointmentListBox);

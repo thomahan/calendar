@@ -1,15 +1,16 @@
 package view;
 
-import java.util.List;
 import java.awt.event.ActionListener;
+import java.util.List;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.JButton;
 
 import model.User;
 
@@ -43,9 +44,13 @@ public class UserInvitationView extends JFrame {
 		userListBox = new JList<User>(userListModel);
 		userListBox.setBounds(10, 25, 248, 180);
 		userListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		userListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		panel.add(userListBox);
-		
+		userListBox.setLayoutOrientation(JList.VERTICAL);
+		userListBox.setAutoscrolls(true);
+
+		JScrollPane scrollPane = new JScrollPane(userListBox);
+		scrollPane.setBounds(10, 25, 248, 180);
+		panel.add(scrollPane);
+	
 		inviteButton = new JButton("Invite");
 		inviteButton.setBounds(6, 221, 117, 29);
 		panel.add(inviteButton);

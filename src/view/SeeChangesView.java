@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
@@ -10,11 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import model.Appointment;
 import model.CancelNotification;
-import model.User;
 
 @SuppressWarnings("serial")
 public class SeeChangesView extends JFrame {
@@ -49,9 +48,14 @@ public class SeeChangesView extends JFrame {
 		appointmentListBox = new JList<Appointment>(appointmentListModel);
 		appointmentListBox.setBounds(10, 25, 248, 180);
 		appointmentListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		appointmentListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		appointmentListBox.setLayoutOrientation(JList.VERTICAL);
 		panel.add(appointmentListBox);
-			
+		appointmentListBox.setAutoscrolls(true);
+
+		JScrollPane appointmentScrollPane = new JScrollPane(appointmentListBox);
+		appointmentScrollPane.setBounds(10, 25, 248, 180);
+		panel.add(appointmentScrollPane);
+	
 		hideAppointmentChangeButton = new JButton("Hide");
 		hideAppointmentChangeButton.setBounds(10, 217, 117, 29);
 		panel.add(hideAppointmentChangeButton);
@@ -66,6 +70,11 @@ public class SeeChangesView extends JFrame {
 		cancelNotificationListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		cancelNotificationListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		panel.add(cancelNotificationListBox);
+		cancelNotificationListBox.setAutoscrolls(true);
+
+		JScrollPane cancelNotificationScrollPane = new JScrollPane(cancelNotificationListBox);
+		cancelNotificationScrollPane.setBounds(291, 25, 248, 180);
+		panel.add(cancelNotificationScrollPane);
 			
 		JLabel cancelNotificationLabel = new JLabel("Cancellations");
 		cancelNotificationLabel.setBounds(291, 6, 248, 16);

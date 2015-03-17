@@ -1,16 +1,16 @@
 package view;
 
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.JButton;
 
 import model.Group;
 
@@ -22,7 +22,7 @@ public class GroupInvitationView extends JFrame {
 	private JButton cancelButton, inviteButton;
 
 	public static void main(String[] args) {
-		new UserInvitationView();
+		new GroupInvitationView();
 	}
 
 	public GroupInvitationView() {
@@ -43,8 +43,12 @@ public class GroupInvitationView extends JFrame {
 		groupListBox = new JList<Group>(groupListModel);
 		groupListBox.setBounds(10, 25, 248, 180);
 		groupListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		groupListBox.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		panel.add(groupListBox);
+		groupListBox.setLayoutOrientation(JList.VERTICAL);
+		groupListBox.setAutoscrolls(true);
+
+		JScrollPane scrollPane = new JScrollPane(groupListBox);
+		scrollPane.setBounds(10, 25, 248, 180);
+		panel.add(scrollPane);
 	
 		inviteButton = new JButton("Invite");
 		inviteButton.setBounds(6, 221, 117, 29);
