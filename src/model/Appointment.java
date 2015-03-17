@@ -15,6 +15,15 @@ public class Appointment {
 	private String location;
 	private Room room;
 	private boolean editable;
+	private boolean showDateByDefault;
+	public boolean isShowDateByDefault() {
+		return showDateByDefault;
+	}
+
+	public void setShowDateByDefault(boolean showDateByDefault) {
+		this.showDateByDefault = showDateByDefault;
+	}
+
 	private String status;
 	private Date alarmDate;
 	private String title, oldName;
@@ -33,6 +42,7 @@ public class Appointment {
 		this.description = description;
 		this.editable = editable;
 		this.status = status;
+		this.showDateByDefault = false;
 		//this.roomList = main.Controller.getRoomlist();
 //		this.roomList = TestMain.getRoomList(); DENNE
 //		this.room = selectRoom(); DENNE
@@ -184,7 +194,7 @@ public class Appointment {
 
 		String summary = "<html>";
 
-		summary += (date.format(startDate).equals(date.format(endDate))) ? time.format(startDate)+"-"+time.format(endDate) : full.format(startDate)+" - "+full.format(endDate);
+		summary += (date.format(startDate).equals(date.format(endDate)) && !showDateByDefault) ? time.format(startDate)+"-"+time.format(endDate) : full.format(startDate)+" - "+full.format(endDate) + "<br>";
 		if (!isEditable()) {
 			summary += " ("+status+")";
 		}

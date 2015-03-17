@@ -110,6 +110,7 @@ public class SeeChangesView extends JFrame {
 	public void setAppointmentList(List<Appointment> appointmentList){
 		appointmentListModel.clear();
 		for (Appointment appointment : appointmentList) {
+			appointment.setShowDateByDefault(true);
 			appointmentListModel.addElement(appointment);
 		}
 	}
