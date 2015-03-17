@@ -677,7 +677,6 @@ public class Controller {
 		
 		List<Integer> appointmentDays = new ArrayList<Integer>();
 		for (Appointment a : monthlyAppointmentList) {
-			System.out.println(a);
 			calendarView.changeCellColor(a.getStartDate(), "");
 			appointmentDays.add(a.getStartDate().getDate());
 		}
