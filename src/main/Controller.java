@@ -405,6 +405,7 @@ public class Controller {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
 			updateDailyAppointments();
+			updateNotifications();
 		}
 
 		@Override public void mouseEntered(MouseEvent arg0) {}
@@ -603,9 +604,9 @@ public class Controller {
 		
 		calendarView.setTitle(calendarView.getTitle()+" ("+user.getName()+")");
 		
-		updateNotifications();
 		selectedMonth = calendarView.getCurrentMonth();
 		updateMonthlyAppointments();
+		updateNotifications();
 	}
 	
 	private void openAppointmentCreationView() {
