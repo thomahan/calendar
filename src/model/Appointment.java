@@ -198,7 +198,9 @@ public class Appointment {
 		if (!isEditable()) {
 			summary += " ("+status+")";
 		}
-		summary+="<br>";
+		if (!showDateByDefault) {
+			summary+="<br>";
+		}
 		summary += (alarmDate != null) ? (date.format(startDate).equals(date.format(alarmDate))) ? "Alarm: "+time.format(alarmDate)+"<br>" : "Alarm:"+full.format(alarmDate)+"<br>" : "";
 
 		summary += description+"<br>";
