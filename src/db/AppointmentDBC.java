@@ -234,6 +234,12 @@ public class AppointmentDBC {
 		}
 	}
 
+	public static void removeInvitation(int appointmentId, String username) {
+		DBConnector.makeStatement(""
+				+ "DELETE FROM invitation "
+				+ "WHERE appointment_id = '"+appointmentId+"' AND username = '" + username + "';");
+	}
+
 	public static void addGroupInvitation(int appointmentId, int groupId) {
 		DBConnector.makeStatement(""
 				+ "INSERT INTO group_invitation (appointment_id, user_group_id) "
@@ -298,11 +304,11 @@ public class AppointmentDBC {
 		return invitedUserList;
 	}
 	
-	public static List<String> getParticipantList(int appointmentId) {
-		ArrayList<String> participantList = new ArrayList<String>();
+	public static List<User> getParticipantList(int appointmentId) {
+		ArrayList<User> participantList = new ArrayList<User>();
 
 		Query query = DBConnector.makeQuery(""
-				+ "SELECT user.first_name, user.last_name, status "
+				+ "SELECT user.username, user.first_name, user.last_name, status "
 				+ "FROM invitation JOIN user ON invitation.username = user.username "
 				+ "WHERE appointment_id = "+appointmentId+" "
 				+ "ORDER BY status ASC;");
@@ -310,10 +316,11 @@ public class AppointmentDBC {
 
 		try {
 			while (result.next()) {
+				String username = result.getString("user.username");
 				String firstName = result.getString("user.first_name");
 				String lastName = result.getString("user.last_name");
 				String status = result.getString("status");
-				participantList.add(firstName + " " + lastName + " (" + status + ")");
+				participantList.add(new User(username, "", "", firstName, lastName + " (" + status + ")"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -358,10 +365,13 @@ public class AppointmentDBC {
 				String lastName = result.getString("last_name");
 
 				Appointment appointment = getAppointment(appointmentId, username);
-				User canceller = new User(cancellerUsername, "", "", firstName, lastName);
-				CancelNotification cancelNotification = new CancelNotification(appointment, canceller);
 
-				cancelNotificationList.add(cancelNotification);
+				if (!(appointment.getStatus().equals("Hidden") || appointment.getStatus().equals("Cancelled"))) {
+					User canceller = new User(cancellerUsername, "", "", firstName, lastName);
+					CancelNotification cancelNotification = new CancelNotification(appointment, canceller);
+
+					cancelNotificationList.add(cancelNotification);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

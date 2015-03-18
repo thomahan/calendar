@@ -194,13 +194,14 @@ public class Appointment {
 
 		String summary = "<html>";
 
-		summary += (date.format(startDate).equals(date.format(endDate)) && !showDateByDefault) ? time.format(startDate)+"-"+time.format(endDate) : full.format(startDate)+" - "+full.format(endDate) + "<br>";
-		if (!isEditable()) {
-			summary += " ("+status+")";
-		}
-		if (!showDateByDefault) {
+		summary += (date.format(startDate).equals(date.format(endDate)) && !showDateByDefault) ? time.format(startDate)+"-"+time.format(endDate) : full.format(startDate)+" - "+full.format(endDate);
+		if (showDateByDefault) {
 			summary+="<br>";
 		}
+		if (!isEditable()) {
+			summary += " ("+status+")<br>";
+		}
+		
 		summary += (alarmDate != null) ? (date.format(startDate).equals(date.format(alarmDate))) ? "Alarm: "+time.format(alarmDate)+"<br>" : "Alarm:"+full.format(alarmDate)+"<br>" : "";
 
 		summary += description+"<br>";

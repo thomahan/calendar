@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class Controller {
 	private User user;
 	private List<User> userList;
 	private List<User> invitedUserList;
-	private List<String> participantList;
+	private List<User> participantList;
 	private List<Group> groupList;
 	private List<Group> invitedGroupList;
 	private Date selectedDate;
@@ -393,14 +392,33 @@ public class Controller {
 			roomReservationView.dispose();
 		}
 	}
-/*	
-	class SelectMonthListener implements ActionListener {
+		
+	class PreviousMonthListener implements ActionListener {
+		@SuppressWarnings("deprecation")
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			//calendarView.setMonthlyAppointmentList();
+		public void actionPerformed(ActionEvent e) {
+			if (selectedMonth.getMonth() == 0) {
+				selectedMonth = new Date(selectedMonth.getYear() - 1, 11, 1);
+			} else {
+				selectedMonth = new Date(selectedMonth.getYear(), selectedMonth.getMonth() - 1, 1);
+			}
+			updateMonthlyAppointments();
 		}
 	}
-*/
+
+	class NextMonthListener implements ActionListener {
+		@SuppressWarnings("deprecation")
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (selectedMonth.getMonth() == 11) {
+				selectedMonth = new Date(selectedMonth.getYear() + 1, 0, 1);
+			} else {
+				selectedMonth = new Date(selectedMonth.getYear(), selectedMonth.getMonth() + 1, 1);
+			}
+			updateMonthlyAppointments();
+		}
+	}
+
 	class SelectDateListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
@@ -494,10 +512,30 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			seeParticipantsView = new SeeParticipantsView();
+			seeParticipantsView.addRemoveButtonListener(new RemoveParticipantsListener());
 			seeParticipantsView.addCloseButtonListener(new CloseSeeParticipantsViewListener());
 			
 			participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId());
 			seeParticipantsView.setParticipantList(participantList);
+			
+			if (selectedAppointment.isEditable()) {
+				seeParticipantsView.setEnableRemoveParticipant(true);
+			}
+		}
+	}
+	
+	class RemoveParticipantsListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			System.out.println("You tried to remove participants!");
+
+			List<User> removableParticipantList = seeParticipantsView.getRemovedParticipantList();
+			
+			for (User participant : removableParticipantList) {
+				AppointmentDBC.removeInvitation(selectedAppointment.getId(), participant.getUsername());
+			}
+
+			seeParticipantsView.dispose();
 		}
 	}
 	
@@ -552,30 +590,6 @@ public class Controller {
 		public void actionPerformed(ActionEvent e) {
 			notificationsView.dispose();
 			updateNotifications();
-		}
-	}
-		
-	class PreviousMonthListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (selectedMonth.getMonth() == 0) {
-				selectedMonth = new Date(selectedMonth.getYear() - 1, 11, 1);
-			} else {
-				selectedMonth = new Date(selectedMonth.getYear(), selectedMonth.getMonth() - 1, 1);
-			}
-			updateMonthlyAppointments();
-		}
-	}
-
-	class NextMonthListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (selectedMonth.getMonth() == 11) {
-				selectedMonth = new Date(selectedMonth.getYear() + 1, 0, 1);
-			} else {
-				selectedMonth = new Date(selectedMonth.getYear(), selectedMonth.getMonth() + 1, 1);
-			}
-			updateMonthlyAppointments();
 		}
 	}
 
@@ -633,6 +647,7 @@ public class Controller {
 	private void updateDailyAppointments() {
 		selectedDate = calendarView.getSelectedDate();
 
+		@SuppressWarnings("deprecation")
 		Date endOfSelectedDate = new Date(selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDate(), 23, 59);
 
 		dailyAppointmentList = AppointmentDBC.getAppointmentList(user.getUsername(), selectedDate, endOfSelectedDate);
@@ -642,6 +657,7 @@ public class Controller {
 		calendarView.setAppointmentAccess("");
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void updateMonthlyAppointments() {
 		Date endOfSelectedMonth;
 		if (selectedMonth.getMonth() == 11) {
@@ -665,6 +681,7 @@ public class Controller {
 	private void updateNotifications() {
 		calendarView.setSeeChangesButton(false);
 		cancelNotificationList = AppointmentDBC.getCancelNotificationList(user.getUsername());
+		
 		changedAppointmentList = AppointmentDBC.getChangedAppointmentList(user.getUsername());
 		changedAppointmentList = removeHiddenAndCancelled(changedAppointmentList);
 
@@ -678,7 +695,7 @@ public class Controller {
 
 		for (Appointment a : appointmentList) {
 			if (a != null) {
-				if (a.getStatus().equals("Hidden") || a.getStatus().equals("Cancelled")) {
+				if (!(a.getStatus().equals("Hidden") || a.getStatus().equals("Cancelled"))) {
 					newList.add(a);
 				}
 			}
