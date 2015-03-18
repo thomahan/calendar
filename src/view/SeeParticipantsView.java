@@ -43,7 +43,7 @@ public class SeeParticipantsView extends JFrame {
 		participantListModel = new DefaultListModel<User>();
 		participantListBox = new JList<User>(participantListModel);
 		participantListBox.setBounds(10, 25, 248, 180);
-		participantListBox.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		participantListBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		participantListBox.setLayoutOrientation(JList.VERTICAL);
 		participantListBox.setAutoscrolls(true);
 		participantListBox.setEnabled(false);

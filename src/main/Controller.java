@@ -292,17 +292,7 @@ public class Controller {
 			
 			userList = UserDBC.getUserList();
 			// This should be done differently
-			List<User> removeList = new ArrayList<User>();
-			for (User u : userList) {
-				if (u.getUsername().equals(user.getUsername())) {
-					removeList.add(u);
-				}
-			}
-			
-			for (User r : removeList) {
-				userList.remove(r);
-				
-			}
+			userList = removeUser(user, userList);
 			userInvitationView.setUserList(userList);
 		}
 
@@ -516,6 +506,7 @@ public class Controller {
 			seeParticipantsView.addCloseButtonListener(new CloseSeeParticipantsViewListener());
 			
 			participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId());
+			participantList = removeUser(user, participantList);
 			seeParticipantsView.setParticipantList(participantList);
 			
 			if (selectedAppointment.isEditable()) {
@@ -527,15 +518,15 @@ public class Controller {
 	class RemoveParticipantsListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
-			System.out.println("You tried to remove participants!");
-
 			List<User> removableParticipantList = seeParticipantsView.getRemovedParticipantList();
 			
 			for (User participant : removableParticipantList) {
 				AppointmentDBC.removeInvitation(selectedAppointment.getId(), participant.getUsername());
 			}
-
-			seeParticipantsView.dispose();
+				
+			participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId());
+			participantList = removeUser(user, participantList);
+			seeParticipantsView.setParticipantList(participantList);
 		}
 	}
 	
@@ -703,4 +694,19 @@ public class Controller {
 		
 		return newList;
 	}
+	
+	public List<User> removeUser(User user, List<User> userList) {
+		List<User> newList = new ArrayList<User>();
+
+		for (User u : userList) {
+			if (u != null) {
+				if (!u.equals(user)) {
+					newList.add(u);
+				}
+			}
+		}
+		
+		return newList;
+	}
+
 }

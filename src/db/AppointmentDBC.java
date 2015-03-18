@@ -308,9 +308,11 @@ public class AppointmentDBC {
 		ArrayList<User> participantList = new ArrayList<User>();
 
 		Query query = DBConnector.makeQuery(""
-				+ "SELECT user.username, user.first_name, user.last_name, status "
-				+ "FROM invitation JOIN user ON invitation.username = user.username "
-				+ "WHERE appointment_id = "+appointmentId+" "
+				+ "SELECT user.username, user.first_name, user.last_name, status, creator "
+				+ "FROM invitation "
+					+ "JOIN user ON invitation.username = user.username "
+					+ "JOIN appointment ON invitation.appointment_id = appointment.appointment_id "
+				+ "WHERE invitation.appointment_id = "+appointmentId+" "
 				+ "ORDER BY status ASC;");
 		ResultSet result = query.getResult();
 
@@ -320,7 +322,14 @@ public class AppointmentDBC {
 				String firstName = result.getString("user.first_name");
 				String lastName = result.getString("user.last_name");
 				String status = result.getString("status");
-				participantList.add(new User(username, "", "", firstName, lastName + " (" + status + ")"));
+				String creator = result.getString("creator");
+				String statusString;
+				if (username.equals(creator)) {
+					statusString = "Appointment creator";
+				} else {
+					statusString = status;
+				}
+				participantList.add(new User(username, "", "", firstName, lastName + " (" + statusString + ")"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
