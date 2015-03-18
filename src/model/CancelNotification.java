@@ -20,7 +20,7 @@ public class CancelNotification {
 
 	@Override
 	public String toString() {
-		return appointment.toString().substring(0, appointment.toString().length()-12) +"<hmtl>" + canceller.toString() + " has cancelled.<br></html>";
+		return appointment.toString().substring(0, appointment.toString().length()-12) +"<hmtl>" + canceller.toString() + " has cancelled.<br><br></html>";
 	}
 	
 }
