@@ -2,26 +2,19 @@ package model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Appointment {
 	private final int id;
-	private Date startDate; // Starttid for appointment
-	private Date endDate; // Sluttid for appointment
+	private Date startDate;
+	private Date endDate;
+	private Date alarmDate;
 	private String description;
 	private String location;
 	private Room room;
 	private boolean editable;
-	private boolean showDateByDefault;
-
 	private String status;
-	private Date alarmDate;
-	private String title, oldName;
-
-	private User creator;
-	private ArrayList<User> participants = new ArrayList<User>();
-	private ArrayList<User> eventListeners = new ArrayList<User>();
+	private boolean showDateByDefault;
 		
 	public Appointment(int id, Date startDate, Date endDate, String description, boolean editable, String status){
 		this.id = id;
@@ -33,39 +26,10 @@ public class Appointment {
 		this.showDateByDefault = false;
 	}
 	
-	public boolean isShowDateByDefault() {
-		return showDateByDefault;
+	public int getId() {
+		return id;
 	}
 
-	public void setShowDateByDefault(boolean showDateByDefault) {
-		this.showDateByDefault = showDateByDefault;
-	}
-		
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	
-	public void setRoom(Room room) {
-		this.room = room;
-	}
-	
-	public String getStatus() {
-		return status;
-	}
-
-	public String getEventName(){
-		return title;
-	}
-	
-	public String getOldName(){
-		return oldName;
-	}
-	
-	public void setEventName(String eventName){
-		oldName = this.title;
-		this.title = eventName;
-	}
-	
 	public Date getStartDate(){
 		return startDate;
 	}
@@ -73,7 +37,6 @@ public class Appointment {
 	public Date getEndDate(){
 		return endDate;
 	}
-	
 
 	public Date getAlarmDate() {
 		return alarmDate;
@@ -83,81 +46,42 @@ public class Appointment {
 		this.alarmDate = alarmDate;
 	}
 
-
-	public ArrayList<User> getParticipants(){
-		return participants;
-	}
-	
-
-	public void setStartDate(Date date){
-		this.startDate.setTime(date.getTime()); //M� endres i databasen
-	}
-	
-	public void setEndDate(Date date){ // M� endres i databasen
-		this.endDate.setTime(date.getTime());
-	}
-	
-	public Room getRoom(){
-		return room;
-	}
-	
-	public void addListener(User user){
-		eventListeners.add(user);
-	}
-	
-	public void removeListener(User user){
-		eventListeners.remove(user);
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public User getCreator() {
-		return creator;
-	}
-
-	public int getId() {
-		return id;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 	
+	public String getLocation() {
+		return location;
+	}
+		
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Room getRoom(){
+		return room;
+	}
+	
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
 	public boolean isEditable() {
 		return editable;
 	}
-
-	@Override
-	public String toString() {
-		DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-		DateFormat time = new SimpleDateFormat("HH:mm");
-		DateFormat full = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-		String summary = "<html>";
-
-		summary += (date.format(startDate).equals(date.format(endDate)) && !showDateByDefault) ? time.format(startDate)+"-"+time.format(endDate) : full.format(startDate)+" - "+full.format(endDate);
-		if (!isEditable()) {
-			if (showDateByDefault) {
-				summary += "<br>";
-			}
-			summary += " ("+status+")";
-		}
-		summary+="<br>";
 		
-		summary += (alarmDate != null) ? (date.format(startDate).equals(date.format(alarmDate))) ? "Alarm: "+time.format(alarmDate)+"<br>" : "Alarm:"+full.format(alarmDate)+"<br>" : "";
-
-		summary += description+"<br>";
-		summary += (location != null) ? "Location: "+location+"<br>" : "";
-		if (room != null && room.getId() != 0) {
-			summary += "Room: "+room+"<br>";
-		}
-
-		summary += "<br> </html>";
-		return summary;
+	public String getStatus() {
+		return status;
 	}
-	
+
+	public boolean isShowDateByDefault() {
+		return showDateByDefault;
+	}
+
+	public void setShowDateByDefault(boolean showDateByDefault) {
+		this.showDateByDefault = showDateByDefault;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -194,4 +118,34 @@ public class Appointment {
 		return (idIsEqual && startDateIsEqual && endDateIsEqual && descriptionIsEqual && locationIsEqual && roomIdIsEqual);
 	}
 	
+	@Override
+	public String toString() {
+		DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat time = new SimpleDateFormat("HH:mm");
+		DateFormat full = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+		String summary = "<html>";
+
+		summary += (date.format(startDate).equals(date.format(endDate)) && !showDateByDefault) ? time.format(startDate)+"-"+time.format(endDate) : full.format(startDate)+" - "+full.format(endDate);
+
+		if (!isEditable()) {
+			if (showDateByDefault) {
+				summary += "<br>";
+			}
+			summary += " ("+status+")";
+		}
+		summary+="<br>";
+		
+		summary += (alarmDate != null) ? (date.format(startDate).equals(date.format(alarmDate))) ? "Alarm: "+time.format(alarmDate)+"<br>" : "Alarm:"+full.format(alarmDate)+"<br>" : "";
+		summary += description+"<br>";
+		summary += (location != null) ? "Location: "+location+"<br>" : "";
+
+		if (room != null && room.getId() != 0) {
+			summary += "Room: "+room+"<br>";
+		}
+
+		summary += "<br> </html>";
+		return summary;
+	}
+
 }

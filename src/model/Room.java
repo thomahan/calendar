@@ -14,14 +14,6 @@ public class Room {
 	public int getId(){
 		return id;
 	}
-	
-	public String getName(){
-		return name;
-	}
-	
-	public int getSeatCount(){
-		return seatCount;
-	}
 
 	@Override
 	public boolean equals(Object obj) {

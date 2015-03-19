@@ -37,16 +37,6 @@ public class PasswordHash {
 	}
 
 	/**
-	 * Converts an array of bytes into a string of hexadecimals
-	 * @param bytes
-	 * @return A string of hexadecimals
-	 */
-	private static String toHexString(byte[] bytes) {
-		BigInteger n = new BigInteger(1, bytes);
-		return n.toString(16);
-	}
-
-	/**
 	 * Creates a hash from a string
 	 * @param s
 	 * @return A SHA-256 hash
@@ -65,4 +55,15 @@ public class PasswordHash {
 			return null;
 		}
 	}
+
+	/**
+	 * Converts an array of bytes into a string of hexadecimals
+	 * @param bytes
+	 * @return A string of hexadecimals
+	 */
+	private static String toHexString(byte[] bytes) {
+		BigInteger n = new BigInteger(1, bytes);
+		return n.toString(16);
+	}
+
 }

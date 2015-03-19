@@ -78,7 +78,7 @@ public class UserDBC {
 				+ "INSERT INTO user (username, salt, password_hash, first_name, last_name) "
 				+ "VALUES ('"+user.getUsername()+"', "
 						 +"'"+user.getSalt()+"', "
-						 +"'"+user.getHashResult()+"', "
+						 +"'"+user.getPasswordHash()+"', "
 						 +"'"+user.getFirstName()+"', "
 						 +"'"+user.getLastName()+"');");
 	}

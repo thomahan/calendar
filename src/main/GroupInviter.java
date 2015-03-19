@@ -15,30 +15,31 @@ public class GroupInviter {
 
 		// Invite all groups and subgroups
 		for (Group group : groupList) {
-			AppointmentDBC.addGroupInvitation(appointmentId, group.getGroupID());
+			AppointmentDBC.addGroupInvitation(appointmentId, group.getGroupId());
 		}
 
+		// Get all users in all groups
 		List<User> invitedUserList = new ArrayList<User>();
 		for (Group group : groupList) {
-			List<User> userList = UserDBC.getMemberList(group.getGroupID());
+			List<User> userList = UserDBC.getMemberList(group.getGroupId());
 			for (User user : userList) {
 				if (!invitedUserList.contains(user)) {
 					invitedUserList.add(user);
 				}
 			}
 		}
-
 	
+		// Invite users
 		for (User user : invitedUserList) {
 			AppointmentDBC.addInvitation(appointmentId, user.getUsername(), "Not replied");
 		}
-}
+	}
 	
 	public static List<Group> getAllSubGroupList(List<Group> groupList) {
 		List<Group> subGroupList = new ArrayList<Group>();
 		
 		for (Group group : groupList) {
-			List<Group> gList = UserDBC.getSubGroupList(group.getGroupID());
+			List<Group> gList = UserDBC.getSubGroupList(group.getGroupId());
 			gList = getAllSubGroupList(gList);
 			for (Group g : gList) {
 				if (!groupList.contains(g)) {
@@ -50,4 +51,5 @@ public class GroupInviter {
 		groupList.addAll(subGroupList);
 		return groupList;
 	}
+
 }

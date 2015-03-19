@@ -615,7 +615,7 @@ public class Controller {
 		calendarView.addSeeParticipantListener(new OpenSeeParticipantsListener());
 		calendarView.addSeeChangesListener(new OpenNotificationsListener());
 		
-		calendarView.setTitle(calendarView.getTitle()+" ("+user.getName()+")");
+		calendarView.setTitle(calendarView.getTitle()+" ("+user.getFullName()+")");
 		
 		selectedMonth = calendarView.getCurrentMonth();
 		updateMonthlyAppointments();

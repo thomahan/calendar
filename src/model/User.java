@@ -2,19 +2,12 @@ package model;
 
 import main.PasswordHash;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class User {
-	
-	private String firstName;
-	private String lastName;
 	private String username;
 	private String salt;
 	private String passwordHash;
-	
-	private ArrayList<Group> groups = new ArrayList<Group>();
-	Scanner scanner = new Scanner(System.in);
+	private String firstName;
+	private String lastName;
 	
 	/**
 	 * Returns a User object. To be used when creating a new user from UI.
@@ -46,10 +39,17 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
+
+	public String getUsername(){
+		return username;
+	}
+
+	public String getSalt(){
+		return this.salt;
+	}
 	
-	public boolean isPasswordCorrect(String password) {
-		String passwordHashCandidate = PasswordHash.hashPassword(this.salt, password);
-		return this.passwordHash.equals(passwordHashCandidate);
+	public String getPasswordHash(){
+		return passwordHash;
 	}
 	
 	public String getFirstName() {
@@ -60,45 +60,15 @@ public class User {
 		return lastName;
 	}
 
-	public String getName() {
+	public String getFullName() {
 		return firstName + " " + lastName;
 	}
-	
-	public String getUsername(){
-		return username;
-	}
-
-	public String getSalt(){
-		return this.salt;
-	}
-	
-	public String getHashResult(){
-		return passwordHash;
-	}
-
-	public ArrayList<Group> getGroups() {
-		return groups;
-	}
-	
-	public boolean answerInvitation(){
-		String answer;
-		answer = scanner.next();
 		
-		while (!(answer.equals("YES") || answer.equals("NO"))){
-			System.out.println("Not a valid answer. Please type YES or NO");
-			answer = scanner.next();
-		}
-		if(answer.equals("YES")){
-			return true;
-		} else 
-			return false;
-	} 
+	public boolean isPasswordCorrect(String password) {
+		String passwordHashCandidate = PasswordHash.hashPassword(this.salt, password);
+		return this.passwordHash.equals(passwordHashCandidate);
+	}	
 
-	//Legger til en ny gruppe til gruppelisten
-	public void addToGroups(Group group) { //Legg til oppdatert gruppeliste i db
-		groups.add(group);
-	}
-		
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
