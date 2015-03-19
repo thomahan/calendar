@@ -232,18 +232,6 @@ public class AppointmentDBC {
 					+ "VALUES ('"+appointmentId+"', '"+username+"', 1);");
 		}
 	}
-
-	public static void removeInvitation(int appointmentId, String username) {
-		DBConnector.makeStatement(""
-				+ "DELETE FROM invitation "
-				+ "WHERE appointment_id = '"+appointmentId+"' AND username = '" + username + "';");
-	}
-
-	public static void addGroupInvitation(int appointmentId, int groupId) {
-		DBConnector.makeStatement(""
-				+ "INSERT INTO group_invitation (appointment_id, user_group_id) "
-				+ "VALUES ('"+appointmentId+"', '"+groupId+"');");
-	}
 	
 	/**
 	 * Sets the status of an invitation
@@ -258,6 +246,42 @@ public class AppointmentDBC {
 			  + "AND username = '"+username+"';");
 	}
 	
+	public static void removeInvitation(int appointmentId, String username) {
+		DBConnector.makeStatement(""
+				+ "DELETE FROM invitation "
+				+ "WHERE appointment_id = '"+appointmentId+"' AND username = '" + username + "';");
+	}
+
+	public static void addGroupInvitation(int appointmentId, int groupId) {
+		DBConnector.makeStatement(""
+				+ "INSERT INTO group_invitation (appointment_id, user_group_id) "
+				+ "VALUES ('"+appointmentId+"', '"+groupId+"');");
+	}
+		
+	public static List<Appointment> getChangedAppointmentList(String username) {
+		ArrayList<Appointment> changedAppointmentList = new ArrayList<Appointment>();
+
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT appointment_id "
+				+ "FROM invitation "
+				+ "WHERE username = '"+username+"' AND unseen_change = 1;");
+		ResultSet result = query.getResult();
+
+		try {
+			while (result.next()) {
+				int appointmentId = result.getInt("appointment_id");
+				Appointment appointment = getAppointment(appointmentId, username);
+				changedAppointmentList.add(appointment);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+
+		return changedAppointmentList;
+	}
+
 	public static void addChangeNotification(int appointmentId, String username) {
 		List<User> invitedUserList = getInvitedUserList(appointmentId);
 		for (User user : invitedUserList) {
@@ -277,6 +301,57 @@ public class AppointmentDBC {
 			+ "SET unseen_change = '"+0+"' "
 			+ "WHERE appointment_id = '"+appointmentId+"' "
 			  + "AND username = '"+username+"';");	
+	}
+	
+	public static List<CancelNotification> getCancelNotificationList(String username) {
+		ArrayList<CancelNotification> cancelNotificationList = new ArrayList<CancelNotification>();
+
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT appointment_id, canceller, first_name, last_name "
+				+ "FROM cancel_notification JOIN user ON cancel_notification.canceller = user.username "
+				+ "WHERE cancel_notification.username = '"+username+"';");
+		ResultSet result = query.getResult();
+
+		try {
+			while (result.next()) {
+				int appointmentId = result.getInt("appointment_id");
+				String cancellerUsername = result.getString("canceller");
+				String firstName = result.getString("first_name");
+				String lastName = result.getString("last_name");
+
+				Appointment appointment = getAppointment(appointmentId, username);
+
+				if (!(appointment.getStatus().equals("Hidden") || appointment.getStatus().equals("Cancelled"))) {
+					User canceller = new User(cancellerUsername, "", "", firstName, lastName);
+					CancelNotification cancelNotification = new CancelNotification(appointment, canceller);
+
+					cancelNotificationList.add(cancelNotification);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
+		}
+
+		return cancelNotificationList;
+	}
+	
+	public static void addCancelNotification(int appointmentId, String username) {
+		List<User> invitedUserList = getInvitedUserList(appointmentId);
+		for (User user : invitedUserList) {
+			if (!user.getUsername().equals(username)) {
+				DBConnector.makeStatement(""
+					+ "INSERT INTO cancel_notification "
+					+ "VALUES ('"+appointmentId+"', '"+user.getUsername()+"', '"+username+"');");
+			}
+		}
+	}
+
+	public static void removeCancelNotification(int appointmentId, String username, String canceller) {
+		DBConnector.makeStatement(""
+			+ "DELETE FROM cancel_notification "
+			+ "WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"' AND canceller = '"+canceller+"';");
 	}
 
 	public static List<User> getInvitedUserList(int appointmentId) {
@@ -338,82 +413,31 @@ public class AppointmentDBC {
 
 		return participantList;
 	}
+	
+	public static Room getRoom(int roomId) {
+		Room room = null;
+	
+		Query query = DBConnector.makeQuery(""
+				+ "SELECT name, seat_count "
+				+ "FROM room "
+				+ "WHERE room_id = '"+roomId+"';");
+		ResultSet result = query.getResult();
+		try {
+			if (result.next()) {
+				String name = result.getString("name");
+				int seatCount = result.getInt("seat_count");
 
-	public static void addCancelNotification(int appointmentId, String username) {
-		List<User> invitedUserList = getInvitedUserList(appointmentId);
-		for (User user : invitedUserList) {
-			if (!user.getUsername().equals(username)) {
-				DBConnector.makeStatement(""
-					+ "INSERT INTO cancel_notification "
-					+ "VALUES ('"+appointmentId+"', '"+user.getUsername()+"', '"+username+"');");
+				room = new Room(roomId, name, seatCount);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			query.close();
 		}
-	}
 
-	public static void removeCancelNotification(int appointmentId, String username, String canceller) {
-		DBConnector.makeStatement(""
-			+ "DELETE FROM cancel_notification "
-			+ "WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"' AND canceller = '"+canceller+"';");
+		return room;	
 	}
 		
-	public static List<CancelNotification> getCancelNotificationList(String username) {
-		ArrayList<CancelNotification> cancelNotificationList = new ArrayList<CancelNotification>();
-
-		Query query = DBConnector.makeQuery(""
-				+ "SELECT appointment_id, canceller, first_name, last_name "
-				+ "FROM cancel_notification JOIN user ON cancel_notification.canceller = user.username "
-				+ "WHERE cancel_notification.username = '"+username+"';");
-		ResultSet result = query.getResult();
-
-		try {
-			while (result.next()) {
-				int appointmentId = result.getInt("appointment_id");
-				String cancellerUsername = result.getString("canceller");
-				String firstName = result.getString("first_name");
-				String lastName = result.getString("last_name");
-
-				Appointment appointment = getAppointment(appointmentId, username);
-
-				if (!(appointment.getStatus().equals("Hidden") || appointment.getStatus().equals("Cancelled"))) {
-					User canceller = new User(cancellerUsername, "", "", firstName, lastName);
-					CancelNotification cancelNotification = new CancelNotification(appointment, canceller);
-
-					cancelNotificationList.add(cancelNotification);
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			query.close();
-		}
-
-		return cancelNotificationList;
-	}
-			
-	public static List<Appointment> getChangedAppointmentList(String username) {
-		ArrayList<Appointment> changedAppointmentList = new ArrayList<Appointment>();
-
-		Query query = DBConnector.makeQuery(""
-				+ "SELECT appointment_id "
-				+ "FROM invitation "
-				+ "WHERE username = '"+username+"' AND unseen_change = 1;");
-		ResultSet result = query.getResult();
-
-		try {
-			while (result.next()) {
-				int appointmentId = result.getInt("appointment_id");
-				Appointment appointment = getAppointment(appointmentId, username);
-				changedAppointmentList.add(appointment);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			query.close();
-		}
-
-		return changedAppointmentList;
-	}
-	
 	/**
 	 * Returns a list of rooms available for an interval with the given seat count
 	 * @param startDate
@@ -455,37 +479,6 @@ public class AppointmentDBC {
 
 		return roomList;	
 	}
-
-	public static Room getRoom(int roomId) {
-		Room room = null;
-	
-		Query query = DBConnector.makeQuery(""
-				+ "SELECT name, seat_count "
-				+ "FROM room "
-				+ "WHERE room_id = '"+roomId+"';");
-		ResultSet result = query.getResult();
-		try {
-			if (result.next()) {
-				String name = result.getString("name");
-				int seatCount = result.getInt("seat_count");
-
-				room = new Room(roomId, name, seatCount);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			query.close();
-		}
-
-		return room;	
-	}
-	
-	public static void releaseRoom(int appointmentId) {
-		DBConnector.makeStatement(""
-			+ "UPDATE appointment "
-			+ "SET room_id = DEFAULT "
-			+ "WHERE appointment_id = "+appointmentId+";");
-	}
 	
 	public static void setAppointmentRoom(int appointmentId, int roomId) {
 		DBConnector.makeStatement(""
@@ -493,4 +486,12 @@ public class AppointmentDBC {
 			+ "SET room_id = '"+roomId+"' "
 			+ "WHERE appointment_id = '"+appointmentId+"';");
 	}
+
+	public static void releaseRoom(int appointmentId) {
+		DBConnector.makeStatement(""
+			+ "UPDATE appointment "
+			+ "SET room_id = DEFAULT "
+			+ "WHERE appointment_id = "+appointmentId+";");
+	}
+
 }
