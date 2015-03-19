@@ -1,15 +1,15 @@
 package db;
 
-import java.sql.DriverManager;
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DBConnector {
-	private static String url = "jdbc:mysql://mysql.stud.ntnu.no/thomahan_pu_g41_kalender";
-	private static String username = "thomahan_pu_g41";
-	private static String password = "g41aahmt";
+	private static final String URL = "jdbc:mysql://mysql.stud.ntnu.no/thomahan_pu_g41_kalender";
+	private static final String USERNAME = "thomahan_pu_g41";
+	private static final String PASSWORD = "g41aahmt";
 
 	/**
 	 * Establishes a connection to the database
@@ -17,7 +17,7 @@ public class DBConnector {
 	 */
 	public static Connection getConnection() {
 		try {
-			Connection connection = DriverManager.getConnection(url, username, password);
+			Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			return connection;
 		} catch (SQLException e) {
 			e.printStackTrace();
