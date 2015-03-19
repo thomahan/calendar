@@ -569,7 +569,7 @@ public class Controller {
 		public void actionPerformed(ActionEvent e) {
 			List<CancelNotification> acceptedCancelNotificationList = notificationsView.getSelectedCancelNotificationList();
 			for (CancelNotification c : acceptedCancelNotificationList) {
-				AppointmentDBC.removeCancelNotification(c.getAppointment().getId(), user.getUsername());
+				AppointmentDBC.removeCancelNotification(c.getAppointment().getId(), user.getUsername(), c.getCanceller().getUsername());
 			}
 			updateNotifications();
 			notificationsView.setCancelNotificationList(cancelNotificationList);

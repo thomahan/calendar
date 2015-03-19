@@ -5,7 +5,7 @@ import main.PasswordHash;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class User implements CalendarEventListener, GroupListener {
+public class User {
 	
 	private String firstName;
 	private String lastName;
@@ -98,18 +98,6 @@ public class User implements CalendarEventListener, GroupListener {
 	public void addToGroups(Group group) { //Legg til oppdatert gruppeliste i db
 		groups.add(group);
 	}
-
-	@Override
-	public void eventHasChanged(Appointment event) {
-		System.out.println(event.getOldName() + " has been changed: " + "name: " + event.getEventName() + ", start date: " + event.getStartDate() + ", end date: " + event.getEndDate() + ", room: " + event.getRoom().getName());
-		
-	}
-
-	@Override
-	public void groupHasChanged(Group group) {
-		System.out.println(group.getGroupName() + " has been changed.");
-		
-	}
 		
 	@Override
 	public boolean equals(Object obj) {
@@ -127,4 +115,5 @@ public class User implements CalendarEventListener, GroupListener {
 	public String toString() {
 		return firstName+" "+lastName;
 	}
+
 }

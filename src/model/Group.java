@@ -1,14 +1,12 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Group {
 	final int groupId;
 	private String groupName;
 	ArrayList<User> members = new ArrayList<User>();
 	private ArrayList<User> listeners = new ArrayList<User>();
-	private static final AtomicInteger count = new AtomicInteger(0);
 	
 	public Group(int groupId, String name) {
 		this.groupId = groupId;
@@ -60,12 +58,6 @@ public class Group {
 	
 	public void removeUserFromGroup(User user) { //Legg til endring i db
 		members.remove(user);
-	}
-	
-	public void changeInGroup() {
-		for(User listener : listeners){
-			listener.groupHasChanged(this);
-		}
 	}
 	
 	@Override

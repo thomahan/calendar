@@ -8,8 +8,10 @@ public class DBSetup {
 		DBInitializer.createTables();
 		System.out.println("Table creation complete!");
 
+		/*
 		System.out.println("Inserting test data...");
 		DBInitializer.insertValues();
 		System.out.println("Test data insertion complete!");
+		*/
 	}
 }

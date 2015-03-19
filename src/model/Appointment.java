@@ -47,7 +47,6 @@ public class Appointment {
 	
 	public void setRoom(Room room) {
 		this.room = room;
-		fireCalendarEventHasChanged();
 	}
 	
 	public String getStatus() {
@@ -65,7 +64,6 @@ public class Appointment {
 	public void setEventName(String eventName){
 		oldName = this.title;
 		this.title = eventName;
-		fireCalendarEventHasChanged();
 	}
 	
 	public Date getStartDate(){
@@ -93,22 +91,14 @@ public class Appointment {
 
 	public void setStartDate(Date date){
 		this.startDate.setTime(date.getTime()); //M� endres i databasen
-		fireCalendarEventHasChanged();
 	}
 	
 	public void setEndDate(Date date){ // M� endres i databasen
 		this.endDate.setTime(date.getTime());
-		fireCalendarEventHasChanged();
 	}
 	
 	public Room getRoom(){
 		return room;
-	}
-	
-	public void fireCalendarEventHasChanged(){
-		for(User listener : eventListeners){
-			listener.eventHasChanged(this);
-		}
 	}
 	
 	public void addListener(User user){

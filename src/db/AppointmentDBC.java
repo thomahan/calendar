@@ -350,10 +350,10 @@ public class AppointmentDBC {
 		}
 	}
 
-	public static void removeCancelNotification(int appointmentId, String username) {
+	public static void removeCancelNotification(int appointmentId, String username, String canceller) {
 		DBConnector.makeStatement(""
 			+ "DELETE FROM cancel_notification "
-			+ "WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"';");
+			+ "WHERE appointment_id = '"+appointmentId+"' AND username = '"+username+"' AND canceller = '"+canceller+"';");
 	}
 		
 	public static List<CancelNotification> getCancelNotificationList(String username) {
