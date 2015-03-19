@@ -83,6 +83,7 @@ public class Controller {
 	class OpenRegistrationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
+			loginView.setEnabled(false);
 			registrationView = new RegistrationView();
 			registrationView.addRegisterButtonListener(new RegisterListener());
 			registrationView.addCancelButtonListener(new CancelRegistrationListener());
@@ -114,6 +115,7 @@ public class Controller {
 
 				registrationView.displayRegisterMessage(username);
 				registrationView.dispose();
+				loginView.setEnabled(true);
 			} catch (Exception e){
 				registrationView.displayErrorMessage(e.getMessage());
 			}
@@ -124,6 +126,7 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			registrationView.dispose();
+			loginView.setEnabled(true);
 		}
 	}
 
