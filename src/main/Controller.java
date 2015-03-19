@@ -25,6 +25,7 @@ import view.SeeChangesView;
 import view.SeeParticipantsView;
 import view.UserInvitationView;
 import db.AppointmentDBC;
+import db.RoomDBC;
 import db.UserDBC;
 
 public class Controller {
@@ -198,7 +199,7 @@ public class Controller {
 				int appointmentId;
 				if (appointmentCreationView.isNewAppointment()) {
 					if (reservedRoom.getId() != 0) {
-						availableRoomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, 0);
+						availableRoomList = RoomDBC.getAvailableRoomList(startDate, endDate, 0);
 						if (!availableRoomList.contains(reservedRoom)) {
 							reservedRoom = new Room(0, "", 0);
 							throw new Exception("The room could not be reserved for the new time period.");
@@ -218,13 +219,13 @@ public class Controller {
 					}
 
 					if (selectedAppointment.getRoom().getId() != 0) {
-						AppointmentDBC.releaseRoom(appointmentId);
+						RoomDBC.releaseRoom(appointmentId);
 						releasedRoom = selectedAppointment.getRoom();
 					}
 					editedAppointment.setRoom(reservedRoom);
 
 					if (reservedRoom.getId() != 0) {
-						availableRoomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, 0);
+						availableRoomList = RoomDBC.getAvailableRoomList(startDate, endDate, 0);
 						if (!availableRoomList.contains(reservedRoom)) {
 							releasedRoom = selectedAppointment.getRoom();
 							reservedRoom = new Room(0, "", 0);
@@ -234,7 +235,7 @@ public class Controller {
 					}
 					
 					if (releasedRoom != null && selectedAppointment.getRoom().getId() != 0) {
-						AppointmentDBC.setAppointmentRoom(selectedAppointment.getId(), selectedAppointment.getRoom().getId());
+						RoomDBC.setAppointmentRoom(selectedAppointment.getId(), selectedAppointment.getRoom().getId());
 						releasedRoom = null;
 					}
 
@@ -277,7 +278,7 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if (releasedRoom != null) {
-				AppointmentDBC.setAppointmentRoom(selectedAppointment.getId(), releasedRoom.getId());
+				RoomDBC.setAppointmentRoom(selectedAppointment.getId(), releasedRoom.getId());
 			}
 			appointmentCreationView.dispose();
 		}
@@ -359,7 +360,7 @@ public class Controller {
 				roomReservationView.addReserveButtonListener(new ReserveRoomListener());
 				roomReservationView.addCancelButtonListener(new CancelRoomReservationListener());
 
-				availableRoomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, minSeatCount);
+				availableRoomList = RoomDBC.getAvailableRoomList(startDate, endDate, minSeatCount);
 				roomReservationView.setRoomList(availableRoomList);
 
 			} catch (Exception ex) {

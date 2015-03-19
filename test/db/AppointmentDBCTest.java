@@ -81,7 +81,7 @@ public class AppointmentDBCTest {
 		System.out.println(startDate);
 		System.out.println(endDate);
 
-		List<Room> roomList = AppointmentDBC.getAvailableRoomList(startDate, endDate, 5);
+		List<Room> roomList = RoomDBC.getAvailableRoomList(startDate, endDate, 5);
 		for (Room r : roomList) {
 			System.out.println(r);
 		}
