@@ -33,9 +33,10 @@ public class DBInitializer {
 	private static List<String> readSqlFile(String fileName) {
 		ArrayList<String> statementList = new ArrayList<String>();
 		String statement = "";
+		Scanner scanner = null;
 
 		try {
-            Scanner scanner = new Scanner(new BufferedReader(new FileReader(fileName)));
+            scanner = new Scanner(new BufferedReader(new FileReader(fileName)));
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
 				statement = statement.concat(line);
@@ -47,6 +48,8 @@ public class DBInitializer {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			scanner.close();
 		}
 
 		return statementList;

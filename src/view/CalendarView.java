@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -32,7 +31,7 @@ import model.Appointment;
 
 @SuppressWarnings("serial")
 public class CalendarView extends JFrame {
-	private static JLabel monthLabel, warningNextMonth, warningPrevMonth;
+	private static JLabel monthLabel;
 	private static JComboBox<String> yearComboBox;
 	private static JTable table;
 	private static DefaultTableModel mtblCalendar;
@@ -68,6 +67,7 @@ public class CalendarView extends JFrame {
 		new CalendarView();
 	}
 
+	@SuppressWarnings("deprecation")
 	public CalendarView() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle(FRAME_TITLE);
@@ -104,19 +104,7 @@ public class CalendarView extends JFrame {
 		monthLabel = new JLabel();
 		monthLabel.setBounds(6, 12, 106, 16);
 		calendarControlPanel.add(monthLabel);
-/*		
-		warningNextMonth = new JLabel();
-		warningNextMonth.setBounds(168, 0, 15, 15);
-		calendarControlPanel.add(warningNextMonth);
-		warningNextMonth.setText("*");
-		warningNextMonth.setVisible(false);
 		
-		warningPrevMonth = new JLabel();
-		warningPrevMonth.setBounds(132, 0, 15, 15);
-		calendarControlPanel.add(warningPrevMonth);
-		warningPrevMonth.setText("*");
-		warningPrevMonth.setVisible(false);
-*/		
 		JPanel calendarDisplayPanel = new JPanel();
 		calendarDisplayPanel.setBounds(6, 55, 284, 280);
 		leftPanel.add(calendarDisplayPanel);
@@ -453,11 +441,9 @@ public class CalendarView extends JFrame {
 	}
 	
 	class tblCellRenderer extends DefaultTableCellRenderer{
-		private int dayOfMonth;
 		private Color color;
 		
 		public tblCellRenderer(Date date, Color color) {
-			this.dayOfMonth = date.getDate();
 			this.color = color;
 		}
 		
@@ -474,6 +460,7 @@ public class CalendarView extends JFrame {
 		}	
 	}
 	
+	@SuppressWarnings("deprecation")
 	public Date getCurrentMonth() {
 		return new Date(currentYear - 1900, currentMonth, 1);
 	}

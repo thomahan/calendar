@@ -4,7 +4,6 @@ import main.PasswordHash;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class User implements CalendarEventListener, GroupListener {
 	
@@ -13,8 +12,6 @@ public class User implements CalendarEventListener, GroupListener {
 	private String username;
 	private String salt;
 	private String passwordHash;
-
-	private Calendar calendar;
 	
 	private ArrayList<Group> groups = new ArrayList<Group>();
 	Scanner scanner = new Scanner(System.in);
@@ -32,7 +29,6 @@ public class User implements CalendarEventListener, GroupListener {
 		this.username = username;
 		this.salt = PasswordHash.nextSalt();
 		this.passwordHash = PasswordHash.hashPassword(this.salt, password);
-		this.calendar = new Calendar(this);
 	}
 
 	/**
@@ -49,26 +45,12 @@ public class User implements CalendarEventListener, GroupListener {
 		this.passwordHash = passwordHash;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.calendar = new Calendar(this);
 	}
 	
 	public boolean isPasswordCorrect(String password) {
 		String passwordHashCandidate = PasswordHash.hashPassword(this.salt, password);
 		return this.passwordHash.equals(passwordHashCandidate);
 	}
-
-	private void changeUser(String newFirstName, String newLastName) { //Legg til endring i db
-		this.firstName = newFirstName;
-		this.lastName = newLastName;
-	}
-	
-	private void createGroup(String name) { //Legg til gruppe i db
-		Group group = new Group(0, name);
-		group.addUserToGroup(this);
-		groups.add(group);
-	}
-
-	
 	
 	public String getFirstName() {
 		return firstName;
@@ -92,14 +74,6 @@ public class User implements CalendarEventListener, GroupListener {
 	
 	public String getHashResult(){
 		return passwordHash;
-	}
-
-	public Calendar getCalendar() {
-		return calendar;
-	}
-
-	public void setCalendar(Calendar calendar) {
-		this.calendar = calendar;
 	}
 
 	public ArrayList<Group> getGroups() {

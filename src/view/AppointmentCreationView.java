@@ -7,18 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.AbstractAction;
 
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.Action;
-
-import model.User;
-
+@SuppressWarnings("serial")
 public class AppointmentCreationView extends JFrame {
 	private JTextField descriptionField;
 	private JTextField startTimeField;
@@ -29,7 +20,6 @@ public class AppointmentCreationView extends JFrame {
 	private JButton cancelButton;
 	private JButton invitePersonButton;
 	private JButton inviteGroupButton;
-	private ArrayList<User> invitedUsers;
 	private JButton btnChooseRoom;
 	
 	private final String FRAME_TITLE = "Create new appointment";

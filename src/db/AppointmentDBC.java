@@ -69,13 +69,12 @@ public class AppointmentDBC {
 	}
 
 	/**
-	 * Returns alist of appointments that starts on a specified date
+	 * Returns a list of appointments that starts on a specified date
 	 * @param username
 	 * @param intervalStartDate
-	 * @param intervalEndDate TODO
+	 * @param intervalEndDate
 	 * @return List of appointments for specified date
 	 */
-	@SuppressWarnings("deprecation")
 	public static ArrayList<Appointment> getAppointmentList(String username, Date intervalStartDate, Date intervalEndDate) {
 		ArrayList<Appointment> appointmentList = new ArrayList<Appointment>();
 		
@@ -345,7 +344,7 @@ public class AppointmentDBC {
 		for (User user : invitedUserList) {
 			if (!user.getUsername().equals(username)) {
 				DBConnector.makeStatement(""
-					+ "INSERT IGNORE INTO cancel_notification "
+					+ "INSERT INTO cancel_notification "
 					+ "VALUES ('"+appointmentId+"', '"+user.getUsername()+"', '"+username+"');");
 			}
 		}
