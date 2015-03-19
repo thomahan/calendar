@@ -35,6 +35,7 @@ public class Query {
 	 */
 	public void close() {
 		try {
+			result.close();
 			statement.close();
 			connection.close();
 		} catch (SQLException e) {
