@@ -433,6 +433,13 @@ public class Controller {
 				} else {
 					calendarView.setAppointmentAccess(selectedAppointment.getStatus());
 				}
+
+				participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId());
+				participantList = removeUser(user, participantList);
+				if (participantList.size() > 0) {
+					calendarView.setSeeParticipantsButton(true);
+				}
+	
 			}
 		}
 
@@ -504,7 +511,7 @@ public class Controller {
 			seeParticipantsView = new SeeParticipantsView();
 			seeParticipantsView.addRemoveButtonListener(new RemoveParticipantsListener());
 			seeParticipantsView.addCloseButtonListener(new CloseSeeParticipantsViewListener());
-			
+
 			participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId());
 			participantList = removeUser(user, participantList);
 			seeParticipantsView.setParticipantList(participantList);

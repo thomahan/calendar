@@ -393,18 +393,22 @@ public class CalendarView extends JFrame {
 		if (appointment.equals("Not replied")) {
 			acceptButton.setEnabled(true);
 			declineButton.setEnabled(true);
-			seeParticipantsButton.setEnabled(true);
 		} else if (appointment.equals("Accepted")) {
 			deleteButton.setEnabled(true);
-			seeParticipantsButton.setEnabled(true);
 		} else if (appointment.equals("Declined")) {
 			acceptButton.setEnabled(true);
 			hideButton.setEnabled(true);
-			seeParticipantsButton.setEnabled(true);
 		} else if (appointment.equals("Owned")) {
 			editButton.setEnabled(true);
 			deleteButton.setEnabled(true);
+		}
+	}
+	
+	public void setSeeParticipantsButton(boolean enableButton) {
+		if (enableButton) {
 			seeParticipantsButton.setEnabled(true);
+		} else {
+			seeParticipantsButton.setEnabled(false);
 		}
 	}
 	
