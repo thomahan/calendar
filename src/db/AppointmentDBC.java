@@ -378,7 +378,7 @@ public class AppointmentDBC {
 		return invitedUserList;
 	}
 	
-	public static List<User> getParticipantList(int appointmentId) {
+	public static List<User> getParticipantList(int appointmentId, String username) {
 		ArrayList<User> participantList = new ArrayList<User>();
 
 		Query query = DBConnector.makeQuery(""
@@ -386,24 +386,24 @@ public class AppointmentDBC {
 				+ "FROM invitation "
 					+ "JOIN user ON invitation.username = user.username "
 					+ "JOIN appointment ON invitation.appointment_id = appointment.appointment_id "
-				+ "WHERE invitation.appointment_id = "+appointmentId+" "
+				+ "WHERE invitation.appointment_id = "+appointmentId+" AND user.username != '"+username+"' "
 				+ "ORDER BY status ASC;");
 		ResultSet result = query.getResult();
 
 		try {
 			while (result.next()) {
-				String username = result.getString("user.username");
+				String participantUsername = result.getString("user.username");
 				String firstName = result.getString("user.first_name");
 				String lastName = result.getString("user.last_name");
 				String status = result.getString("status");
 				String creator = result.getString("creator");
 				String statusString;
-				if (username.equals(creator)) {
+				if (participantUsername.equals(creator)) {
 					statusString = "Appointment creator";
 				} else {
 					statusString = status;
 				}
-				participantList.add(new User(username, "", "", firstName, lastName + " (" + statusString + ")"));
+				participantList.add(new User(participantUsername, "", "", firstName, lastName + " (" + statusString + ")"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

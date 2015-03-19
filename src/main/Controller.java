@@ -296,7 +296,7 @@ public class Controller {
 			
 			userList = UserDBC.getUserList();
 			// This should be done differently
-			userList = removeUser(user, userList);
+			userList.remove(user);
 			userInvitationView.setUserList(userList);
 		}
 
@@ -438,8 +438,7 @@ public class Controller {
 					calendarView.setAppointmentAccess(selectedAppointment.getStatus());
 				}
 
-				participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId());
-				participantList = removeUser(user, participantList);
+				participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId(), user.getUsername());
 				if (participantList.size() > 0) {
 					calendarView.setSeeParticipantsButton(true);
 				}
@@ -516,8 +515,7 @@ public class Controller {
 			seeParticipantsView.addRemoveButtonListener(new RemoveParticipantsListener());
 			seeParticipantsView.addCloseButtonListener(new CloseSeeParticipantsViewListener());
 
-			participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId());
-			participantList = removeUser(user, participantList);
+			participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId(), user.getUsername());
 			seeParticipantsView.setParticipantList(participantList);
 			
 			if (selectedAppointment.isEditable()) {
@@ -535,8 +533,7 @@ public class Controller {
 				AppointmentDBC.removeInvitation(selectedAppointment.getId(), participant.getUsername());
 			}
 				
-			participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId());
-			participantList = removeUser(user, participantList);
+			participantList = AppointmentDBC.getParticipantList(selectedAppointment.getId(), user.getUsername());
 			seeParticipantsView.setParticipantList(participantList);
 		}
 	}
@@ -699,20 +696,6 @@ public class Controller {
 			if (a != null) {
 				if (!(a.getStatus().equals("Hidden") || a.getStatus().equals("Cancelled"))) {
 					newList.add(a);
-				}
-			}
-		}
-		
-		return newList;
-	}
-	
-	public List<User> removeUser(User user, List<User> userList) {
-		List<User> newList = new ArrayList<User>();
-
-		for (User u : userList) {
-			if (u != null) {
-				if (!u.equals(user)) {
-					newList.add(u);
 				}
 			}
 		}
